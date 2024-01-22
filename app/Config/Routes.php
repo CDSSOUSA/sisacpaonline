@@ -76,6 +76,10 @@ $routes->group('/usuario', ['namespace'=>'App\Controllers','filter'=>'authFilter
     $routes->post('escrever_anamnese_ep05','Usuario::escreverAnamneseEp05');  
     $routes->post('escrever_anamnese_ep06','Usuario::escreverAnamneseEp06');  
     $routes->post('escrever_anamnese_ep07','Usuario::escreverAnamneseEp07');
+
+    $routes->get('form_escolha_cadastrar_usuario','Usuario::form_escolha_cadastrar_usuario');
+    $routes->get('form_cadastrar_usuario','Usuario::form_cadastrar_usuario');
+    $routes->post('cadastrar_usuario_simplificado','Usuario::cadastrarUsuarioSimplificado');
     
    
 });

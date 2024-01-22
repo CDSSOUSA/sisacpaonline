@@ -7,38 +7,38 @@ use Exception;
 
 class UsuarioModel extends MyModel
 {
-    protected $DBGroup          = 'default';
-    protected $table            = 'tb_usuario';
-    protected $primaryKey       = 'idUsuario';
+    protected $DBGroup = 'default';
+    protected $table = 'tb_usuario';
+    protected $primaryKey = 'idUsuario';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'object';
-    protected $useSoftDeletes   = false;
-    protected $protectFields    = true;
+    protected $returnType = 'object';
+    protected $useSoftDeletes = false;
+    protected $protectFields = true;
     //protected $allowedFields    = ['nomeUsuario', 'listaEspera', 'nomeResponsavel', 'cnsUsuario', 'nomeMae', 'telefone', 'dataNascimento', 'cpfUsuario', 'ativo', 'telefoneMae', 'telefonePai', 'acompanhante'];
     protected $allowedFields = [];
     // Dates
     protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+    protected $dateFormat = 'datetime';
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
+    protected $deletedField = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
-    protected $skipValidation       = false;
+    protected $validationRules = [];
+    protected $validationMessages = [];
+    protected $skipValidation = false;
     protected $cleanValidationRules = true;
 
     // Callbacks
     protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
+    protected $beforeInsert = [];
+    protected $afterInsert = [];
+    protected $beforeUpdate = [];
+    protected $afterUpdate = [];
+    protected $beforeFind = [];
+    protected $afterFind = [];
+    protected $beforeDelete = [];
+    protected $afterDelete = [];
 
     /*public function __construct()
     {
@@ -133,6 +133,57 @@ class UsuarioModel extends MyModel
             ->get()->getRow();
     }
 
+    public function saveUsuario($dados)
+    {
+        try {
+            $this->db->transBegin();
+
+            $dado['nome'] = $dados['nomeUsuario'];
+            $dado['ativo'] = 'S';
+            $dado['cpf'] = $dados['cpfUsuario'];
+            $dado['idOperadorCadastro'] = session()->get('idOperador');
+            $dado['tipo'] = 2;
+
+            $pessoa = new PessoaModel();
+            $pessoa->save($dado);
+
+
+            $ultimaPessoa = $pessoa->getLastPessoa();
+            $idUsuario = $ultimaPessoa->idPessoa;
+            $dados['idUsuario'] = $idUsuario;
+            $this->insert($dados);
+
+            if ($dados['listaEspera'] == 'N') {
+                $dadosMatricula['idUsuario'] = $dados['idUsuario'];
+                $dadosMatricula['anoMatricula'] = date('Y');
+                $dadosMatricula['dataMatricula'] = date('Y-m-d H:i:s');
+                $dadosMatricula['ativo'] = 'S';
+                $dadosMatricula['idOperadorMatricula'] = session()->get('idOperador');
+
+                $matricula = new MatriculaModel;
+                $matricula->salvarMatricula($dadosMatricula);
+            }
+
+
+            if ($this->db->transStatus()) {
+
+                $this->db->transCommit();
+
+                return true;
+            }
+
+            $this->db->transRollback();
+
+            return false;
+        } catch (Exception $e) {
+            echo 'Erro: ' . $e->getMessage();
+            // Fazer o rollback da transação em caso de erro
+            $this->db->transRollback();
+            return false;
+        }
+
+    }
+
     public function desligaUsuario($dados)
     {
 
@@ -193,11 +244,7 @@ class UsuarioModel extends MyModel
 
             return false;
         } catch (Exception $e) {
-
             echo 'Erro: ' . $e->getMessage();
-
-
-
             // Fazer o rollback da transação em caso de erro
             $this->db->transRollback();
             return false;

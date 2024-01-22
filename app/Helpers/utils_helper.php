@@ -95,6 +95,11 @@ if (!function_exists('span')) {
     }
 }
 
+function nbs($num = 1)
+{
+    return str_repeat('&nbsp;', $num);
+}
+
 /**
  * @param string $campo
  * @return string
@@ -217,7 +222,7 @@ function tratarHora($hora)
 {
     if (!empty($hora)) {
         $horaNova = explode(':', $hora);
-        return  $horaNova[0] . ":" . $horaNova[1];
+        return $horaNova[0] . ":" . $horaNova[1];
     }
     return '--';
 }
@@ -265,7 +270,8 @@ function mascaraCns($numero)
 
 function tratarCns($cns)
 {
-    return $cns = implode("", explode(".", $cns));
+    //return $cns = implode("", explode(".", $cns));
+    return preg_replace('/[^0-9]/', '', $cns);
 }
 
 /*
@@ -347,7 +353,7 @@ function calcAge(string $birthDate): string
     if ($birthDate == null)
         return '--';
 
-    $dateNow  = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
+    $dateNow = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
 
     $birthDate = explode('-', $birthDate);
 
@@ -464,21 +470,22 @@ function mascaraMoeda($valor)
 
 function tratarPalavras($string)
 {
-    return preg_replace(array(
-        "/(á|à|ã|â|ä)/",
-        "/(Á|À|Ã|Â|Ä)/",
-        "/(é|è|ê|ë)/",
-        "/(É|È|Ê|Ë)/",
-        "/(í|ì|î|ï)/",
-        "/(Í|Ì|Î|Ï)/",
-        "/(ó|ò|õ|ô|ö)/",
-        "/(Ó|Ò|Õ|Ô|Ö)/",
-        "/(ú|ù|û|ü)/",
-        "/(Ú|Ù|Û|Ü)/",
-        "/(ñ)/",
-        "/(Ñ)/",
-        "/(Ç)/"
-    ), explode(" ", "a A e E i I o O u U n N C"), mb_strtoupper($string));
+    return preg_replace(
+        array(
+            "/(á|à|ã|â|ä)/",
+            "/(Á|À|Ã|Â|Ä)/",
+            "/(é|è|ê|ë)/",
+            "/(É|È|Ê|Ë)/",
+            "/(í|ì|î|ï)/",
+            "/(Í|Ì|Î|Ï)/",
+            "/(ó|ò|õ|ô|ö)/",
+            "/(Ó|Ò|Õ|Ô|Ö)/",
+            "/(ú|ù|û|ü)/",
+            "/(Ú|Ù|Û|Ü)/",
+            "/(ñ)/",
+            "/(Ñ)/",
+            "/(Ç)/"
+        ), explode(" ", "a A e E i I o O u U n N C"), mb_strtoupper($string));
 }
 
 function tratarTelefone($telefone)
@@ -708,9 +715,9 @@ function tratarMes($mes)
 
 function tratarTipoEscola($tipoEscola)
 {
-    if (empty($tipoEscola)) :
+    if (empty($tipoEscola)):
         return '--';
-    else :
+    else:
         if ($tipoEscola == '1')
             return 'PÚBLICA';
         return 'PRIVADA';
@@ -753,25 +760,62 @@ function valorPorExtenso($valor = 0)
 {
     $singular = array("centavo", "real", "mil", "milhao", "bilhao", "trilhao", "quatrilhao");
     $plural = array(
-        "centavos", "reais", "mil", "milhoes", "bilhoes", "trilhoes",
+        "centavos",
+        "reais",
+        "mil",
+        "milhoes",
+        "bilhoes",
+        "trilhoes",
         "quatrilhoes"
     );
 
     $c = array(
-        "", "cem", "duzentos", "trezentos", "quatrocentos",
-        "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"
+        "",
+        "cem",
+        "duzentos",
+        "trezentos",
+        "quatrocentos",
+        "quinhentos",
+        "seiscentos",
+        "setecentos",
+        "oitocentos",
+        "novecentos"
     );
     $d = array(
-        "", "dez", "vinte", "trinta", "quarenta", "cinquenta",
-        "sessenta", "setenta", "oitenta", "noventa"
+        "",
+        "dez",
+        "vinte",
+        "trinta",
+        "quarenta",
+        "cinquenta",
+        "sessenta",
+        "setenta",
+        "oitenta",
+        "noventa"
     );
     $d10 = array(
-        "dez", "onze", "doze", "treze", "quatorze", "quinze",
-        "dezesseis", "dezesete", "dezoito", "dezenove"
+        "dez",
+        "onze",
+        "doze",
+        "treze",
+        "quatorze",
+        "quinze",
+        "dezesseis",
+        "dezesete",
+        "dezoito",
+        "dezenove"
     );
     $u = array(
-        "", "um", "dois", "tres", "quatro", "cinco", "seis",
-        "sete", "oito", "nove"
+        "",
+        "um",
+        "dois",
+        "tres",
+        "quatro",
+        "cinco",
+        "seis",
+        "sete",
+        "oito",
+        "nove"
     );
 
     $z = 0;
@@ -825,7 +869,7 @@ function testarDiaSemana($data)
 
 function definirUrlBase(): string
 {
-    $baseUrl =  $_SERVER['DOCUMENT_ROOT'];
+    $baseUrl = $_SERVER['DOCUMENT_ROOT'];
     $baseUrl .= str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
     return $baseUrl;
 }
@@ -919,22 +963,26 @@ function escreveAutor()
     return 'cleberdossantossousa@gmail.com - 83 98796-9712';
 }
 
-function generateUpperCase (): string {
-    return implode("",range('A','Z'));
+function generateUpperCase(): string
+{
+    return implode("", range('A', 'Z'));
 }
-function generateLowerCase (): string {
-    return implode("",range('a','z'));
+function generateLowerCase(): string
+{
+    return implode("", range('a', 'z'));
 }
-function generateNumber(): string {
-    return implode('',range('0','9'));
+function generateNumber(): string
+{
+    return implode('', range('0', '9'));
 }
-function generateSimbol(): string {
+function generateSimbol(): string
+{
     return "!@#$%&*()_+=-";
 }
 
 function gerar_senha(int $size, bool $upperCase, bool $lowerCase, bool $number, bool $simbol)
 {
-     
+
     $options = [
         generateUpperCase() => $upperCase,
         generateLowerCase() => $lowerCase,
@@ -944,7 +992,7 @@ function gerar_senha(int $size, bool $upperCase, bool $lowerCase, bool $number, 
 
     $password = '';
 
-    $limitMax = strlen(generateUpperCase()) + strlen(generateLowerCase() ) + strlen(generateNumber()) + strlen(generateSimbol());
+    $limitMax = strlen(generateUpperCase()) + strlen(generateLowerCase()) + strlen(generateNumber()) + strlen(generateSimbol());
 
     $accumulator = 0;
 
@@ -970,7 +1018,7 @@ function gerar_senha(int $size, bool $upperCase, bool $lowerCase, bool $number, 
 function definePassword(bool $option, $data): string
 {
     if ($option) {
-        return  str_shuffle($data);
+        return str_shuffle($data);
     }
     return '';
 }
@@ -986,7 +1034,7 @@ function definePassword(bool $option, $data): string
 function gerarbotaoVoltar($metodo)
 {
 
-    return anchor($metodo, '<span class="badge">V</span> OLTAR', array('class' => 'btn bg-orange waves-effect')) .'  ';
+    return anchor($metodo, '<span class="badge">V</span> OLTAR', array('class' => 'btn bg-orange waves-effect')) . '  ';
 }
 
 function gerarBotaoImprimir($metodo, $titulo = null)
@@ -997,7 +1045,7 @@ function gerarBotaoImprimir($metodo, $titulo = null)
 
 function generateButtonAdd(string $metodo, string $titulo)
 {
-    return anchor($metodo, '<span class="badge">N</span> OVO  ' . $titulo, array('class' => 'btn bg-teal waves-effect')).nbs(2);
+    return anchor($metodo, '<span class="badge">N</span> OVO  ' . $titulo, array('class' => 'btn bg-teal waves-effect')) . nbs(2);
 }
 
 function mod($dividendo, $divisor)
@@ -1165,27 +1213,30 @@ function valid_cns($cns)
         }
         return 'false';
     }*/
-    
+
 }
 
-function encrypt($data) {
+function encrypt($data)
+{
 
-    
-    $inicio = gerar_senha(15,true,true,true,false);
-    $fim = gerar_senha(15,true,true,true,false);
-    
-    $hash = $inicio.$data.$fim;
+
+    $inicio = gerar_senha(15, true, true, true, false);
+    $fim = gerar_senha(15, true, true, true, false);
+
+    $hash = $inicio . $data . $fim;
     return $hash;
 }
 
-function decrypt($data) {
+function decrypt($data)
+{
 
     $resto = substr($data, 15);
     $result = substr($resto, 0, -15);
     return $result;
 }
 
-function tratarEvolucao ($minhaString, $status = false) {
+function tratarEvolucao($minhaString, $status = false)
+{
 
     if ($status && substr($minhaString, 0, 2) === '++') {
         $minhaString = 'Editado: ' . substr($minhaString, 2);
@@ -1193,12 +1244,13 @@ function tratarEvolucao ($minhaString, $status = false) {
         $minhaString = substr($minhaString, 2);
     }
     return $minhaString;
-   
+
 }
 
-function ultimosDozeMeses($data, $dias) {
-   // Obtém a data atual
-   $ultimosDozeMeses = array();
+function ultimosDozeMeses($data, $dias)
+{
+    // Obtém a data atual
+    $ultimosDozeMeses = array();
 
     // Converte a data fornecida em um objeto DateTime
     $dataAtual = new DateTime($data);
@@ -1207,7 +1259,7 @@ function ultimosDozeMeses($data, $dias) {
     $dataAtual->modify('-' . $dias . ' days');
 
     // Obtém o mês e o ano da data atual
-    $anoAtual = $dataAtual->format('Y') ;
+    $anoAtual = $dataAtual->format('Y');
     $mesAtual = $dataAtual->format('m');
 
     // Loop para obter os últimos doze meses
@@ -1220,17 +1272,17 @@ function ultimosDozeMeses($data, $dias) {
 
         // Se o mês for menor que 1, ajusta para dezembro e diminui o ano
         //if ($mesAtual < 1) {
-            //$mesAtual = 12;
-            //$anoAtual--;
-       // }
-       if($mesAtual > 12){
-        $anoAtual++;
-        $mesAtual = 1;
-       }
+        //$mesAtual = 12;
+        //$anoAtual--;
+        // }
+        if ($mesAtual > 12) {
+            $anoAtual++;
+            $mesAtual = 1;
+        }
     }
-   
-   // Retorna o array com os últimos doze meses
-   return ($ultimosDozeMeses); // Inverte o array para começar com o mês atual
+
+    // Retorna o array com os últimos doze meses
+    return ($ultimosDozeMeses); // Inverte o array para começar com o mês atual
 }
 
 function proximas_datas_do_dia_da_semana($dia_semana)

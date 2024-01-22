@@ -13,6 +13,7 @@ use App\Models\ComunicacaoModel;
 use App\Models\FinalizacaoModel;
 use App\Models\MatriculaModel;
 use App\Models\MotivoDesligamentoModel;
+use App\Models\PessoaModel;
 use App\Models\UsuarioModel;
 use CodeIgniter\Files\File;
 use Exception;
@@ -1254,6 +1255,46 @@ class Usuario extends BaseController
         return view('usuario/form-escrever-anamnese07', $dados);
     }
 
+    public function form_escolha_cadastrar_usuario()
+    {        
+        $dados = array(
+
+            'titulo' => 'ESCOLHA TIPO DE USUÁRIO',            
+            'pasta' => 'usuario',
+            
+        );   
+        return view('usuario/form-escolha-cadastrar-usuario', $dados);
+    
+    }
+
+    public function form_cadastrar_usuario()
+    {       
+        $dados = array(
+
+            'titulo' => 'CADASTRAR USUÁRIO - SIMPLIFICADO',            
+            'pasta' => 'usuario',
+            'modelCidade' => $this->modelCidade,
+            
+        );       
+
+        return view('usuario/form-cadastrar-usuario', $dados);
+
+    }
+    public function formCadastrarUsuarioAcompanhante()
+    {
+        //require_once APPPATH . "/third_party/validarConsistencia.php";
+        $dados = array(
+
+            'titulo' => 'CADASTRAR USUÁRIO <span style="color:orange;font-weight:bold">ACOMPANHANTE</span>',            
+            'pagina' => 'form-cadastrar-usuario-acompanhante',
+            
+        );
+       
+
+        $this->load->view('principal', $dados);
+
+    }
+
 
     public function escreverAnamneseEp01()
     {
@@ -1324,7 +1365,8 @@ class Usuario extends BaseController
        
     }
 
-    public function escreverAnamneseEp02(){
+    public function escreverAnamneseEp02()
+    {
 
         $rules = [
         'nFilhoDesejado'=>'required',      
@@ -1402,7 +1444,8 @@ class Usuario extends BaseController
        
     }
 
-    public function escreverAnamneseEp03(){
+    public function escreverAnamneseEp03()
+    {
         $rules = [
         'nCercadinho'=>'required',      
         'nEngatinhou'=>'required',      
@@ -1481,7 +1524,8 @@ class Usuario extends BaseController
             return $this->form_escrever_anamnese(encrypt($idUsuario));  
     }
 
-    public function escreverAnamneseEp04(){
+    public function escreverAnamneseEp04()
+    {
         $rules = [
         'nIdadeFala'=>'required',      
         'nFalavaMais'=> 'required|min_length[3]',      
@@ -1572,7 +1616,8 @@ class Usuario extends BaseController
             return $this->form_escrever_anamnese(encrypt($idUsuario));  
     }
 
-    public function escreverAnamneseEp05(){
+    public function escreverAnamneseEp05()
+    {
         $rules = [
         'nBronquite'=>'required',
         'nAlergia'=>'required',
@@ -1652,7 +1697,8 @@ class Usuario extends BaseController
             return $this->form_escrever_anamnese(encrypt($idUsuario));  
     }
 
-    public function escreverAnamneseEp06(){
+    public function escreverAnamneseEp06()
+    {
         $rules = [
         'nFamilia'=>'permit_empty|min_length[10]',
         'nDisciplina'=>'permit_empty|min_length[10]',
@@ -1732,7 +1778,8 @@ class Usuario extends BaseController
             return $this->form_escrever_anamnese(encrypt($idUsuario));  
     }
 
-    public function escreverAnamneseEp07(){
+    public function escreverAnamneseEp07()
+    {
         $rules = [
              'nCreche'=>'required',
              'nIdadeEscola'=>'required',
@@ -1815,5 +1862,120 @@ class Usuario extends BaseController
             }    
     
             return $this->form_escrever_anamnese(encrypt($idUsuario));  
+    }
+    public function cadastrarUsuarioSimplificado()
+    {
+        
+
+        /*$this->form_validation->set_message('is_unique_cpf', 'O {field} já está cadastrado!');
+       
+        $this->form_validation->set_message('is_unique_cns', 'O {field} já está cadastrado!');
+
+        $this->form_validation->set_message('is_unique_nis', 'O {field} já está cadastrado!');*/
+
+       
+       
+          
+            $dados['nomeUsuario'] = tratarPalavras($this->request->getPost('nNomeUsuario'));
+            $dados['dataNascimento'] = converteParaDataMysql($this->request->getPost('nDataNascimento'));
+            $dados['idadeDiagnostico'] = $this->request->getPost('nIdadeDiagnostico');
+            $dados['genero'] = $this->request->getPost('nGenero');
+            $dados['telefone'] = $this->request->getPost('nTelefone');
+            $dados['teste'] = $this->request->getPost('teste');
+            $dados['cpfUsuario'] = tratarCpf($this->request->getPost('nCpfUsuario'));
+            $dados['cnsUsuario'] = tratarCns($this->request->getPost('nCnsUsuario'));           
+            $dados['nisUsuario'] = tratarNis($this->request->getPost('nNisUsuario'));
+            $dados['frequentaEscolaRegular'] = $this->request->getPost('nFrequentaEscola');
+            $dados['frequentaEscolaEspecial'] = $this->request->getPost('nFrequentaEscolaEspecial');
+            $dados['escolaOrigem'] = tratarPalavras($this->request->getPost('nNomeEscola'));
+            $dados['tipoEscolaRegular'] = $this->request->getPost('nTipoEscola');
+            $dados['serieAno'] = $this->request->getPost('nSerieAno');
+            $dados['possuiCuidador'] = $this->request->getPost('nCuidador');
+            $dados['medicoAcompanhante'] = tratarPalavras($this->request->getPost('nMedico'));
+            $dados['telefoneMedicoAcompanhante'] = $this->request->getPost('nTelefoneMedicoAcompanhante');
+            $dados['fezAtendimento'] = $this->request->getPost('nFezAtendimento');
+            $dados['fazAtendimento'] = $this->request->getPost('nFazAtendimento');
+            $dados['nomePai'] = tratarPalavras($this->request->getPost('nNomePai'));
+            $dados['telefonePai'] = $this->request->getPost('nTelefonePai');
+            $dados['nomeMae'] = tratarPalavras($this->request->getPost('nNomeMae'));
+            $dados['telefoneMae'] = $this->request->getPost('nTelefoneMae');
+            $dados['moraCom'] = $this->request->getPost('nMoraCom');
+            $dados['cep'] = $this->request->getPost('nCep');
+            $dados['logradouro'] = tratarPalavras($this->request->getPost('nLogradouro'));
+            $dados['numeroLogradouro'] = $this->request->getPost('nNumeroLogradouro');
+            $dados['bairro'] = tratarPalavras($this->request->getPost('nBairro'));
+            $dados['complemento'] = tratarPalavras($this->request->getPost('nComplemento'));
+            $dados['pontoReferencia'] = tratarPalavras($this->request->getPost('nPontoReferencia'));
+            $dados['cidade'] = tratarPalavras($this->request->getPost('nCidade'));
+            $dados['listaEspera'] = $this->request->getPost('nListaEspera');    
+            
+      
+            
+            $rules = [
+                'nNomeUsuario' => 'required|min_length[3]',
+                'nDataNascimento' => 'required',
+                'nGenero' => 'required',
+                'nFrequentaEscola' => 'required',
+                'nFrequentaEscolaEspecial' => 'required',
+                'nNomeEscola' => 'permit_empty|min_length[3]',
+                'nCuidador' => 'required',
+                'nMedico'=> 'permit_empty|min_length[3]',
+                'nNomePai' => 'required|min_length[3]',
+                'nTelefonePai' => 'required', 
+                'nNomeMae' => 'required|min_length[3]',
+                'nTelefoneMae' => 'required',
+                'nMoraCom' => 'permit_empty|min_length[2]|max_length[20]',
+                'nLogradouro' => 'required',
+                'nNumeroLogradouro' => 'required',
+                'nBairro' => 'required',
+                'nCidade' => 'required',
+                'nPontoReferencia' => 'permit_empty|min_length[3]',
+                'nListaEspera' => 'required',
+                'nCpfUsuario' => 'permit_empty|valid_cpf|is_unique[tb_pessoa.cpf]',
+                'nCnsUsuario' => 'required|valid_cns|is_unique[tb_usuario.cnsUsuario, idUsuario, {".$idUsuario."}]',
+                'nNisUsuario' => 'permit_empty|valid_nis|is_unique[tb_usuario.nisUsuario]',            
+            ];
+    
+            $val = $this->validate($rules);  
+            
+            dd($val);     
+            
+            $idUsuario = $this->request->getPost('nIdUsuario');
+            if (!$val) {
+    
+                $this->logging->error(__CLASS__ . "\\" . __FUNCTION__, [
+                    'USUARIO::' => $idUsuario,
+                    'FEITO POR::' => session()->get("nome"),
+                    'ERROR' => $this->validator->getErrors()
+                ]);
+    
+    
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            }
+            
+            try {
+                $modelUsuario = new UsuarioModel;
+
+                $gravar = $modelUsuario->saveUsuario($dados);
+
+                //dd($gravar);
+    
+                if ($gravar) {
+                    session()->set('sucesso', 'Parabéns, ação realizada com sucesso.');
+
+                    $modelPessoa = new PessoaModel;
+                    $ultimaPessoa = $modelPessoa->getLastPessoa();
+
+                    $idUsuario = $ultimaPessoa->idPessoa;    
+                    //return redirect()->to('usuario/detalhar_usuario/' . encrypt($idUsuario));
+                    $this->logging->info(__CLASS__ . "\\" . __FUNCTION__, ['USUARIO::' => $idUsuario, 'FEITO POR::' => session()->get("nome"), 'SUCCESS::' => $gravar]);
+                    return redirect()->to('usuario/detalhar_usuario/' . encrypt($idUsuario));
+                }
+            } catch (Exception $e) {
+                session()->set('erro', 'ERRO, não foi possível realizar operação.');
+                $this->logging->critical(__CLASS__ . "\\" . __FUNCTION__, ['USUARIO::' => $idUsuario, 'FEITO POR::' => session()->get("nome"), 'ERROR' => $e->getMessage()]);
+            }    
+    
+            return $this->form_cadastrar_usuario();  
     }
 }

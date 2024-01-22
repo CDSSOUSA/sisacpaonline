@@ -48,4 +48,11 @@ class PessoaModel extends Model
 
         $this->allowedFields = $colunas;
     }
+
+    public function getLastPessoa()
+    {
+        return $this->select('idPessoa')
+                    ->orderBy('idPessoa', "DESC")
+                    ->get()->getRow();    
+    }  
 }
