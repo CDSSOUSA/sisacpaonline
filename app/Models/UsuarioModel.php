@@ -164,7 +164,6 @@ class UsuarioModel extends MyModel
                 $matricula->salvarMatricula($dadosMatricula);
             }
 
-
             if ($this->db->transStatus()) {
 
                 $this->db->transCommit();

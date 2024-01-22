@@ -81,6 +81,8 @@ $routes->group('/usuario', ['namespace'=>'App\Controllers','filter'=>'authFilter
     $routes->get('form_cadastrar_usuario','Usuario::form_cadastrar_usuario');
     $routes->post('cadastrar_usuario_simplificado','Usuario::cadastrarUsuarioSimplificado');
     
+    $routes->get('form_cadastrar_usuario_acompanhante','Usuario::form_cadastrar_usuario_acompanhante');
+    $routes->post('cadastrar_usuario_acompanhante','Usuario::cadastrarUsuarioUcompanhante');
    
 });
 $routes->group('/api/atendimento', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {

@@ -79,7 +79,7 @@ echo $this->section('content');
                             <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" name="nCnsUsuario" value="<?php echo set_value('nCnsUsuario') ?>" class="form-control cns" placeholder="Cartão do SUS do Usuário">
+                                        <input type="text" name="nCnsUsuario" value="<?php echo set_value('nCnsUsuario') ?>" class="form-control" placeholder="Cartão do SUS do Usuário">
                                     </div>
                                     <span style="color:red"><?= session()->get('errors')['nCnsUsuario']??'';?></span> 
                                     

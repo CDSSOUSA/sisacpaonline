@@ -1280,19 +1280,17 @@ class Usuario extends BaseController
         return view('usuario/form-cadastrar-usuario', $dados);
 
     }
-    public function formCadastrarUsuarioAcompanhante()
+    public function form_cadastrar_usuario_acompanhante()
     {
-        //require_once APPPATH . "/third_party/validarConsistencia.php";
         $dados = array(
 
-            'titulo' => 'CADASTRAR USUÁRIO <span style="color:orange;font-weight:bold">ACOMPANHANTE</span>',            
-            'pagina' => 'form-cadastrar-usuario-acompanhante',
+            'titulo' => 'CADASTRAR USUÁRIO <span style="color:orange;font-weight:bold">ACOMPANHANTE</span>', 
+            'pasta' => 'usuario',
+            'modelCidade' => $this->modelCidade,
             
-        );
-       
+        );       
 
-        $this->load->view('principal', $dados);
-
+        return view('usuario/form-cadastrar-usuario-acompanhante', $dados);
     }
 
 
@@ -1865,17 +1863,6 @@ class Usuario extends BaseController
     }
     public function cadastrarUsuarioSimplificado()
     {
-        
-
-        /*$this->form_validation->set_message('is_unique_cpf', 'O {field} já está cadastrado!');
-       
-        $this->form_validation->set_message('is_unique_cns', 'O {field} já está cadastrado!');
-
-        $this->form_validation->set_message('is_unique_nis', 'O {field} já está cadastrado!');*/
-
-       
-       
-          
             $dados['nomeUsuario'] = tratarPalavras($this->request->getPost('nNomeUsuario'));
             $dados['dataNascimento'] = converteParaDataMysql($this->request->getPost('nDataNascimento'));
             $dados['idadeDiagnostico'] = $this->request->getPost('nIdadeDiagnostico');
@@ -1934,12 +1921,10 @@ class Usuario extends BaseController
                 'nCpfUsuario' => 'permit_empty|valid_cpf|is_unique[tb_pessoa.cpf]',
                 'nCnsUsuario' => 'required|valid_cns|is_unique[tb_usuario.cnsUsuario, idUsuario, {".$idUsuario."}]',
                 'nNisUsuario' => 'permit_empty|valid_nis|is_unique[tb_usuario.nisUsuario]',            
-            ];
-    
+            ];    
+
             $val = $this->validate($rules);  
-            
-            dd($val);     
-            
+
             $idUsuario = $this->request->getPost('nIdUsuario');
             if (!$val) {
     
@@ -1977,5 +1962,80 @@ class Usuario extends BaseController
             }    
     
             return $this->form_cadastrar_usuario();  
+    }
+    public function cadastrarUsuarioUcompanhante()
+    {
+            $dados['nomeUsuario'] = tratarPalavras($this->request->getPost('nNomeUsuario'));
+            $dados['dataNascimento'] = converteParaDataMysql($this->request->getPost('nDataNascimento'));
+            $dados['idadeDiagnostico'] = $this->request->getPost('nIdadeDiagnostico');
+            $dados['genero'] = $this->request->getPost('nGenero');
+            $dados['telefone'] = $this->request->getPost('nTelefone');
+            $dados['teste'] = $this->request->getPost('teste');
+            $dados['cpfUsuario'] = tratarCpf($this->request->getPost('nCpfUsuario'));
+            $dados['cnsUsuario'] = tratarCns($this->request->getPost('nCnsUsuario'));           
+            $dados['nisUsuario'] = tratarNis($this->request->getPost('nNisUsuario'));
+            $dados['nomeResponsavel'] = 'NAO INFORMADO';
+            $dados['cep'] = $this->request->getPost('nCep');
+            $dados['logradouro'] = tratarPalavras($this->request->getPost('nLogradouro'));
+            $dados['numeroLogradouro'] = $this->request->getPost('nNumeroLogradouro');
+            $dados['bairro'] = tratarPalavras($this->request->getPost('nBairro'));
+            $dados['complemento'] = tratarPalavras($this->request->getPost('nComplemento'));
+            $dados['pontoReferencia'] = tratarPalavras($this->request->getPost('nPontoReferencia'));
+            $dados['cidade'] = tratarPalavras($this->request->getPost('nCidade'));
+            $dados['listaEspera'] = 'N';
+            $dados['acompanhante'] = 'S';      
+            
+            $rules = [
+                'nNomeUsuario' => 'required|min_length[3]',
+                'nDataNascimento' => 'required',
+                'nGenero' => 'required',
+                'nLogradouro' => 'required',
+                'nNumeroLogradouro' => 'required',
+                'nBairro' => 'required',
+                'nCidade' => 'required',
+                'nPontoReferencia' => 'permit_empty|min_length[3]',
+                'nCpfUsuario' => 'permit_empty|valid_cpf|is_unique[tb_pessoa.cpf]',
+                'nCnsUsuario' => 'required|valid_cns|is_unique[tb_usuario.cnsUsuario, idUsuario, {".$idUsuario."}]',
+                'nNisUsuario' => 'permit_empty|valid_nis|is_unique[tb_usuario.nisUsuario]', 
+            ];
+
+            $val = $this->validate($rules);  
+
+            $idUsuario = $this->request->getPost('nIdUsuario');
+            if (!$val) {
+    
+                $this->logging->error(__CLASS__ . "\\" . __FUNCTION__, [
+                    'USUARIO::' => $idUsuario,
+                    'FEITO POR::' => session()->get("nome"),
+                    'ERROR' => $this->validator->getErrors()
+                ]);    
+    
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            }
+            
+            try {
+                $modelUsuario = new UsuarioModel;
+
+                $gravar = $modelUsuario->saveUsuario($dados);
+
+                //dd($gravar);
+    
+                if ($gravar) {
+                    session()->set('sucesso', 'Parabéns, ação realizada com sucesso.');
+
+                    $modelPessoa = new PessoaModel;
+                    $ultimaPessoa = $modelPessoa->getLastPessoa();
+
+                    $idUsuario = $ultimaPessoa->idPessoa;    
+                    //return redirect()->to('usuario/detalhar_usuario/' . encrypt($idUsuario));
+                    $this->logging->info(__CLASS__ . "\\" . __FUNCTION__, ['USUARIO::' => $idUsuario, 'FEITO POR::' => session()->get("nome"), 'SUCCESS::' => $gravar]);
+                    return redirect()->to('usuario/detalhar_usuario/' . encrypt($idUsuario));
+                }
+            } catch (Exception $e) {
+                session()->set('erro', 'ERRO, não foi possível realizar operação.');
+                $this->logging->critical(__CLASS__ . "\\" . __FUNCTION__, ['USUARIO::' => $idUsuario, 'FEITO POR::' => session()->get("nome"), 'ERROR' => $e->getMessage()]);
+            }    
+    
+            return $this->form_cadastrar_usuario_acompanhante();  
     }
 }
