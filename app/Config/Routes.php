@@ -85,6 +85,7 @@ $routes->group('/usuario', ['namespace'=>'App\Controllers','filter'=>'authFilter
     $routes->post('cadastrar_usuario_acompanhante','Usuario::cadastrarUsuarioUcompanhante');
    
 });
+
 $routes->group('/api/atendimento', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
     $routes->get('getDataAtendimento/(:any)','AtendimentoApi::getDataAtendimento/$1');
     $routes->get('listarAtendimentos/(:any)','AtendimentoApi::listarAtendimentos/$1');
@@ -96,9 +97,7 @@ $routes->group('/api/atendimento', ['namespace'=>'App\Controllers','filter'=>'au
 
 });
 
-$routes->group('/atendimento', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {    
-
-   
+$routes->group('/atendimento', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {  
 
     $routes->get('form_cadastrar_atendimento/(:any)','Atendimento::form_cadastrar_atendimento/$1');
     $routes->get('form_cadastrar_atendimento02/(:any)/(:any)','Atendimento::form_cadastrar_atendimento02/$1/$2');
@@ -135,6 +134,7 @@ $routes->group('/atendimento', ['namespace'=>'App\Controllers','filter'=>'authFi
     //$route['confirmar_presenca_usuario_horario/(:any)/(:any)/(:any)/(:any)/(:any)'] = $caminho . 'confirmarPresencaUsuarioHorario/$1/$2/$3/$4/$5';
   
 });
+
 $routes->group('/evolucao', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
 
     $routes->get('listar_historico_evolucao/(:any)','Evolucao::listar_historico_evolucao/$1');
@@ -151,6 +151,13 @@ $routes->group('/matricula', ['namespace'=>'App\Controllers','filter'=>'authFilt
 
     $routes->get('form_matricular_usuario/(:any)','Matricula::form_matricular_usuario/$1');
     $routes->post('matricular_usuario','Matricula::matricularUsuario');
+});
+
+$routes->group('/profissional', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
+
+    $routes->get('form_cadastrar_profissional','Profissional::form_cadastrar_profissional');
+
+    $routes->post('matricular_usuario','Profissional::matricularUsuario');
 });
 /*
  * --------------------------------------------------------------------
