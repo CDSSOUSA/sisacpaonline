@@ -175,4 +175,7 @@ echo $this->section('content');
     </div>
 </div>
 
-<?php $this->endSection();
+<?php $this->endSection();?>
+<?= $this->section('script-js'); ?>
+<script src="<?=base_url()?>assets/js/atendimento.js"></script>
+<?= $this->endSection(); ?>

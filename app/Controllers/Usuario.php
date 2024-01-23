@@ -1918,7 +1918,7 @@ class Usuario extends BaseController
                 'nCidade' => 'required',
                 'nPontoReferencia' => 'permit_empty|min_length[3]',
                 'nListaEspera' => 'required',
-                'nCpfUsuario' => 'permit_empty|valid_cpf|is_unique[tb_pessoa.cpf]',
+                'nCpfUsuario' => 'permit_empty|validateCpf|is_unique[tb_pessoa.cpf]',
                 'nCnsUsuario' => 'required|valid_cns|is_unique[tb_usuario.cnsUsuario, idUsuario, {".$idUsuario."}]',
                 'nNisUsuario' => 'permit_empty|valid_nis|is_unique[tb_usuario.nisUsuario]',            
             ];    
@@ -1994,7 +1994,7 @@ class Usuario extends BaseController
                 'nBairro' => 'required',
                 'nCidade' => 'required',
                 'nPontoReferencia' => 'permit_empty|min_length[3]',
-                'nCpfUsuario' => 'permit_empty|valid_cpf|is_unique[tb_pessoa.cpf]',
+                'nCpfUsuario' => 'permit_empty|validateCpf|is_unique[tb_pessoa.cpf]',
                 'nCnsUsuario' => 'required|valid_cns|is_unique[tb_usuario.cnsUsuario, idUsuario, {".$idUsuario."}]',
                 'nNisUsuario' => 'permit_empty|valid_nis|is_unique[tb_usuario.nisUsuario]', 
             ];

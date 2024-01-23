@@ -154,11 +154,18 @@ $routes->group('/matricula', ['namespace'=>'App\Controllers','filter'=>'authFilt
 });
 
 $routes->group('/profissional', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
-
     $routes->get('form_cadastrar_profissional','Profissional::form_cadastrar_profissional');
-
-    $routes->post('matricular_usuario','Profissional::matricularUsuario');
+    $routes->post('cadastrar_profissional','Profissional::cadastrarProfissional');
+    $routes->get('form_alocar_profissional','Profissional::form_alocar_profissional');
+    $routes->get('alocar_profissional','Profissional::alocar_profissional');
+    $routes->get('form_editar_profissional','Profissional::form_editar_profissional');
 });
+
+$routes->group('/api/profissional', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
+    $routes->get('listarProfissional','ProfissionalApi::listarProfissional');  
+
+});
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

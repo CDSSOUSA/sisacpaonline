@@ -11,3 +11,4 @@ function hexToRgba(hexCode, opacity) {
     var rgb = "rgba(" + parseInt(matches[1], 16) + "," + parseInt(matches[2], 16) + "," + parseInt(matches[3], 16) + "," + opacity + ")";
     return rgb;
 }
+
