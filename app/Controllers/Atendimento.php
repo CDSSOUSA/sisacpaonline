@@ -6,7 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\AlocacaoModel;
 use App\Models\AtendimentoModel;
 use App\Models\DocumentoJustificativaModel;
-use App\Models\ProfisionalModel;
+use App\Models\ProfissionalModel;
 use App\Models\RegistroAtendimentoModel;
 use App\Models\UsuarioModel;
 use Exception;
@@ -25,7 +25,7 @@ class Atendimento extends BaseController
     {
         $this->modelUsuario = new UsuarioModel;
         $this->modelAtendimento = new AtendimentoModel;
-        $this->modelProfissional = new ProfisionalModel;
+        $this->modelProfissional = new ProfissionalModel;
         $this->modelAlocacao = new AlocacaoModel;
         $this->modelRegistroAtendimento = new RegistroAtendimentoModel;
 

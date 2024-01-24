@@ -2,14 +2,15 @@
 
 namespace App\Controllers;
 
-use App\Models\ProfissionalModel;
+use App\Controllers\BaseController;
+use App\Models\ModalidadeModel;
 use CodeIgniter\RESTful\ResourceController;
 use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
-class ProfissionalApi extends ResourceController
-{
+class ModalidadeApi extends ResourceController
+{   
     private $logging;   
 
     public function __construct()
@@ -20,23 +21,11 @@ class ProfissionalApi extends ResourceController
         $this->logging = $logger;
     }
 
-    public function listarProfissional(){
-
-        try {
-            $modelProfissional = new ProfissionalModel();
-            $data = $modelProfissional->getProfissionalAtivo();
-            return $this->response->setJSON($data);
-
-        } catch (Exception $e) {
-            return $this->failServerError($e->getMessage());
-        }
-    }
-
-    public function getDataProfissional($idProfissional)
+    public function getDataModalidade()
     {
         try {
-            $modelProfissional = new ProfissionalModel();
-            $data = $modelProfissional->find($idProfissional);
+            $modelModalidade = new ModalidadeModel;
+            $data = $modelModalidade->getDataModalidade();
             return $this->response->setJSON($data);
 
         } catch (Exception $e) {
@@ -44,4 +33,6 @@ class ProfissionalApi extends ResourceController
         }
 
     }
+
+    
 }

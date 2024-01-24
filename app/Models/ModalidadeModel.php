@@ -48,4 +48,11 @@ class ModalidadeModel extends Model
 
         $this->allowedFields = $colunas;
     }
+
+    public function getDataModalidade()
+    {
+        return $this->select('idModalidade, nomeModalidade')
+            ->where('ativo','S')
+            ->findAll();
+    }
 }

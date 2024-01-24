@@ -58,6 +58,7 @@
 <script src="<?php echo base_url('js/pages/ui/modals.js'); ?>"></script>
 <script src="<?php echo base_url("js/jquery.maxlength.js"); ?>"></script>
 <script src="<?php echo base_url('js/script.js'); ?>"></script>
+<script src="<?php echo base_url('js/utils.js'); ?>"></script>
 <?= $this->renderSection('script-js');?>
 <script type="text/javascript">
 
