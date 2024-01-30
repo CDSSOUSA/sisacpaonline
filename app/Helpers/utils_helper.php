@@ -1220,8 +1220,8 @@ function encrypt($data)
 {
 
 
-    $inicio = gerar_senha(15, true, true, true, false);
-    $fim = gerar_senha(15, true, true, true, false);
+    $inicio = gerar_senha(getenv('QTDE_HASH'), true, true, true, false);
+    $fim = gerar_senha(getenv('QTDE_HASH'), true, true, true, false);
 
     $hash = $inicio . $data . $fim;
     return $hash;
@@ -1230,8 +1230,8 @@ function encrypt($data)
 function decrypt($data)
 {
 
-    $resto = substr($data, 15);
-    $result = substr($resto, 0, -15);
+    $resto = substr($data, getenv('QTDE_HASH'));
+    $result = substr($resto, 0, -getenv('QTDE_HASH'));
     return $result;
 }
 

@@ -48,6 +48,7 @@
     <!-- Bootstrap Select Css -->
     <link href="<?php echo base_url('plugins/bootstrap-select/css/bootstrap-select.css'); ?>" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 
 

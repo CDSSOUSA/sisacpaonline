@@ -185,7 +185,7 @@ if (editProfissionalForm) {
         }).then(response => {
             console.log(response.data);
             if (response.data.error) {
-
+                showAlertToast(false, 'Erros no preechimento!');  
                 console.log(response.data.error)
                 validateErros(response.data.msgs.nNomeProfissional, 'iNomeProfissional')
                 validateErros(response.data.msgs.nCpfProfissional, 'iCpfProfissional')
@@ -201,19 +201,17 @@ if (editProfissionalForm) {
                 //validateErros(response.data.msgs.name, 'fieldlertErrorEditName')*/
             } else {
                 //activeSeriesModal.hide();
-                editSerieForm.reset();
-                $('#registrarPresencaUsuario').modal('hide')
-                document.getElementById('msg').innerHTML = `
-                            <div class="alert alert-show bg-teal alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                Parabéns, ação realizada com sucesso!
-                            </div>`
+                showAlertToast(response.data.status);
+                editProfissionalForm.reset();
+                //editProfissionalForm.hide();
+                $('#editarProfissional').modal('hide')
+               
                 //addSeriesForm.reset();
                 //editSerieModal.hide()
                 //localStorage.setItem('idSeriesStorege', response.data.id)
                 //loadToast(typeSuccess, titleSuccess, messageSuccess);
 
-                listarAtendimentos(dataForm.get('nDataAtendimento'));
+                listarProfissionais();
             }
         })
     });

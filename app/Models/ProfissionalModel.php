@@ -23,7 +23,14 @@ class ProfissionalModel extends Model
     protected $deletedField  = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [];
+    protected $validationRules      = [
+            'nNomeProfissional' => 'required|min_length[3]',
+            'nGenero' => 'required',
+            'nCpfProfissional' => 'required|validateCpf|is_unique[tb_profissional.cpfProfissional, idProfissional,{idProfissional}]',
+            'nCnsProfissional' => 'required|valid_cns|is_unique[tb_profissional.cnsProfissional, idProfissional,{idProfissional}]',
+            'nTipoProfissional' => 'required',
+            'nModalidade' => 'required'
+    ];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;

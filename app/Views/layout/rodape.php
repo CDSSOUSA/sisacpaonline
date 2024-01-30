@@ -52,6 +52,8 @@
 <script src="<?php echo base_url('plugins/jquery-datatable/extensions/export/buttons.html5.min.js'); ?>"></script>
 <script src="<?php echo base_url('plugins/jquery-datatable/extensions/export/buttons.print.min.js'); ?>"></script>
 <script src="<?php echo base_url('js/pages/tables/jquery-datatable.js'); ?>"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 
 <!-- Scripts -->
 <script src="<?php echo base_url('js/axios.min.js'); ?>"></script>

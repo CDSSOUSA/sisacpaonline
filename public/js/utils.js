@@ -60,3 +60,20 @@ const clearMessageError = (option) => {
         })
     }
 }
+
+function showAlertToast(status, message = 'Nenhum registro encontrado!') {
+
+    toastr.options = {
+      closeButton: true, // Exibir botão de fechar
+      positionClass: 'toast-top-right',
+      timeOut: 3000,
+      progressBar: true, // Posição da notificação (pode ser 'toast-top-right', 'toast-top-left', 'toast-bottom-right', 'toast-bottom-left', etc.)
+    };
+  
+    if (status) {
+      toastr.success(`<b>Parabéns! Operação realizada com sucesso!</b>`);
+    } else {
+      toastr.error(`<b>Ops! ${message}</b>`);
+    }
+  
+  }
