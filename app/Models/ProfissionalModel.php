@@ -53,7 +53,7 @@ class ProfissionalModel extends Model
     {
         return $this->where('ativo','S')
                     ->orderBy('nomeProfissional')
-                    ->findAll();
+                    ->get()->getResult();
     }
 
     public function saveProfissional($dados)

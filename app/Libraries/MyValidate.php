@@ -4,6 +4,7 @@ namespace App\Libraries;
 
 class MyValidate
 {
+    
     public function validateCpf($cpf): bool
     {
         // Extrai somente os números
@@ -52,6 +53,7 @@ class MyValidate
 
     public function valid_cns($cns): bool
     {
+        helper('utils');
 
         $cns = tratarCns($cns);
 

@@ -164,6 +164,7 @@ $routes->group('/profissional', ['namespace'=>'App\Controllers','filter'=>'authF
 $routes->group('/api/profissional', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
     $routes->get('listarProfissional','ProfissionalApi::listarProfissional');  
     $routes->get('getDataProfissional/(:any)','ProfissionalApi::getDataProfissional/$1');  
+    $routes->post('edita_profissional','ProfissionalApi::editaProfissional');  
 
 });
 

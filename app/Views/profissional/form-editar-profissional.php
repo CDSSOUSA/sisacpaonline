@@ -64,7 +64,7 @@ echo $this->section('content');
                 $atributos_formulario = array(
                     'role' => 'form',
                     'class' => '',
-                    'id' => 'editSeriesForm'
+                    'id' => 'editProfissionalForm'
                 );
 
                 echo form_open('api/profissional/edita_profissional', $atributos_formulario);
@@ -80,42 +80,102 @@ echo $this->section('content');
 
                 ?>
 
-                <input type="text" id="idProfissional" name="nIdProfissional">                
-
-
+                <input type="text" id="idProfissional" name="nIdProfissional">  
+                
                 <div class="row clearfix">
                     <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
-                        <label for="">Nome completo:</label>
+                        <label for="">Nome completo: *</label>
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
                         <div class="form-group">
                             <div class="form-line">
-                            <input type="text" id="nomeProfissional" name="nNomeProfissional" class="form-control">    
+                            <input 
+                                type="text" 
+                                id="nomeProfissional" 
+                                name="nNomeProfissional" 
+                                class="form-control"
+                                onfocus="clearMessageError('iNomeProfissional');">    
                             </div>
+                            <span class="messageErro" style="color:red" id="iNomeProfissional"></span> 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                        <label for="">Genero: * </label>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                        <div class="form-group">
+                            <div class="form-line" id="genero">                                
+                            </div>
+                         
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                        <label for="">CNS Profissional: *</label>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input 
+                                    type="text" 
+                                    id="cnsProfissional" 
+                                    name="nCnsProfissional" 
+                                    class="form-control"
+                                    onfocus="clearMessageError('iCnsProfissional');">
+                            </div>
+                            <span class="messageErro" style="color:red" id="iCnsProfissional"></span>                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                        <label for="">CPF Profissional: *</label>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input 
+                                    type="text" 
+                                    id="cpfProfissional" 
+                                    name="nCpfProfissional" 
+                                    class="form-control"
+                                    onfocus="clearMessageError('iCpfProfissional');">
+                            </div>
+                            <span class="messageErro" style="color:red" id="iCpfProfissional"></span> 
                         </div>
                     </div>
                 </div>
                 <div class="row clearfix">
                     <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
-                        <label for="">CNS Profissional:</label>
+                        <label for="">Núm. Cons. de Classe: *</label>
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
                         <div class="form-group">
                             <div class="form-line">
-                                <input type="text" id="cnsProfissional" name="nCnsProfissional" class="form-control">
+                                <input 
+                                    type="text" 
+                                    id="conselhoClasse" 
+                                    name="nConselhoClasse" 
+                                    class="form-control">                                
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="row clearfix">
                     <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
-                        <label for="">Núm. Cons. de Classe:</label>
+                        <label for="">Tipo profissional: *</label>
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
                         <div class="form-group">
-                            <div class="form-line">
-                                <input type="text" id="conselhoClasse" name="nConselhoClasse" class="form-control">                                
-                            </div>
+                            <div class="form-line" id="tipos"></div>
+                            <span class="messageErro" style="color:red" id="iTipoProfissional"></span>
                         </div>
                     </div>
                 </div>
@@ -126,29 +186,11 @@ echo $this->section('content');
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
                         <div class="form-group">
-                            <div class="form-line" id="modalidades">
-                            
-                
-                            </div>
+                            <div class="form-line" id="modalidades"></div>
+                            <span class="messageErro" style="color:red" id="iModalidadeProfissional"></span>
                         </div>
                     </div>
-                </div>
-               
-
-                <div class="row clearfix">
-                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
-                        <label for="">Genero: * </label>
-                    </div>
-                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
-                        <div class="form-group">
-                            <div class="form-line" id="genero">
-                                
-                            </div>
-                            <span style="color:red" id="iLabelHorarioConfirmado"></span>
-                        </div>
-                    </div>
-                </div>
-
+                </div>    
 
             </div>
             <div class="modal-footer">
