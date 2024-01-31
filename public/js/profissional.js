@@ -47,7 +47,7 @@ function loadDataProfissional(data) {
 
     //if (data) {
     data.forEach((elem, indice) => {
-        console.log(elem.idProfissional)
+      
         /*if (elem.status == 'I') {
             display = 'disabled'
             color = 'text-secondary'
@@ -63,8 +63,8 @@ function loadDataProfissional(data) {
                         <a href="" onclick = "editar_profissional('${elem.idProfissional}')" class = "btn bg-teal waves-effect" title = "Editar profissional" data-toggle = "modal" data-target = "#editarProfissional">
                            E
                         </a>
-                        <a href="#/" onclick = "confirmarPresencaUsuarioHorario(${elem.idProfissional})" class = "btn bg-red waves-effect" title = "Falta Usuário" data-toggle = "modal" data-target = "#modal-lg">
-                           F
+                        <a href="#/" onclick = "ativar_desativar_profissional('${elem.idProfissional}','N')" class = "btn bg-red waves-effect" title = "Ativar Profissional" data-toggle = "modal" data-target = "#ativarDesativarProfissional">
+                           D
                         </a>
                         <a href="#/" onclick = "confirmarPresencaUsuarioHorario(${elem.idProfissional})" class = "btn bg-orange waves" title = "Falta Profissional" data-toggle = "modal" data-target = "#registrarPresencaUsuario">
                             P
@@ -79,41 +79,84 @@ function loadDataProfissional(data) {
 
     return row;
 }
+async function ativar_desativar_profissional(idProfissional,status){
+
+    clearMessageErrorAll()   
+
+    await axios.get(`${URL_BASE}${URI_API_PROFISSIONAL}/getDataProfissional/${idProfissional}`)
+        .then(response => {
+            var dados = response.data           
+            document.getElementById('idProfissionalAtivaDesativa').value =  idProfissional
+            document.getElementById('statusAtivaDesativa').value = `${dados['ativo']== 'S'? 'N' : 'S'}` 
+            document.getElementById('nomeProfissionalAtivaDesativa').value = `${dados['nomeProfissional']}` 
+           
+        })
+        .catch(error => console.log(error))
+}
+
+const ativarDesativarProfissionalForm = document.getElementById('ativarDesativarProfissionalForm');
+console.log(ativarDesativarProfissionalForm);
+
+if (ativarDesativarProfissionalForm) {
+    ativarDesativarProfissionalForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const dataForm = new FormData(ativarDesativarProfissionalForm);
+
+        await axios.post(`${URL_BASE}${URI_API_PROFISSIONAL}/ativa_desativa_profissional`, dataForm, {
+            headers: {
+                "Content-Type": "application/json"                
+            }
+        }).then(response => {
+            console.log(response.data);
+            if (response.data.error) {
+                showAlertToast(false, 'Erros no preechimento!');  
+                console.log(response.data.error)
+                validateErros(response.data.msgs.nNomeProfissional, 'iNomeProfissional')
+                validateErros(response.data.msgs.nCpfProfissional, 'iCpfProfissional')
+                validateErros(response.data.msgs.nCnsProfissional, 'iCnsProfissional')
+                validateErros(response.data.msgs.nTipoProfissional, 'iTipoProfissional')
+                validateErros(response.data.msgs.nModalidade, 'iModalidadeProfissional')
+                //document.getElementById('iCnsProfissional').innerHTML = response.data.msgs.nCnsProfissional
+                //document.getElementById('iHoraAtendimento').value = '00:00'
+                //editSerieForm.reset();
+                /*validateErros(response.data.msgs.description, 'fieldAlertErrorDescriptionSeriesEdit')
+                validateErros(response.data.msgs.classification, 'fieldAlertErrorTurmaEdit')
+                validateErros(response.data.msgs.series, 'fieldAlertDuplicativeEdit')
+                //validateErros(response.data.msgs.name, 'fieldlertErrorEditName')*/
+            } else {
+                //activeSeriesModal.hide();
+                showAlertToast(response.data.status);
+                ativarDesativarProfissionalForm.reset();
+                //editProfissionalForm.hide();
+                $('#ativarDesativarProfissional').modal('hide')
+               
+                //addSeriesForm.reset();
+                //editSerieModal.hide()
+                //localStorage.setItem('idSeriesStorege', response.data.id)
+                //loadToast(typeSuccess, titleSuccess, messageSuccess);
+
+                listarProfissionais();
+            }
+        })
+    });
+}
 
 async function editar_profissional(idProfissional) {
 
-    console.log('Função editar_profissional chamada com idProfissional:', idProfissional);
+    clearMessageErrorAll()   
 
-    clearMessageErrorAll()
-    // await axios.get(URL_BASE + '/teacher/delete/' + id)
-    //     .then(response => {
-    //         const data = response.data;
-    //         if (data) {
-    //             console.log(data);
-
-    //deleteTeacherModal.show();
-
-    const dataModalidade = await getDataModalidade();
-    console.log(dataModalidade);
+    const dataModalidade = await getDataModalidade();  
 
     await axios.get(`${URL_BASE}${URI_API_PROFISSIONAL}/getDataProfissional/${idProfissional}`)
         .then(response => {
             var dados = response.data
-            console.log(dados)
-            //eraseAlert('iLabelHorarioConfirmado')  
-
-            // document.getElementById('iIdUsuarioNome').innerText = `${dados.idUsuario} -  ${dados.nomeUsuario}`
-            // document.getElementById('iNomeProfModalidade').innerText = `${dados.nomeProfissional} -  ${dados.modalidade}`
-            // document.getElementById('iDiaHoraInicio').innerText = `${dados.diaSemana} -  ${dados.horaInicio}`
-            // document.getElementById('iHoraAtendimento').value = `${dados.horaConfirmacao}`
-
+           
             document.getElementById('idProfissional').value =  idProfissional
             document.getElementById('nomeProfissional').value = `${dados['nomeProfissional']}`
             document.getElementById('cnsProfissional').value = tratarFieldNull(`${dados['cnsProfissional']}`)
             document.getElementById('cpfProfissional').value = tratarFieldNull(`${dados['cpfProfissional']}`)
             document.getElementById('conselhoClasse').value = `${dados['numeralConselhoClasse']}`
-
-
 
             construirSelect(dataModalidade, dados['modalidade'], "modalidades", 'nModalidade')
 
@@ -138,35 +181,9 @@ async function editar_profissional(idProfissional) {
             optionGenero += `<input name="nGenero" type="radio" ${checkedFem} id="iGeneroFemi" class="with-gap" value="F"/>
                 <label for="iGeneroFemi">Femi</label>`
             genero.innerHTML = optionGenero;
-
-
-
-
-
-            // document.getElementById('acao').value = 'H'
-            // document.getElementById('frequencia').value = `${dados.frequencia}`
-            // document.getElementById('dataAtendimento').value = `${dados.dataPrevisaoAtendimento}`
-            // document.getElementById('dataAtendimentoFake').innerText = `${inverterData(dados.dataPrevisaoAtendimento)}`
-
-            //eraseAlert('msg')       
-
-            //document.getElementById(locale).innerText = `${response.data[0].description}º${response.data[0].classification} - ${convertShift(response.data[0].shift)}`
-
-            //shiftGlobal = response.data[0].shift
+           
         })
         .catch(error => console.log(error))
-
-    //getDataTeacher(id, 'nameTeacher')
-    //          </div>`
-
-    //         }
-    //     })
-    //     .catch(error => console.log(error))
-    // //deleteModal.show()
-
-
-    // Chamar a função para construir o select
-    //construirSelect();
 }
 
 const editProfissionalForm = document.getElementById('editProfissionalForm');

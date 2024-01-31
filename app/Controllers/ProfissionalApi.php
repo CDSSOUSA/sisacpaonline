@@ -73,8 +73,6 @@ class ProfissionalApi extends ResourceController
         helper("utils");   
         $idProfissinal = $this->request->getPost('nIdProfissional');
         $id = decrypt($idProfissinal);
-        $post = $this->request->getPost();
-        $post['idProfissional'] = $id;
         
         $modelProfissional = new ProfissionalModel;
         $result = $modelProfissional->find($id);
@@ -95,10 +93,18 @@ class ProfissionalApi extends ResourceController
             return $this->response->setJSON($response);
         }
 
-        $rules = $modelProfissional->validationRules;
+        //$rules = $modelProfissional->validationRules;
 
-        $val = $this->validate($rules);
+        $regrasTemporarias = $modelProfissional->validationRules;
+        //var_dump($modelProfissional->validationRules);
         
+        $regrasTemporarias['nCpfProfissional'] = str_replace('|is_unique[tb_profissional.cpfProfissional, idProfissional,{idProfissional}]', '', $regrasTemporarias['nCpfProfissional']);
+        $regrasTemporarias['nCnsProfissional'] = str_replace('|is_unique[tb_profissional.cnsProfissional, idProfissional,{idProfissional}]', '', $regrasTemporarias['nCnsProfissional']);
+
+        
+        $rules = $regrasTemporarias;
+        $val = $this->validate($rules);
+
         if (!$val) {
             $response = [
                 'status' => 'ERROR',
@@ -181,4 +187,105 @@ class ProfissionalApi extends ResourceController
             ]);
         }
     }
+
+    public function ativaDesativaProfissional(){
+
+        helper("utils");   
+        $idProfissinal = $this->request->getPost('nIdProfissional');
+        $id = decrypt($idProfissinal);
+
+        $modelProfissional = new ProfissionalModel;
+        $result = $modelProfissional->find($id);
+        if(!$result){
+            $response = [
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => 400,
+                'msg' => ['nIdProfissional'=>'Id inválido'],
+                'msgs' => ['nIdProfissional'=>'Id inválido']
+            ];
+
+            $this->logging->error(__CLASS__ . "\\" . __FUNCTION__, [
+                'PROFISSIONAL::' => $id,
+                'FEITO POR::' => session()->get("nome"),
+                'ERROR' => ['nIdProfissional'=>'Id inválido']
+            ]);
+            return $this->response->setJSON($response);
+        }
+
+        $rules = [
+            'nIdProfissional' => 'required',
+        ];
+
+        $val = $this->validate($rules);
+        
+        if (!$val) {
+            $response = [
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => 400,
+                'msg' => $this->validator->getErrors(),
+                'msgs' => $this->validator->getErrors()
+            ];
+
+            $this->logging->error(__CLASS__ . "\\" . __FUNCTION__, [
+                'PROFISSIONAL::' => $id,
+                'FEITO POR::' => session()->get("nome"),
+                'ERROR' => $this->validator->getErrors()
+            ]);
+            return $this->response->setJSON($response);
+        }
+
+        
+        
+        $idProfissional= $id;
+        $ativo = $this->request->getPost('nAtivaDesativa');
+        $operadorAtivo = $this->request->getPost('nAtivaDesativa');
+
+        $data = [
+            'idProfissional' => $idProfissional,
+            'ativo' => $ativo,
+            'operadorAtivo' => $operadorAtivo,            
+        ];
+
+        try {
+            //$save = $this->series->save($data);
+            $gravar = $modelProfissional->ativaDesativaProfissional($data);
+
+            if ($gravar) {
+                 //session()->set('sucesso', 'Parabéns, ação realizada com sucesso.');
+                 //session()->setFlashdata('confirmadoAtendimento', $idAtendimento);
+                 //session()->setFlashdata('confirmadoAtendimentoData', $dataAtendimento);
+                 $this->logging->info(__CLASS__ . "\\" . __FUNCTION__, ['PROFISSIONAL::' => $idProfissinal, 'FEITO POR::' => session()->get("nome"), 'SUCCESS::' => $gravar]);
+ 
+ 
+                 $response = [
+                     'status' => 'OK',
+                     'error' => false,
+                     'code' => 200,
+                     'msg' => '<p>Operação realizada com sucesso!</p>',
+                     //'id' =>  $this->series->getInsertID()
+                     //'data' => $this->list()
+                 ];
+                 //return redirect()->to('atendimento/listar_atendimento');
+                 return $this->response->setJSON($response);
+            }
+        } catch (Exception $e) {
+
+            session()->set('erro', 'ERRO, não foi possível realizar operação.');
+            $this->logging->critical(__CLASS__ . "\\" . __FUNCTION__, ['PROFISSIONAL::' => $idProfissinal, 'FEITO POR::' => session()->get("nome"), 'ERROR' => $e->getMessage()]);
+   
+            return $this->response->setJSON([
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+                'msgs' => [
+                    'series' => 'Série, turma e turno já cadastrados!'
+                ]
+            ]);
+        }
+    }
+
+
 }

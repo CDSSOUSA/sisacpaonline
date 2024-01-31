@@ -113,4 +113,65 @@ class ProfissionalModel extends Model
         
 
     }
+
+    public function ativaDesativaProfissional($dados)
+    {
+        try {
+            $this->db->transBegin();
+
+            $dado['idProfissional'] = $dados['idProfissional'];        
+            $dado['ativo'] = $dados['ativo'];
+            $dado['operadorAtivo'] = $dados['operadorAtivo']; 
+            $this->save($dado);
+
+
+            $pessoa = new PessoaModel;
+            $dadoPessoa['idPessoa'] = $dados['idProfissional'];        
+            $dadoPessoa['ativo'] = $dados['ativo'];
+            $pessoa->save($dadoPessoa);
+            
+            //$this->db->update('tb_pessoa', array('ativo' => $dados['ativo']), array('idPessoa' => $dados['idProfissional']));
+            if ($dados['ativo'] == 'N') {
+                $modelAlocacao = new AlocacaoModel;          
+
+                $dataAlocacao = [
+                    'ativo' => $dados['ativo']
+                ];
+                $modelAlocacao->where('idProfissional', $dados['idProfissional']);           
+                $modelAlocacao->builder->update($dataAlocacao);
+            }
+
+            if ($dados['operadorAtivo'] == 'S')
+            {
+                $modelOperador = new OperadorModel;
+                $dataOperador = [
+                    'ativo' => $dados['ativo']
+                ];
+                $modelOperador->where('idOperador', $dados['idProfissional']);           
+                $modelOperador->builder->update($dataOperador);
+
+                $modelOperadorPermissao = new OperadorPermissaoModel;
+                $dataOperadorPermissao = [
+                    'ativo' => $dados['ativo']
+                ];
+                $modelOperadorPermissao->where('idOperador', $dados['idProfissional']);           
+                $modelOperadorPermissao->builder->delete($dataOperadorPermissao);
+            }
+            if ($this->db->transStatus()) {
+                $this->db->transCommit();
+                return true;
+            }
+            $this->db->transRollback();
+
+            return false;
+            
+
+        } catch (\Exception $e) {
+            echo 'Erro: ' . $e->getMessage();
+            // Fazer o rollback da transação em caso de erro
+            $this->db->transRollback();
+            return false;
+        }        
+
+    }  
 }

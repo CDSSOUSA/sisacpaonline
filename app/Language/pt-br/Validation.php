@@ -45,6 +45,7 @@ return [
 
 	//my
 	'valid_cns'				=> 'Número de CNS inválido.',
+	'validateCpf'		    => 'Número de CPF inválido.',
 
 	// Credit Cards
 	'valid_cc_num'          => '{field} não parece ser um número de cartão de crédito válido.',
