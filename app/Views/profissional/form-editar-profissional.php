@@ -34,14 +34,13 @@ echo $this->section('content');
                                             Modalidade</th>
                                         <th style="font-weight: bold; color: black; font-size: 18px;">Tipo
                                         </th>
+                                        <th style="font-weight: bold; color: black; font-size: 18px;">Status
+                                        </th>
                                         <th style="font-weight: bold; color: black; font-size: 18px;">Ações
                                         </th>
                                     </tr>
                                 </thead>
-
-                                <tbody>
-
-                                </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
@@ -50,6 +49,7 @@ echo $this->section('content');
         </div>
     </div>
 </section>
+
 <div class="modal fade" id="editarProfissional" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -71,16 +71,6 @@ echo $this->section('content');
                 );
 
                 echo form_open('api/profissional/edita_profissional', $atributos_formulario);
-
-
-
-                //echo form_input('nIdAtendimento', $atendimento->idAtendimento);
-                /*echo form_input('nDiaSemana', $dia);
-                echo form_input('nDataAtendimento', $dataAtendimento);
-                echo form_input('nAcao', $acao);
-                echo form_input('nFrequencia', $frequencia);*/
-
-
                 ?>
 
                 <input type="text" id="idProfissional" name="nIdProfissional">
@@ -142,6 +132,7 @@ echo $this->section('content');
                         </div>
                     </div>
                 </div>
+
                 <div class="row clearfix">
                     <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
                         <label for="">Núm. Cons. de Classe: *</label>
@@ -178,7 +169,6 @@ echo $this->section('content');
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-link waves-effect" data-dismiss="modal"><span
@@ -190,17 +180,18 @@ echo $this->section('content');
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="ativarDesativarProfissional" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-indigo">
-                <h4 class="modal-title"> ATIVAR|DESATIVAR PROFISSIONAL ::</h4>
+                <h4 class="modal-title" id="titleFormAtivarDesativar"></h4>
                 <small> </small>
 
             </div>
             <div class="modal-body">
-                <div class="alert bg-red alert-dismissible" role="alert">
+                <div id="aviso" style="display:none" class="alert bg-red alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
                     <strong>ATENÇÃO!</strong> Após desativar o PROFISSIONAL todos os registros de: alocação, atendimento
@@ -213,18 +204,7 @@ echo $this->section('content');
                     'class' => '',
                     'id' => 'ativarDesativarProfissionalForm'
                 );
-
                 echo form_open('api/profissional/ativa_desativa_profissional', $atributos_formulario);
-
-
-
-                //echo form_input('nIdAtendimento', $atendimento->idAtendimento);
-                /*echo form_input('nDiaSemana', $dia);
-                echo form_input('nDataAtendimento', $dataAtendimento);
-                echo form_input('nAcao', $acao);
-                echo form_input('nFrequencia', $frequencia);*/
-
-
                 ?>
 
                 <input type="text" id="idProfissionalAtivaDesativa" name="nIdProfissional">
@@ -237,11 +217,8 @@ echo $this->section('content');
                     <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
                         <div class="form-group">
                             <div class="form-line">
-                                <input 
-                                    type="text" 
-                                    id="nomeProfissionalAtivaDesativa" 
-                                    class="form-control"
-                                    disabled>
+                                <h4 id="nomeProfissionalAtivaDesativa">
+                                </h4>
                             </div>
 
                         </div>
@@ -258,6 +235,152 @@ echo $this->section('content');
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="alocarProfissional" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-teal">
+                <h4 class="modal-title">
+                    ALOCAR PROFISSIONAL ::
+                </h4>
+                <small>* campos de preenchimento obrigatório.</small>
+
+            </div>
+            <div class="modal-body">
+
+                <?php
+                $atributos_formulario = array(
+                    'role' => 'form',
+                    'class' => '',
+                    'id' => 'alocarProfissionalForm'
+                );
+
+                echo form_open('api/profissional/aloca_profissional', $atributos_formulario);
+                ?>
+
+                <input type="text" id="idProfissionalAlocar" name="nIdProfissional">
+
+                <div class="row clearfix">
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                        <label for="">Nome completo: *</label>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <h4 id="nomeProfissionalAlocar"></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                        <label>Dias de atendimento *</label>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                        <div class="form-group">
+                            <div class="demo-checkbox">
+                                <a class="btn bg-green" onclick="marcardesmarcar();"> <i class="fa fa-check"></i>
+                                    todos</a><br><br>
+                                <div id="diaSemanaDiv"></div>
+                                <span class="messageErro" style="color:red" id="iDiasAtendimento"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                        <label>Hora Início: </label>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                        <div class="form-group">
+                            <div class="form-line" id="horaInicioDiv">
+
+                            </div>
+                            <span class="messageErro" style="color:red" id="iHoraInicio"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row clearfix">
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                        <label>Hora Fim: *</label>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                        <div class="form-group">
+                            <div id="containerHoraFim" class="form-line"></div>
+                            <span class="messageErro" style="color:red" id="iHoraFim"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+
+                <a href="#" class="btn btn-warning waves-effect" id="btnListarAlocacao"><span class="badge">L</span>
+                    ISTAR ALOCAÇÕES</a>
+
+                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal"><span
+                        class="badge">C</span> ANCELAR</button>
+
+                <?= session()->get('botaoSalvar'); ?>
+            </div>
+            <?php echo form_close(); ?>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="listarAlocacaoProfissional" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-teal">
+                <h4 class="modal-title">
+                    ALOCAÇÕES DO PROFISSIONAL ::
+                </h4>
+                <small id="nomeProfissionalSmall">* campos de preenchimento obrigatório.</small>
+
+            </div>
+            <div class="modal-body">
+                
+                <div class="body table-responsive p-0" style="height: 500px;">
+                    <table id="tb_alocacao_profissional" class="table table-head-fixed text-nowrap">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th style="font-weight: bold; color: black; font-size: 14px;">Dia semana</th>
+                                <th style="font-weight: bold; color: black; font-size: 14px;">Hora início</th>
+                                <th style="font-weight: bold; color: black; font-size: 14px;">Hora fim</th>
+                                <th style="font-weight: bold; color: black; font-size: 14px;">Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">               
+
+                        <a href="#"
+                            class="btn btn-warning waves-effect"
+                            id="btVoltarAlocacaoProfissional"
+                            data-toggle = "modal" 
+                            data-target = "#alocarProfissional">
+                        <span
+                            class="badge">
+                            V
+                        </span> OLTAR</a>
+                        </a>              
+
+            </div>
+            <?php echo form_close(); ?>
+        </div>
+    </div>
+</div>
+
 <?= $this->endSection(); ?>
 <?= $this->section('script-js'); ?>
 <script src="<?= base_url() ?>js/profissional.js"></script>

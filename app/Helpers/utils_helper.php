@@ -957,6 +957,10 @@ function tratarStatus($status)
     $texto = '';
     return $texto = $status == 'A' ? 'ATIVO' : 'INATIVO';
 }
+function tratarAtivo($ativo){
+    
+    return $ativo == 'S' ? 'ATIVO' : 'INATIVO';
+}
 
 function escreveAutor()
 {

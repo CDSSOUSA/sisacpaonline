@@ -58,8 +58,7 @@ class ProfissionalModel extends Model
 
     public function getProfissionalAtivo()
     {
-        return $this->where('ativo','S')
-                    ->orderBy('nomeProfissional')
+        return $this->orderBy('ativo desc, nomeProfissional asc')
                     ->get()->getResult();
     }
 
@@ -151,11 +150,11 @@ class ProfissionalModel extends Model
                 $modelOperador->builder->update($dataOperador);
 
                 $modelOperadorPermissao = new OperadorPermissaoModel;
-                $dataOperadorPermissao = [
-                    'ativo' => $dados['ativo']
-                ];
-                $modelOperadorPermissao->where('idOperador', $dados['idProfissional']);           
-                $modelOperadorPermissao->builder->delete($dataOperadorPermissao);
+                // $dataOperadorPermissao = [
+                //     'ativo' => $dados['ativo']
+                // ];
+                //$modelOperadorPermissao->where('idOperador', $dados['idProfissional']);           
+                $modelOperadorPermissao->delete($dados['idProfissional']);
             }
             if ($this->db->transStatus()) {
                 $this->db->transCommit();
@@ -174,4 +173,5 @@ class ProfissionalModel extends Model
         }        
 
     }  
+        
 }

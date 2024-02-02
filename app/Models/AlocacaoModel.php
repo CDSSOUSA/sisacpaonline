@@ -51,9 +51,10 @@ class AlocacaoModel extends Model
 
     public function getAlocacao($idProfissional)
     {
-        return $this->select('idAlocacao, diaSemana, horaInicio, idProfissional')
-            ->where('idProfissional', $idProfissional)
-            ->where('ativo','S')
+        return $this->select('idAlocacao, diaSemana, horaInicio, horaFim, p.nomeProfissional')
+            ->join('tb_profissional p','p.idProfissional = '.$this->table.'.idProfissional')
+            ->where($this->table.'.idProfissional', $idProfissional)
+            ->where($this->table.'.ativo','S')
             ->get()->getResult();
-    }    
+    }  
 }

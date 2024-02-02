@@ -7,10 +7,10 @@ use CodeIgniter\Model;
 class OperadorModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'operadors';
-    protected $primaryKey       = 'id';
+    protected $table            = 'tb_operador';
+    protected $primaryKey       = 'idOperador';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
+    protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [];
@@ -38,4 +38,16 @@ class OperadorModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $db = \Config\Database::connect();
+        $colunas = $db->getFieldNames($this->table);
+
+        $this->allowedFields = $colunas;
+    }
+
+   
 }

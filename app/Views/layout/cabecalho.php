@@ -95,6 +95,11 @@
     max-height: none; /* Remova a altura máxima */
     overflow: auto; /* Exiba todo o conteúdo sem barra de rolagem */
   }
+  .custom-modal {
+      max-height: 400px; /* Altura máxima do modal */
+      overflow-y: auto; /* Adiciona uma barra de rolagem vertical se necessário */
+    }
+    
 
        
     </style>

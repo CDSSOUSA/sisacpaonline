@@ -62,7 +62,7 @@ $matricula = '';
                                         ));
                                     } else {
                                         $botao = anchor('#', '<span class="badge bg-green">A</span> tivar', array(
-                                            'class' => 'waves-effect waves-block',
+                                            'class' => 'waves-effecdt waves-block',
                                             'title' => 'Ativar Usuário', 'data-toggle' => 'modal',
                                             'data-target' => '#smallModal' . $dados->idUsuario,
                                         ));

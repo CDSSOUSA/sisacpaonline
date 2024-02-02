@@ -40,7 +40,22 @@ const clearMessageErrorAll = () => {
     fields.forEach((item)=>{
         item.innerHTML = '';
     })
+    atualizarHoraFim()
 }
+
+const clearInput = (option) => {
+
+    if (typeof option == 'string') {
+        document.querySelector(`#${option}`).value = '';
+    } else {
+        option.forEach((e) => {
+            document.querySelector(`#${e}`).value = '';
+        })
+    }
+    
+    //document.querySelector('#option').value = '';
+}
+
 
 const validateErros = (errors, locale) => {
     let r = document.getElementById(locale).innerHTML = '';
@@ -76,4 +91,26 @@ function showAlertToast(status, message = 'Nenhum registro encontrado!') {
       toastr.error(`<b>Ops! ${message}</b>`);
     }
   
-  }
+}
+function tratarDiaSemana(dia, pExt)
+{
+    diaSemana = "";
+    switch (dia) {
+        case 2:
+            diaSemana = pExt ? "segunda-feira" : "SEG";
+            break;
+        case 3:
+            diaSemana = pExt ? "terça-feira" : "TER";
+            break;
+        case 4:
+            diaSemana = pExt ? "quarta-feira" : "QUA";
+            break;
+        case 5:
+            diaSemana = pExt ? "quinta-feira" : "QUI";
+            break;
+        case 6:
+            diaSemana = pExt ? "sexta-feira" : "SEX";
+            break;
+    }    
+    return diaSemana;
+}

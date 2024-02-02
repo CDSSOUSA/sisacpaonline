@@ -164,8 +164,10 @@ $routes->group('/profissional', ['namespace'=>'App\Controllers','filter'=>'authF
 $routes->group('/api/profissional', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
     $routes->get('listarProfissional','ProfissionalApi::listarProfissional');  
     $routes->get('getDataProfissional/(:any)','ProfissionalApi::getDataProfissional/$1');  
+    $routes->get('getAlocacaoProfissional/(:any)','ProfissionalApi::getAlocacaoProfissional/$1');  
     $routes->post('edita_profissional','ProfissionalApi::editaProfissional');  
     $routes->post('ativa_desativa_profissional','ProfissionalApi::ativaDesativaProfissional');  
+    $routes->post('aloca_profissional','ProfissionalApi::alocaProfissional');  
 
 });
 
