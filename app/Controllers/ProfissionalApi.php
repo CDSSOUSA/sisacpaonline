@@ -60,6 +60,7 @@ class ProfissionalApi extends ResourceController
         helper('utils');
         $id = decrypt($idProfissional);
         try {
+            //buscar qtde de alocacao
             $modelProfissional = new ProfissionalModel();
             $data = $modelProfissional->find($id);
             return $this->response->setJSON($data);

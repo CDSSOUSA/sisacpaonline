@@ -309,6 +309,9 @@ if (editProfissionalForm) {
             });
     });
 }
+var diasDaSemana = ['SEG', 'TER', 'QUA', 'QUI', 'SEX'];
+var horariosManha = ['07:30 - 08:00', '08:00 - 08:30', '08:30 - 09:00', '09:00 - 09:30', '09:30 - 10:00', '10:00 - 10:30', '10:30 - 11:00', '11:00 - 11:30', '11:30 - 12:00'];
+var horariosTarde = ['13:00 - 13:30', '13:30 - 14:30', '15:00 - 09:00', '09:00 - 09:30', '09:30 - 10:00', '10:00 - 10:30', '10:30 - 11:00', '11:00 - 11:30', '11:30 - 12:00'];
 
 async function alocar_profissional(idProfissional) {
     //clearMessageErrorAll()
@@ -326,6 +329,7 @@ async function alocar_profissional(idProfissional) {
         )
         .then((response) => {
             var dados = response.data;
+            console.log(dados)
             document.getElementById("idProfissionalAlocar").value = idProfissional;
 
             document.getElementById(
@@ -351,7 +355,18 @@ async function alocar_profissional(idProfissional) {
             const btnListarAlocacao = document.querySelector('#btnListarAlocacao')
             btnListarAlocacao.setAttribute('onclick',`listar_alocacao_profissional('${idProfissional}')`)
             btnListarAlocacao.setAttribute('data-toggle','modal')
-            btnListarAlocacao.setAttribute('data-target','#listarAlocacaoProfissional')          
+            btnListarAlocacao.setAttribute('data-target','#listarAlocacaoProfissional')   
+            
+            var tabelaResultanteManha = listOption(diasDaSemana, horariosManha);
+            var containerManha = document.getElementById('tbAlocacaoProfissionalManha');
+            containerManha.appendChild(tabelaResultanteManha);
+
+            var tabelaResultante = listOption(diasDaSemana, horariosTarde);
+            var container = document.getElementById('tbAlocacaoProfissionalTarde');
+            container.appendChild(tabelaResultante);
+            
+            //defineRowsTable(2, 6, 19, '#tb_allocation_teacher_add > thead > tr')
+            //document.querySelector('#tb_allocation_teacher_add > tbody').innerHTML = `${listOption()}`
 
             /*const aviso = document.getElementById('aviso');
                   const titleFormAtivarDesativar = document.getElementById('titleFormAtivarDesativar');
@@ -505,4 +520,166 @@ function atualizarHoraFim() {
 
 function pad(num) {
     return (num < 10 ? "0" : "") + num;
+}
+
+function removerTabelaExistente() {
+    var tabelaExistente = document.getElementById('idTabelaAlocacao');
+    if (tabelaExistente) {
+        tabelaExistente.parentNode.removeChild(tabelaExistente);
+    }
+}
+
+
+
+function listOption(diasDaSemana, horarios) {
+
+    //removerTabelaExistente()
+    // Criação da tabela
+    var tabela = document.createElement('table');
+    tabela.classList.add('table', 'table-striped', 'text-center', 'align-items-center', 'mb-0')
+    tabela.setAttribute('id','idTabelaAlocacao')
+
+    // Cabeçalho da tabela
+    var cabecalho = document.createElement('tr');
+    cabecalho.classList.add('text-center')
+
+    // Célula vazia para a primeira coluna do cabeçalho
+    const thPrimeiro = document.createElement('th')
+    thPrimeiro.appendChild(document.createTextNode('HORÁRIOS MANHÃ'))
+    thPrimeiro.style.color = 'gray'
+    thPrimeiro.style.padding = '10px'
+    thPrimeiro.classList.add('text-center')
+
+    cabecalho.appendChild(thPrimeiro);
+    cabecalho.classList.add('text-center')
+    
+
+    // Adiciona os dias da semana como colunas do cabeçalho
+    for (var i = 0; i < diasDaSemana.length; i++) {
+        var th = document.createElement('th');
+        th.appendChild(document.createTextNode(diasDaSemana[i]));
+        th.classList.add('text-center')
+        th.style.color = 'gray'
+        th.style.padding = '10px'
+        cabecalho.appendChild(th);
+    }
+
+    // Adiciona o cabeçalho à tabela
+    tabela.appendChild(cabecalho);
+
+    // Adiciona linhas com horários
+    for (var j = 0; j < horarios.length; j++) {
+        var linha = document.createElement('tr');
+        linha.classList.add('text-center')
+        
+        var span = document.createElement('span');
+        span.classList.add('text-gray'); // Adiciona a classe 'text-gray' ao <span>
+        span.style.color = 'gray'
+        span.style.padding = '10px'
+        span.style.fontSize = '14px'
+        span.style.fontWeight = 'bold'
+        // Adiciona o horário como primeira coluna da linha
+        var horarioCelula = document.createElement('td');
+        horarioCelula.classList.add('align-middle', 'text-center')
+
+        span.appendChild(document.createTextNode(horarios[j]))
+        horarioCelula.appendChild(span)
+        
+        linha.appendChild(horarioCelula);
+
+        //span.appendChild(document.createTextNode(`Dado_${horarios[j]}_${diasDaSemana[k]}`));
+
+
+        // Preenche as colunas com dados fictícios (substitua com seus próprios dados)
+        for (var k = 0; k < diasDaSemana.length; k++) {
+            var dadoCelula = document.createElement('td');
+            dadoCelula.classList.add('align-middle', 'text-center')      
+            
+            var divCheck = document.createElement('div')
+            divCheck.classList.add('form-check')
+        
+            var inputCheck = document.createElement('input')
+            inputCheck.classList.add('marcarTodos', 'checkbox-inline')
+            inputCheck.setAttribute('type','checkbox')
+            inputCheck.setAttribute('id', `${k+2}-${horarios[j]}`)
+            inputCheck.setAttribute('name','nDia[]')
+            inputCheck.setAttribute('value',`${k+2};${horarios[j]}`)  // Adicionei o índice j como parte do valor
+            inputCheck.setAttribute('onclick','clearMessageError("iDiasAtendimento")')
+        
+            var labelCheck = document.createElement('label')
+            labelCheck.classList.add('form-check-label')
+            labelCheck.setAttribute('for',`${k+2}-${horarios[j]}`)
+        
+            divCheck.appendChild(inputCheck)
+            divCheck.appendChild(labelCheck)
+             
+            dadoCelula.appendChild(divCheck);  // Adiciona diretamente o elemento div à célula
+            linha.appendChild(dadoCelula);
+        }
+        
+
+        // Adiciona a linha à tabela
+        tabela.appendChild(linha);
+    }
+
+    return tabela;
+}
+
+function listOption_() {    
+
+    let row = ""
+    const qtdePosition = 19
+    const startDayWeek = 2
+    const endDayWeek = 6
+
+    for (let ps = 1; ps <= qtdePosition; ps++) {
+        row += `
+            <tr class="text-center">
+                <td class="align-middle text-center"><span class="text-gray">${ps} ª aula</span>
+                </td>`
+        for (let dw = startDayWeek; dw <= endDayWeek; dw++) {
+
+            row += `<td class="align-middle text-center">
+                        <div class="form-check ">
+                        <input type="checkbox" id="dayWeek${ps}${dw}" class="marcarTodos checkbox-inline" name="nDia[]" value="${ps};${dw}" onclick="clearMessageError('iDiasAtendimento')">
+                            <label class="form-check-label" for="dayWeek${ps}${dw}"></label>
+                        </div>
+                    </td>`
+        }
+        row += `</tr>`
+    }
+
+    return row
+
+
+}
+
+const defineRowsTable = (startDayWeek, endDayWeek, qtdePosition, target) => {
+
+    document.querySelector(target).innerHTML = `${getRowHeader(startDayWeek, endDayWeek, qtdePosition)}`;
+
+}
+
+function getRowHeader(startDayWeek, endDayWeek, qtdePosition) {
+    let row = "";
+
+    row += `<th class="text-uppercase text-white text-xxs font-weight-bolder opacity-7">Dias|Aulas</th>`
+
+    for (let i = startDayWeek; i <= endDayWeek; i++) {
+        row += `
+        <th class="text-uppercase text-white text-xxs font-weight-bolder opacity-7">${tratarDiaSemana(i)}</th>`
+    }
+
+    // data.forEach(element => {
+
+    //     row += `
+    //     <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Segunda</th>
+    //     <th class="text-center text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Terça</th>
+    //     <th class="text-center text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Quarta</th>
+    //     <th class="text-center text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Quinta</th>
+    //     <th class="text-center text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Sexta</th>`
+
+    // });
+
+    return row
 }

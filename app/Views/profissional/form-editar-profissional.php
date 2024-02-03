@@ -248,6 +248,18 @@ echo $this->section('content');
 
             </div>
             <div class="modal-body">
+            <div class="body table-responsive" id="tbAlocacaoProfissionalManha" style="border:1px red solid;"></div>
+            <br>
+            <div class="body table-responsive" id="tbAlocacaoProfissionalTarde" style="border:1px red solid;"></div>
+
+            <table id="tb_allocation_teacher_add" class="table table-striped text-center align-items-center mb-0">
+                                    <thead>
+                                        <tr class="text-center">                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody>                                      
+                                    </tbody>
+                                </table>
 
                 <?php
                 $atributos_formulario = array(
