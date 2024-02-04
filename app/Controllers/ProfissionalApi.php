@@ -63,6 +63,12 @@ class ProfissionalApi extends ResourceController
             //buscar qtde de alocacao
             $modelProfissional = new ProfissionalModel();
             $data = $modelProfissional->find($id);
+
+            $modelAlocacao = new AlocacaoModel;
+            $result = $modelAlocacao->getAlocacao($id);            
+
+            $data->totalAlocacao = count($result);
+
             return $this->response->setJSON($data);
 
         } catch (Exception $e) {
@@ -148,8 +154,7 @@ class ProfissionalApi extends ResourceController
             'cnsProfissional' => $cnsProfissional,
             'numeralConselhoClasse' => $conselhoClasse,
             'tipoProfissional' => $tipoProfissional,
-            'modalidade' => $resultModalidade->nomeModalidade,
-            'dataUpdate' => date('Y-m-d H:i:s')
+            'modalidade' => $resultModalidade->nomeModalidade           
         ];
 
 
@@ -301,8 +306,22 @@ class ProfissionalApi extends ResourceController
             $modelAlocacao = new AlocacaoModel;
 
             //$modelProfissional = new ProfissionalModel();
+            
             $data = $modelAlocacao->getAlocacao($id);
-            return $this->response->setJSON($data);
+            $newdata = [];           
+
+            foreach ($data as $value) {
+                $newdata[] = [
+                    'idAlocacao' => encrypt($value->idAlocacao),
+                    'diaSemana' => $value->diaSemana,
+                    'horaInicio' => $value->horaInicio,
+                    'horaFim' => $value->horaFim,
+                    'idProfissional' => encrypt($value->idProfissional),  
+                    'nomeProfissional' => $value->nomeProfissional                  
+                ];
+
+            }
+            return $this->response->setJSON($newdata);
 
         } catch (Exception $e) {
             return $this->failServerError($e->getMessage());

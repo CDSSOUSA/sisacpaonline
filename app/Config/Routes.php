@@ -175,6 +175,11 @@ $routes->group('/api/modalidade', ['namespace'=>'App\Controllers','filter'=>'aut
     $routes->get('getDataModalidade','ModalidadeApi::getDataModalidade'); 
 });
 
+$routes->group('/api/alocacao', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
+    $routes->get('getDataAlocacao/(:any)','AlocacaoApi::getDataAlocacao/$1'); 
+    $routes->post('remover_alocacao','AlocacaoApi::removerAlocacao'); 
+});
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

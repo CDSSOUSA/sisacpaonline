@@ -248,8 +248,8 @@ echo $this->section('content');
 
             </div>
             <div class="modal-body">
-            <!-- <div class="body table-responsive" id="tbAlocacaoProfissionalManha" style="border:1px red solid;"></div> -->           
-           
+                <!-- <div class="body table-responsive" id="tbAlocacaoProfissionalManha" style="border:1px red solid;"></div> -->
+
 
                 <?php
                 $atributos_formulario = array(
@@ -275,6 +275,18 @@ echo $this->section('content');
                         </div>
                     </div>
                 </div>
+                <div class="row clearfix">
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                    <label for="">Horários cadastrados: </label>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <h4 id="iTotalAlocacao"></h4>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row clearfix">
                     <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
@@ -285,9 +297,9 @@ echo $this->section('content');
                             <div class="demo-checkbox-new">
                                 <a class="btn bg-green" onclick="marcardesmarcar();"> <i class="fa fa-check"></i>
                                     todos</a><br><br>
-                                    <div class="icheck-primary d-inline">
-                                <div id="diaSemanaDiv"></div>
-                                    </div>
+                                <div class="icheck-primary d-inline">
+                                    <div id="diaSemanaDiv"></div>
+                                </div>
                                 <span class="messageErro" style="color:red" id="iDiasAtendimento"></span>
                             </div>
                         </div>
@@ -300,10 +312,10 @@ echo $this->section('content');
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
                         <div class="form-group">
-                            <div class="demo-checkbox-new">                               
-                                    
+                            <div class="demo-checkbox-new">
+
                                 <div id="horaInicioNew"></div>
-                                    
+
                                 <span class="messageErro" style="color:red" id="iHorarioManha"></span>
                             </div>
                         </div>
@@ -316,19 +328,19 @@ echo $this->section('content');
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
                         <div class="form-group">
-                            <div class="demo-checkbox-new">                               
-                                    
+                            <div class="demo-checkbox-new">
+
                                 <div id="horaFimNew"></div>
-                                    
+
                                 <span class="messageErro" style="color:red" id="iHorarioTarde"></span>
                             </div>
                         </div>
                     </div>
-                </div>               
+                </div>
 
-               <div class="row clearfix">
+                <div class="row clearfix">
                     <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
-                       
+
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
                         <div class="form-group">
@@ -338,17 +350,39 @@ echo $this->section('content');
                             <span class="messageErro" style="color:red" id="iMensagem"></span>
                         </div>
                     </div>
-                </div>      
+                </div>
+                
             </div>
-            <div class="modal-footer justify-content-between">
+            <div class="row clearfix">
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                    <a href="#" class="btn btn-warning waves-effect disabled" id="btnListarAlocacao"><span class="badge">L</span>
+                        ISTAR ALOCAÇÕES</a>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7 align-content-end">
+                        
+                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal"><span
+                                class="badge">C</span> ANCELAR</button>
+                        
+                            <?= session()->get('botaoSalvar'); ?>
+                    </div>
+                </div>
 
-                <a href="#" class="btn btn-warning waves-effect" id="btnListarAlocacao"><span class="badge">L</span>
-                    ISTAR ALOCAÇÕES</a>
+            <div class="modal-footer">
+                <div class="d-lex flex-ow" style="display: flex;">
+                    <div id="btnSalvar" style="flex: 2; padding: 10px;" >
+                    <a href="#" class="btn btn-warning waves-effect disabled" id="btnListarAlocacao"><span class="badge">L</span>
+                        ISTAR ALOCAÇÕES</a>
+                    </div>
+                    <div style="flex: 2; padding: 10px;">
 
-                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal"><span
-                        class="badge">C</span> ANCELAR</button>
+                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal"><span
+                                class="badge">C</span> ANCELAR</button>
+                        
+                            <?= session()->get('botaoSalvar'); ?>
 
-                <?= session()->get('botaoSalvar'); ?>
+                        </div>
+                </div>
+
             </div>
             <?php echo form_close(); ?>
         </div>
@@ -367,7 +401,7 @@ echo $this->section('content');
 
             </div>
             <div class="modal-body">
-                
+
                 <div class="body table-responsive p-0" style="height: 500px;">
                     <table id="tb_alocacao_profissional" class="table table-head-fixed text-nowrap">
                         <thead class="thead-dark">
@@ -385,20 +419,63 @@ echo $this->section('content');
                     </table>
                 </div>
             </div>
-            <div class="modal-footer">               
+            <div class="modal-footer">
 
-                        <a href="#"
-                            class="btn btn-warning waves-effect"
-                            id="btVoltarAlocacaoProfissional"
-                            data-toggle = "modal" 
-                            data-target = "#alocarProfissionalModal">
-                        <span
-                            class="badge">
-                            V
-                        </span> OLTAR</a>
-                        </a>              
+                <a href="#" class="btn btn-warning waves-effect" id="btVoltarAlocacaoProfissional" data-toggle="modal"
+                    data-target="#alocarProfissionalModal">
+                    <span class="badge">
+                        V
+                    </span> OLTAR</a>
+                </a>
+                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal"><span
+                        class="badge">C</span> ANCELAR</button>
 
             </div>
+            <?php echo form_close(); ?>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="removerAlocacaoProfissionalModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-red">
+                <h4 class="modal-title">
+                    REMOVER ALOCAÇÃO ::
+                </h4>
+                <small id="nomeProfissionalAlocacaoSmall"></small>
+
+            </div>
+            <div class="modal-body">
+                <?php
+                $atributos_formulario = array(
+                    'role' => 'form',
+                    'class' => '',
+                    'id' => 'removerAlocacaoProfissionalForm'
+                );
+
+                echo form_open('', $atributos_formulario);
+                ?>
+
+                <input type="text" id="idAlocacao" name="nIdAlocacao">
+                <input type="text" id="idAlocacaoProfissional" name="nIdProfissional">
+
+                <h4>Confirmar a exclusão?</h4>
+                <h5 id="dataALocacao"></h5>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger waves-effect">SIM</button>
+
+                <a href="#" class="btn btn-link waves-effect" id="btnVoltarAlocacaoProfissional" data-toggle="modal"
+                    data-target="#listarAlocacaoProfissional">
+                    CANCELAR
+                    </a>
+                </a>         
+            </div>         
+
             <?php echo form_close(); ?>
         </div>
     </div>

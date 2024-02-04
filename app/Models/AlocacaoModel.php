@@ -16,7 +16,7 @@ class AlocacaoModel extends Model
     protected $allowedFields    = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -51,10 +51,18 @@ class AlocacaoModel extends Model
 
     public function getAlocacao($idProfissional)
     {
-        return $this->select('idAlocacao, diaSemana, horaInicio, horaFim, p.nomeProfissional')
+        return $this->select('idAlocacao, diaSemana, horaInicio, horaFim, p.nomeProfissional, p.idProfissional, p.modalidade')
             ->join('tb_profissional p','p.idProfissional = '.$this->table.'.idProfissional')
             ->where($this->table.'.idProfissional', $idProfissional)
             ->where($this->table.'.ativo','S')
+            ->get()->getResult();
+    }  
+    public function getAlocacaoId($idAlocacao)
+    {
+        return $this->select('idAlocacao, diaSemana, horaInicio, horaFim, '.$this->table.'.idProfissional, p.nomeProfissional')
+            ->join('tb_profissional p','p.idProfissional = '.$this->table.'.idProfissional')
+            //->where($this->table.'.idProfissional', $idProfissional)
+            ->where('idAlocacao',$idAlocacao)
             ->get()->getResult();
     }  
 
@@ -67,5 +75,53 @@ class AlocacaoModel extends Model
                         ->where('ativo', 'S')                        
                         ->get()->getResult();
 
+    }
+
+    public function removerAlococao($dados)
+    {
+        try {
+            $this->db->transBegin();
+            
+            //$modelAlocacao = new AlocacaoModel;  
+            $dataAlocacao = [
+                'ativo' => 'N',                  
+                'updated_at' => date('Y-m-d H:i:s')             
+            ];
+        
+            $this->where([
+                'idProfissional'=> $dados['idProfissional'],
+                'idAlocacao' => $dados['idAlocacao']
+            ]);
+            $this->builder->update($dataAlocacao); 
+   
+
+            $modelAtendimento = new AtendimentoModel;
+            $modelAtendimento->where([
+                'idProfissional'=> $dados['idProfissional'],
+                'idAlocacao' => $dados['idAlocacao']
+            ]);
+
+            $modelAtendimento->builder->update($dataAlocacao);            
+            
+
+
+            if ($this->db->transStatus()) {
+                $this->db->transCommit();
+                return [
+                    'status'=> true,                    
+                ];
+            }
+            $this->db->transRollback();
+
+            return false;
+
+        } catch (\Exception $e) {
+            echo 'Erro: ' . $e->getMessage();
+            
+            // Fazer o rollback da transação em caso de erro
+            $this->db->transRollback();
+            return false;
+        }
+        
     }
 }

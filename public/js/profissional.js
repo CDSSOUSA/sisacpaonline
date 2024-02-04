@@ -1,6 +1,7 @@
 const URL_BASE = "http://localhost/sisacpaonline/public/";
 const URI_API_PROFISSIONAL = "api/profissional";
 const URI_API_MODALIDADE = "api/modalidade";
+const URI_API_ALOCACAO = "api/alocacao";
 const dataTipo = [
     {
         ident: "F",
@@ -14,6 +15,30 @@ const dataTipo = [
         ident: "O",
         desc: "OUTROS",
     },
+];
+const diasDaSemana = ["SEG", "TER", "QUA", "QUI", "SEX"];
+const horariosManha = [
+    "07:30-08:00",
+    "08:00-08:30",
+    "08:30-09:00",
+    "09:00-09:30",
+    "09:30-10:00",
+    "10:00-10:30",
+    "10:30-11:00",
+    "11:00-11:30",
+    "11:30-12:00",
+];
+const horariosTarde = [
+    "13:00-13:30",
+    "13:30-14:00",
+    "14:00-14:30",
+    "14:30-15:00",
+    "15:00-15:30",
+    "15:30-16:00",
+    "16:00-16:30",
+    "16:30-17:00",
+    "17:00-17:30",
+    "17:30-18:00",
 ];
 
 listarProfissionais();
@@ -68,124 +93,16 @@ function loadDataProfissional(data) {
                            A
                         </a>`;
         }
-        row += `
-                        <a href="#/" onclick = "confirmarPresencaUsuarioHorario(${elem.idProfissional})" class = "btn bg-indigo waves-effect" title = "Escrever observação" data-toggle = "modal" data-target = "#registrarPresencaUsuario">
-                            O
-                        </a>
+        row += `                      
                     </td>                                       
                 </tr>`;
     });
 
     return row;
 }
-async function ativar_desativar_profissional(idProfissional, status) {
-    clearMessageErrorAll();
 
-    await axios
-        .get(
-            `${URL_BASE}${URI_API_PROFISSIONAL}/getDataProfissional/${idProfissional}`
-        )
-        .then((response) => {
-            var dados = response.data;
-            document.getElementById("idProfissionalAtivaDesativa").value =
-                idProfissional;
-            document.getElementById("statusAtivaDesativa").value = `${dados["ativo"] == "S" ? "N" : "S"
-                }`;
-            document.getElementById(
-                "nomeProfissionalAtivaDesativa"
-            ).textContent = `${dados["nomeProfissional"]}`;
+/* editar profissional*/
 
-            const aviso = document.getElementById("aviso");
-            const titleFormAtivarDesativar = document.getElementById(
-                "titleFormAtivarDesativar"
-            );
-
-            if (dados["ativo"] == "S") {
-                aviso.style.display = "block";
-                titleFormAtivarDesativar.textContent = "DESATIVAR PROFISSIONAL ::";
-            } else {
-                aviso.style.display = "none";
-                titleFormAtivarDesativar.textContent = "ATIVAR PROFISSIONAL ::";
-            }
-        })
-        .catch((error) => console.log(error));
-}
-
-const ativarDesativarProfissionalForm = document.getElementById(
-    "ativarDesativarProfissionalForm"
-);
-
-if (ativarDesativarProfissionalForm) {
-    ativarDesativarProfissionalForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const dataForm = new FormData(ativarDesativarProfissionalForm);
-
-        await axios
-            .post(
-                `${URL_BASE}${URI_API_PROFISSIONAL}/ativa_desativa_profissional`,
-                dataForm,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            )
-            .then((response) => {
-                if (response.data.error) {
-                    showAlertToast(false, "Erros no preechimento!");
-                } else {
-                    showAlertToast(response.data.status);
-                    ativarDesativarProfissionalForm.reset();
-                    $("#ativarDesativarProfissional").modal("hide");
-                    listarProfissionais();
-                }
-            })
-            .catch((error) => console.log(error));
-    });
-}
-
-async function listar_alocacao_profissional(idProfissional) {
-    await axios
-        .get(
-            `${URL_BASE}${URI_API_PROFISSIONAL}/getAlocacaoProfissional/${idProfissional}`
-        )
-        .then((response) => {
-            $("#alocarProfissionalModal").modal("hide");
-            const data = response.data;
-
-            document.querySelector(
-                "#tb_alocacao_profissional > tbody"
-            ).innerHTML = `${loadDataAlocacaoProfissional(data)}`;
-        })
-        .catch((error) => console.log(error));
-}
-
-function loadDataAlocacaoProfissional(data) {
-    let row = "";
-    data.forEach((elem, indice) => {
-        const nomeProfissionalSmall = document.querySelector(
-            "#nomeProfissionalSmall"
-        );
-        nomeProfissionalSmall.textContent = elem.nomeProfissional;
-
-        row += `<tr>
-                    <td>${elem.diaSemana} - ${tratarDiaSemana(
-            parseInt(elem.diaSemana, 10)
-        )}</td>
-                    <td>${elem.horaInicio}</td>
-                    <td>${elem.horaFim}</td>
-                    <td class="text-center">
-                        <a href='#' class="btn bg-red waves-effect" data-toggle= "modal"
-                        data-target = "#smallModal" data-title = "tooltip"
-                        data-placement= "top"
-                        title = "Remover alocação">
-                            <span class="badge"> R </span> emover
-                    </td>
-                </tr>`;
-    });
-    return row;
-}
 async function editar_profissional(idProfissional) {
     clearMessageErrorAll();
 
@@ -310,31 +227,76 @@ if (editProfissionalForm) {
             });
     });
 }
-var diasDaSemana = ["SEG", "TER", "QUA", "QUI", "SEX"];
-var horariosManha = [
-    "07:30-08:00",
-    "08:00-08:30",
-    "08:30-09:00",
-    "09:00-09:30",
-    "09:30-10:00",
-    "10:00-10:30",
-    "10:30-11:00",
-    "11:00-11:30",
-    "11:30-12:00",
-];
-var horariosTarde = [
-    "13:00-13:30",
-    "13:30-14:00",
-    "14:00-14:30",
-    "14:30-15:00",
-    "15:00-15:30",
-    "15:30-16:00",
-    "16:00-16:30",
-    "16:30-17:00",
-    "17:00-17:30",
-    "17:30-18:00",
-];
 
+/* ativar e desativar profissional */
+async function ativar_desativar_profissional(idProfissional, status) {
+    clearMessageErrorAll();
+
+    await axios
+        .get(
+            `${URL_BASE}${URI_API_PROFISSIONAL}/getDataProfissional/${idProfissional}`
+        )
+        .then((response) => {
+            var dados = response.data;
+            document.getElementById("idProfissionalAtivaDesativa").value =
+                idProfissional;
+            document.getElementById("statusAtivaDesativa").value = `${dados["ativo"] == "S" ? "N" : "S"
+                }`;
+            document.getElementById(
+                "nomeProfissionalAtivaDesativa"
+            ).textContent = `${dados["nomeProfissional"]}`;
+
+            const aviso = document.getElementById("aviso");
+            const titleFormAtivarDesativar = document.getElementById(
+                "titleFormAtivarDesativar"
+            );
+
+            if (dados["ativo"] == "S") {
+                aviso.style.display = "block";
+                titleFormAtivarDesativar.textContent = "DESATIVAR PROFISSIONAL ::";
+            } else {
+                aviso.style.display = "none";
+                titleFormAtivarDesativar.textContent = "ATIVAR PROFISSIONAL ::";
+            }
+        })
+        .catch((error) => console.log(error));
+}
+
+const ativarDesativarProfissionalForm = document.getElementById(
+    "ativarDesativarProfissionalForm"
+);
+
+if (ativarDesativarProfissionalForm) {
+    ativarDesativarProfissionalForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const dataForm = new FormData(ativarDesativarProfissionalForm);
+
+        await axios
+            .post(
+                `${URL_BASE}${URI_API_PROFISSIONAL}/ativa_desativa_profissional`,
+                dataForm,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            )
+            .then((response) => {
+                if (response.data.error) {
+                    showAlertToast(false, "Erros no preechimento!");
+                } else {
+                    showAlertToast(response.data.status);
+                    ativarDesativarProfissionalForm.reset();
+                    $("#ativarDesativarProfissional").modal("hide");
+                    listarProfissionais();
+                }
+            })
+            .catch((error) => console.log(error));
+    });
+}
+
+/* alocar profissional*/
 async function alocar_profissional(idProfissional) {
     clearMessageErrorAll()
     $("#listarAlocacaoProfissional").modal("hide");
@@ -351,11 +313,15 @@ async function alocar_profissional(idProfissional) {
         .then((response) => {
             var dados = response.data;
 
+            console.log(dados)
+
             document.getElementById("idProfissionalAlocar").value = idProfissional;
 
             document.getElementById(
                 "nomeProfissionalAlocar"
-            ).textContent = `${dados["nomeProfissional"]}`;
+            ).textContent = `${dados["nomeProfissional"]} - ${dados["modalidade"]}`;
+
+            document.querySelector("#iTotalAlocacao").textContent = `${dados['totalAlocacao']} de 95 possíveiss`
 
             const btVoltarAlocacaoProfissional = document.querySelector(
                 "#btVoltarAlocacaoProfissional"
@@ -408,15 +374,25 @@ async function alocar_profissional(idProfissional) {
             document.querySelector("#horaFimNew").innerHTML = checkboxHoraFim;
 
             const btnListarAlocacao = document.querySelector("#btnListarAlocacao");
+
+            if(dados["totalAlocacao"] <= 0) {
+                btnListarAlocacao.classList.add('disabled')
+                return              
+
+            } 
+
             btnListarAlocacao.setAttribute(
                 "onclick",
                 `listar_alocacao_profissional('${idProfissional}')`
             );
+
+            btnListarAlocacao.classList.remove('disabled')
             btnListarAlocacao.setAttribute("data-toggle", "modal");
             btnListarAlocacao.setAttribute(
                 "data-target",
                 "#listarAlocacaoProfissional"
             );
+
         })
         .catch((error) => console.log(error));
 }
@@ -463,6 +439,139 @@ if (alocarProfissionalForm) {
             });
     });
 }
+
+/* listar alocacao profissional */
+async function listar_alocacao_profissional(idProfissional) {
+
+    $('#removerAlocacaoProfissionalModal').modal("hide");
+
+    await axios
+        .get(
+            `${URL_BASE}${URI_API_PROFISSIONAL}/getAlocacaoProfissional/${idProfissional}`
+        )
+        .then((response) => {
+            $("#alocarProfissionalModal").modal("hide");
+            const data = response.data;
+
+            console.log(data);
+
+            document.querySelector(
+                "#tb_alocacao_profissional > tbody"
+            ).innerHTML = `${loadDataAlocacaoProfissional(data)}`;
+        })
+        .catch((error) => console.log(error));
+}
+
+function loadDataAlocacaoProfissional(data) {
+    let row = "";
+    data.forEach((elem, indice) => {
+        const nomeProfissionalSmall = document.querySelector(
+            "#nomeProfissionalSmall"
+        );
+        nomeProfissionalSmall.textContent = elem.nomeProfissional;
+
+        row += `<tr>
+                    <td>${elem.diaSemana} - ${tratarDiaSemana(
+            parseInt(elem.diaSemana, 10)
+        )}</td>
+                    <td>${elem.horaInicio}</td>
+                    <td>${elem.horaFim}</td>
+                    <td class="text-center">
+                        <a href='#' class="btn bg-red waves-effect" data-toggle= "modal"
+                        data-target = "#removerAlocacaoProfissionalModal" data-title = "tooltip"
+                        data-placement= "top"
+                        title = "Remover alocação"
+                        onclick = remover_alocacao_profissional('${elem.idAlocacao}')>
+                            <span class="badge"> R </span> emover
+                    </td>
+                </tr>`;
+    });
+    return row;
+}
+
+
+/* remover alocacao*/
+async function remover_alocacao_profissional(idAlocacao){   
+
+    $('#listarAlocacaoProfissional').modal("hide");
+
+    await axios
+        .get(
+            `${URL_BASE}${URI_API_ALOCACAO}/getDataAlocacao/${idAlocacao}`
+        )
+        .then((response) => {
+
+            //const idProfissional = 10;
+
+            const data = response.data
+            console.log(data)
+
+            const idAlocacaoProfissional = document.querySelector('#idAlocacao')
+            idAlocacaoProfissional.value = idAlocacao
+
+            const btnVoltarAlocacaoProfissional = document.querySelector("#btnVoltarAlocacaoProfissional");
+            btnVoltarAlocacaoProfissional.setAttribute(
+                "onclick",
+                `listar_alocacao_profissional('${data[0].idProfissional}')`
+            );
+
+            document.querySelector('#dataALocacao').textContent = `${tratarDiaSemana(parseInt(data[0].diaSemana,10))} 
+                                                                    :: ${data[0].horaInicio}
+                                                                    :: ${data[0].horaFim}`
+            document.querySelector('#nomeProfissionalAlocacaoSmall').textContent = data[0].nomeProfissional
+
+            document.querySelector('#idAlocacaoProfissional').value = data[0].idProfissional
+            
+
+        })
+        .catch((error) => console.log(error)); 
+
+}
+
+const removerAlocacaoProfissionalForm = document.getElementById(
+    "removerAlocacaoProfissionalForm"
+);
+
+if (removerAlocacaoProfissionalForm) {
+    removerAlocacaoProfissionalForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const dataForm = new FormData(removerAlocacaoProfissionalForm);
+
+        const idProfissional = dataForm.get('nIdProfissional')
+
+        console.log(idProfissional)
+        
+
+        // Remover um campo específico (por exemplo, 'campo2')
+        //dataForm.delete('nMensagem');
+        //console.log([...dataForm.entries()]);
+
+        await axios
+            .post(`${URL_BASE}${URI_API_ALOCACAO}/remover_alocacao`, dataForm, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((response) => {
+                var dados = response.data;
+                //console.log(dados);
+                if (response.data.error) {
+                    showAlertToast(false, "Error inesperado!");                   
+                    return;
+                }
+                showAlertToast(
+                    dados.status                    
+                );
+                removerAlocacaoProfissionalForm.reset();
+                $("#removerAlocacaoProfissionalModal").modal("hide");
+                $("#listarAlocacaoProfissional").modal("show");
+                listar_alocacao_profissional(idProfissional);
+            });
+    });
+}
+
+
 
 async function getDataModalidade() {
     const teses = await fetch(
