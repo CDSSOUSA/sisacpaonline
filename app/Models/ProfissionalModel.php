@@ -6,45 +6,45 @@ use CodeIgniter\Model;
 
 class ProfissionalModel extends Model
 {
-    protected $DBGroup          = 'default';
-    protected $table            = 'tb_profissional';
-    protected $primaryKey       = 'idProfissional';
+    protected $DBGroup = 'default';
+    protected $table = 'tb_profissional';
+    protected $primaryKey = 'idProfissional';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'object';
-    protected $useSoftDeletes   = false;
-    protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $returnType = 'object';
+    protected $useSoftDeletes = false;
+    protected $protectFields = true;
+    protected $allowedFields = [];
 
     // Dates
     protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+    protected $dateFormat = 'datetime';
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
+    protected $deletedField = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [
-            'nNomeProfissional' => 'required|min_length[3]',
-            'nGenero' => 'required',
-            'nCpfProfissional' => 'required|validateCpf|is_unique[tb_profissional.cpfProfissional, idProfissional,{idProfissional}]',
-            'nCnsProfissional' => 'required|valid_cns|is_unique[tb_profissional.cnsProfissional, idProfissional,{idProfissional}]',
-            'nTipoProfissional' => 'required',
-            'nModalidade' => 'required'
+    protected $validationRules = [
+        'nNomeProfissional' => 'required|min_length[3]',
+        'nGenero' => 'required',
+        'nCpfProfissional' => 'required|validateCpf|is_unique[tb_profissional.cpfProfissional, idProfissional,{idProfissional}]',
+        'nCnsProfissional' => 'required|valid_cns|is_unique[tb_profissional.cnsProfissional, idProfissional,{idProfissional}]',
+        'nTipoProfissional' => 'required',
+        'nModalidade' => 'required'
     ];
-    protected $validationMessages   = [];
-    protected $skipValidation       = false;
+    protected $validationMessages = [];
+    protected $skipValidation = false;
     protected $cleanValidationRules = true;
 
     // Callbacks
     protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
+    protected $beforeInsert = [];
+    protected $afterInsert = [];
+    protected $beforeUpdate = [];
+    protected $afterUpdate = [];
+    protected $beforeFind = [];
+    protected $afterFind = [];
+    protected $beforeDelete = [];
+    protected $afterDelete = [];
 
     public function __construct()
     {
@@ -59,7 +59,7 @@ class ProfissionalModel extends Model
     public function getProfissionalAtivo()
     {
         return $this->orderBy('ativo desc, nomeProfissional asc')
-                    ->get()->getResult();
+            ->get()->getResult();
     }
 
     public function saveProfissional($dados)
@@ -68,12 +68,12 @@ class ProfissionalModel extends Model
         try {
             $this->db->transBegin();
 
-            $dado['nome'] = $dados['nomeProfissional'];        
+            $dado['nome'] = $dados['nomeProfissional'];
             $dado['ativo'] = 'S';
             $dado['cpf'] = $dados['cpfProfissional'];
             $dado['idOperadorCadastro'] = session()->get('idOperador');
-            $dado['tipo'] = 3;     
-            $dado['tipoOperador'] = 'P';       
+            $dado['tipo'] = 3;
+            $dado['tipoOperador'] = 'P';
 
             $pessoa = new PessoaModel();
             $pessoa->save($dado);
@@ -83,7 +83,7 @@ class ProfissionalModel extends Model
             $idProfissional = $ultimaPessoa->idPessoa;
             $dados['idProfissional'] = $idProfissional;
             $this->insert($dados);
-            
+
 
             if ($this->db->transStatus()) {
                 $this->db->transCommit();
@@ -108,8 +108,8 @@ class ProfissionalModel extends Model
         // $dadosProf['numeralConselhoClasse'] = $dados['numeralConselhoClasse'];
         // $dadosProf['modalidade'] = $dados['modalidade'];
 
-       //$this->db->insert('tb_profissional', $dadosProf);
-        
+        //$this->db->insert('tb_profissional', $dadosProf);
+
 
     }
 
@@ -118,35 +118,35 @@ class ProfissionalModel extends Model
         try {
             $this->db->transBegin();
 
-            $dado['idProfissional'] = $dados['idProfissional'];        
+            $dado['idProfissional'] = $dados['idProfissional'];
             $dado['ativo'] = $dados['ativo'];
-            $dado['operadorAtivo'] = $dados['operadorAtivo']; 
+            $dado['operadorAtivo'] = $dados['operadorAtivo'];
             $this->save($dado);
 
 
             $pessoa = new PessoaModel;
-            $dadoPessoa['idPessoa'] = $dados['idProfissional'];        
+            $dadoPessoa['idPessoa'] = $dados['idProfissional'];
             $dadoPessoa['ativo'] = $dados['ativo'];
             $pessoa->save($dadoPessoa);
-            
+
             //$this->db->update('tb_pessoa', array('ativo' => $dados['ativo']), array('idPessoa' => $dados['idProfissional']));
             if ($dados['ativo'] == 'N') {
-                $modelAlocacao = new AlocacaoModel;          
+                $modelAlocacao = new AlocacaoModel;
 
                 $dataAlocacao = [
-                    'ativo' => $dados['ativo']
+                    'ativo' => $dados['ativo'],
+                    'dataUpdate' => date('Y-m-d H:i:s')
                 ];
-                $modelAlocacao->where('idProfissional', $dados['idProfissional']);           
+                $modelAlocacao->where('idProfissional', $dados['idProfissional']);
                 $modelAlocacao->builder->update($dataAlocacao);
             }
 
-            if ($dados['operadorAtivo'] == 'S')
-            {
+            if ($dados['operadorAtivo'] == 'S') {
                 $modelOperador = new OperadorModel;
                 $dataOperador = [
                     'ativo' => $dados['ativo']
                 ];
-                $modelOperador->where('idOperador', $dados['idProfissional']);           
+                $modelOperador->where('idOperador', $dados['idProfissional']);
                 $modelOperador->builder->update($dataOperador);
 
                 $modelOperadorPermissao = new OperadorPermissaoModel;
@@ -163,15 +163,135 @@ class ProfissionalModel extends Model
             $this->db->transRollback();
 
             return false;
-            
+
 
         } catch (\Exception $e) {
             echo 'Erro: ' . $e->getMessage();
             // Fazer o rollback da transação em caso de erro
             $this->db->transRollback();
             return false;
-        }        
+        }
 
-    }  
+    }
+
+
+
+    public function verificaDuplicidade($idProfissional, $diaSemana, $horaInicio)
+    {
+        $modelAlocacao = new AlocacaoModel;
+        $duplicidade = $modelAlocacao->getDuplicidade($idProfissional, $diaSemana, $horaInicio);
+
+
+        if ($duplicidade) {
+            return true;
+        }
+        return false;
+
+    }
+
+
+    public function gravarAlocacao($dados)
+    {
+        $qtdeInsert = 0;
+        $qtdeUpdate = 0;
+        try {
+            $this->db->transBegin();
+
+            $diaSemana = $dados['diaSemana'];
+            $horarios = $dados['horarios']; 
+
+            foreach ($diaSemana as $d) {
+                $dadoAlocacao['diaSemana'] = $d;
+                $dadoAlocacao['idProfissional'] = $dados['idProfissional'];
+
+                foreach ($horarios as $hmt) {
+
+                    $horario = explode('-', $hmt);
+
+                    $dadoAlocacao['horaInicio'] = $horario[0];
+                    $dadoAlocacao['horaFim'] = $horario[1];
+
+                    $duplicidade = $this->verificaDuplicidade(
+                        $dados['idProfissional'],
+                        $dadoAlocacao['diaSemana'],
+                        $dadoAlocacao['horaInicio']
+                    );
+
+                    $qtdeUpdate++;  
+
+                    if (!$duplicidade) {
+                        //$this->session->set_flashdata('erro', 'ERRO, horário duplicado.');
+
+                        $modelAlocacao = new AlocacaoModel;
+                        $modelAlocacao->save($dadoAlocacao);
+                        $qtdeInsert++;
+                        $qtdeUpdate--;
+                    } 
+                }
+
+            }
+
+
+
+            if ($this->db->transStatus()) {
+                $this->db->transCommit();
+                return [
+                    'status'=> true,
+                    'insert'=> $qtdeInsert,
+                    'update'=> $qtdeUpdate
+                ];
+            }
+            $this->db->transRollback();
+
+            return false;
+
+        } catch (\Exception $e) {
+            echo 'Erro: ' . $e->getMessage();
+            
+            // Fazer o rollback da transação em caso de erro
+            $this->db->transRollback();
+            return false;
+        }
+
+
+
+
+        /*foreach ($dia AS $dias)
+        {
+
+            $dadoAlocacao['diaSemana'] = $dias;
+            $dadoAlocacao['idProfissional'] = $dados['idProfissional'];
+            $dadoAlocacao['horaInicio'] = $dados['horaInicio'];
+            $dadoAlocacao['horaFim'] = $dados['horaFim'];
+
+            $duplicidade = $this->verificaDuplicidade($dados['idProfissional'], $dadoAlocacao['diaSemana'], $dados['horaInicio'],$dados['horaFim']);
+
+            if($duplicidade === TRUE){
+                //$this->session->set_flashdata('erro', 'ERRO, horário duplicado.');
+
+            } else {
+                $this->db->insert('tb_alocacao', $dadoAlocacao);
+                gerarLog($this->dataLog, $this->session->userdata('idOperador'), 'ALOCOU HORARIO PARA', $dados['idProfissional']);
+
+            }           
+
+        }
         
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === FALSE)
+        {
+
+            return FALSE;
+
+        } 
+        else
+        {
+
+            return TRUE;
+
+        }*/
+
+    }
+
 }

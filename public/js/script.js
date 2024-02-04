@@ -483,7 +483,7 @@ function marcarRadioButton(){
 }
 
 function marcartodos() {
-    clearMessageError('iDiasAtendimento')
+    clearMessageError(['iDiasAtendimento','iMensagem'])    
     $('.marcarTodos').each(
             function() {
                 if ($(this).prop("checked")) {

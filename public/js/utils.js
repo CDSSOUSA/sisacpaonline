@@ -39,8 +39,7 @@ const clearMessageErrorAll = () => {
     const fields = document.querySelectorAll('.messageErro');
     fields.forEach((item)=>{
         item.innerHTML = '';
-    })
-    atualizarHoraFim()
+    })    
 }
 
 const clearInput = (option) => {
@@ -76,7 +75,12 @@ const clearMessageError = (option) => {
     }
 }
 
-function showAlertToast(status, message = 'Nenhum registro encontrado!') {
+function showAlertToast(status, message) {
+
+    var text = '';
+    if(message){
+        text = message
+    }
 
     toastr.options = {
       closeButton: true, // Exibir botão de fechar
@@ -86,7 +90,7 @@ function showAlertToast(status, message = 'Nenhum registro encontrado!') {
     };
   
     if (status) {
-      toastr.success(`<b>Parabéns! Operação realizada com sucesso!</b>`);
+      toastr.success(`<b>Parabéns!Operação realizada com sucesso!</b><br>${text}`);
     } else {
       toastr.error(`<b>Ops! ${message}</b>`);
     }

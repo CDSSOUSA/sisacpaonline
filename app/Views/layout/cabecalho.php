@@ -99,8 +99,12 @@
       max-height: 400px; /* Altura máxima do modal */
       overflow-y: auto; /* Adiciona uma barra de rolagem vertical se necessário */
     }
-    
-
+    .w-75{
+      width: 50px
+    }
+    .demo-checkbox-new label,
+.demo-radio-button label {
+  min-width: 90px; }
        
     </style>
     <script>

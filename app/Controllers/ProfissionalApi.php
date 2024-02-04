@@ -149,6 +149,7 @@ class ProfissionalApi extends ResourceController
             'numeralConselhoClasse' => $conselhoClasse,
             'tipoProfissional' => $tipoProfissional,
             'modalidade' => $resultModalidade->nomeModalidade,
+            'dataUpdate' => date('Y-m-d H:i:s')
         ];
 
 
@@ -312,8 +313,16 @@ class ProfissionalApi extends ResourceController
     public function alocaProfissional()
     {
         helper("utils");
+        $horarioManha = [];
+        $horarioTarde = [];
+
         $idProfissinal = $this->request->getPost('nIdProfissional');
         $id = decrypt($idProfissinal);
+
+        $idProfissional = $id;
+        $dia = $this->request->getPost('nDia');
+        $horarioManha = $this->request->getPost('nHorarioManha');
+        $horarioTarde = $this->request->getPost('nHorarioTarde');
 
         $modelProfissional = new ProfissionalModel;
         $result = $modelProfissional->find($id);
@@ -337,27 +346,27 @@ class ProfissionalApi extends ResourceController
         $rules = [
             'nIdProfissional' => 'required',
             'nDia' => 'required',
-            'nHoraInicio' => 'required',
-            'nHoraFim' => 'required'
+            
 
-        ];
-        // $numeroInicio = $this->input->post('nHoraInicio');
+        ];    
 
-        // $this->form_validation->set_message('verificaIntervalo', 'Ops! HORA INÍCIO é maior ou igual que HORA FIM');
+        $message = [];
 
-        // $this->form_validation->set_message('verificaIntervaloHoras', 'Ops! Intervalo de HORAS maior que 30 minutos!');
+        
+        if(is_null($this->request->getPost('nHorarioManha')) &&
+            (is_null($this->request->getPost('nHorarioTarde')))){              
+                 
+                $rules['nMensagem'] = 'required';                 
+                $message =[
+                    'nMensagem' => [
+                        'required' => 'Pelo menos um horário deve ser escolhido!'
+                    ]
+                ];
+           
+        }
+      
 
-        // $this->form_validation->set_rules('nIdProfissional', 'NOME PROFISSIONAL', '');
-
-        // $this->form_validation->set_rules('nDia[]', 'DIA', 'required');
-
-        // $this->form_validation->set_rules('nHoraInicio', 'HORA INÍCIO', 'required');
-
-        // $this->form_validation->set_rules('nHoraFim', 'HORA FIM', 'required|verificaIntervalo[' . $numeroInicio . ']|verificaIntervaloHoras[' . $numeroInicio . ']');
-
-
-
-        $val = $this->validate($rules);
+        $val = $this->validate($rules, $message);
 
         if (!$val) {
             $response = [
@@ -376,18 +385,63 @@ class ProfissionalApi extends ResourceController
             return $this->response->setJSON($response);
         }
 
-        $idProfissional = $id;
-        $dia = $this->request->getPost('nDia');
-        $horaInicio = $this->request->getPost('nHoraInicio');
-        $horaFim = $this->request->getPost('nHoraFim');
+        $horarios = $horarioManha;
+
+        if ($horarioManha !== null && $horarioTarde !== null) {
+            $horarios = array_merge ($horarioManha, $horarioTarde);
+        } else if($horarioManha === null){
+            $horarios = $horarioTarde;
+        } 
 
         $data = [
             'idProfissional' => $idProfissional,
             'diaSemana' => $dia,
-            'horaInicio' => $horaInicio,
-            'horaFim' => $horaFim,
-        ];
+            'horarios' => $horarios,
+            //'horarioTarde' => $horarioTarde,
+        ];   
+        
+        try {
+            //$save = $this->series->save($data);
+            //$gravar = $modelProfissional->save($data);
+            $modelProfissional = new ProfissionalModel;
+            $gravar = $modelProfissional->gravarAlocacao($data);
 
+            if ($gravar['status']) {
+                //session()->set('sucesso', 'Parabéns, ação realizada com sucesso.');
+                //session()->setFlashdata('confirmadoAtendimento', $idAtendimento);
+                //session()->setFlashdata('confirmadoAtendimentoData', $dataAtendimento);
+                $this->logging->info(__CLASS__ . "\\" . __FUNCTION__, ['PROFISSIONAL::' => $id, 'FEITO POR::' => session()->get("nome"), 'SUCCESS::' => $gravar]);
+
+
+                $response = [
+                    'status' => $gravar['status'],
+                    'error' => false,
+                    'code' => 200,
+                    'msg' => '<p>Operação realizada com sucesso!</p>',
+                    'insert' => $gravar['insert'],
+                    'update'=> $gravar['update']
+                    //'id' =>  $this->series->getInsertID()
+                    //'data' => $this->list()
+                ];
+                //return redirect()->to('atendimento/listar_atendimento');
+                return $this->response->setJSON($response);
+                
+            }
+        } catch (Exception $e) {
+
+            session()->set('erro', 'ERRO, não foi possível realizar operação.');
+            $this->logging->critical(__CLASS__ . "\\" . __FUNCTION__, ['PROFISSIONAL::' => $id, 'FEITO POR::' => session()->get("nome"), 'ERROR' => $e->getMessage()]);
+
+            return $this->response->setJSON([
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+                'msgs' => [
+                    'series' => 'Série, turma e turno já cadastrados!'
+                ]
+            ]);
+        }
     }
 
 

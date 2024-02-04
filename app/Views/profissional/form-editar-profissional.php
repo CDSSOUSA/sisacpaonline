@@ -236,7 +236,7 @@ echo $this->section('content');
     </div>
 </div>
 
-<div class="modal fade" id="alocarProfissional" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="alocarProfissionalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -248,18 +248,8 @@ echo $this->section('content');
 
             </div>
             <div class="modal-body">
-            <div class="body table-responsive" id="tbAlocacaoProfissionalManha" style="border:1px red solid;"></div>
-            <br>
-            <div class="body table-responsive" id="tbAlocacaoProfissionalTarde" style="border:1px red solid;"></div>
-
-            <table id="tb_allocation_teacher_add" class="table table-striped text-center align-items-center mb-0">
-                                    <thead>
-                                        <tr class="text-center">                                           
-                                        </tr>
-                                    </thead>
-                                    <tbody>                                      
-                                    </tbody>
-                                </table>
+            <!-- <div class="body table-responsive" id="tbAlocacaoProfissionalManha" style="border:1px red solid;"></div> -->           
+           
 
                 <?php
                 $atributos_formulario = array(
@@ -292,10 +282,12 @@ echo $this->section('content');
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
                         <div class="form-group">
-                            <div class="demo-checkbox">
+                            <div class="demo-checkbox-new">
                                 <a class="btn bg-green" onclick="marcardesmarcar();"> <i class="fa fa-check"></i>
                                     todos</a><br><br>
+                                    <div class="icheck-primary d-inline">
                                 <div id="diaSemanaDiv"></div>
+                                    </div>
                                 <span class="messageErro" style="color:red" id="iDiasAtendimento"></span>
                             </div>
                         </div>
@@ -304,30 +296,49 @@ echo $this->section('content');
 
                 <div class="row clearfix">
                     <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
-                        <label>Hora Início: </label>
+                        <label>Horário::Manhã: *</label>
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
                         <div class="form-group">
-                            <div class="form-line" id="horaInicioDiv">
-
+                            <div class="demo-checkbox-new">                               
+                                    
+                                <div id="horaInicioNew"></div>
+                                    
+                                <span class="messageErro" style="color:red" id="iHorarioManha"></span>
                             </div>
-                            <span class="messageErro" style="color:red" id="iHoraInicio"></span>
                         </div>
                     </div>
                 </div>
-
 
                 <div class="row clearfix">
                     <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
-                        <label>Hora Fim: *</label>
+                        <label>Horário::Tarde: *</label>
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
                         <div class="form-group">
-                            <div id="containerHoraFim" class="form-line"></div>
-                            <span class="messageErro" style="color:red" id="iHoraFim"></span>
+                            <div class="demo-checkbox-new">                               
+                                    
+                                <div id="horaFimNew"></div>
+                                    
+                                <span class="messageErro" style="color:red" id="iHorarioTarde"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </div>               
+
+               <div class="row clearfix">
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
+                       
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="hidden" id="idProfissionalAlocar" name="nMensagem">
+                            </div>
+                            <span class="messageErro" style="color:red" id="iMensagem"></span>
+                        </div>
+                    </div>
+                </div>      
             </div>
             <div class="modal-footer justify-content-between">
 
@@ -380,7 +391,7 @@ echo $this->section('content');
                             class="btn btn-warning waves-effect"
                             id="btVoltarAlocacaoProfissional"
                             data-toggle = "modal" 
-                            data-target = "#alocarProfissional">
+                            data-target = "#alocarProfissionalModal">
                         <span
                             class="badge">
                             V

@@ -57,4 +57,15 @@ class AlocacaoModel extends Model
             ->where($this->table.'.ativo','S')
             ->get()->getResult();
     }  
+
+    public function getDuplicidade($idProfissional, $diaSemana, $horaInicio)
+    {
+
+        return $this->where('idProfissional', $idProfissional)
+                        ->where('diaSemana', $diaSemana)
+                        ->where('horaInicio', $horaInicio)
+                        ->where('ativo', 'S')                        
+                        ->get()->getResult();
+
+    }
 }
