@@ -55,6 +55,8 @@ async function listarProfissionais() {
             document.querySelector(
                 "#tb_profissionais > tbody"
             ).innerHTML = `${loadDataProfissional(data)}`;
+
+            document.querySelector("#totalProfissionais").textContent = `Total de profissionais :: ${data.length}`;
         })
         .catch((error) => console.log(error));
 }
@@ -64,6 +66,9 @@ function loadDataProfissional(data) {
     let display = "";
     let color = "text-white";
     let marcador = "";
+
+    let contadorAtivo = 0;
+    let contadorInativo = 0;
 
     //if (data) {
     data.forEach((elem, indice) => {
@@ -79,6 +84,7 @@ function loadDataProfissional(data) {
                     <td class="text-center">`;
 
         if (elem.ativo == "ATIVO") {
+            contadorAtivo++
             row += `<a href="" onclick = "editar_profissional('${elem.idProfissional}')" class = "btn bg-teal waves-effect" title = "Editar profissional" data-toggle = "modal" data-target = "#editarProfissional">
                            E
                         </a>
@@ -89,6 +95,7 @@ function loadDataProfissional(data) {
                            A
                         </a>`;
         } else {
+            contadorInativo++
             row += `<a href="#/" onclick = "ativar_desativar_profissional('${elem.idProfissional}','S')" class = "btn bg-success waves-effect" title = "Ativar Profissional" data-toggle = "modal" data-target = "#ativarDesativarProfissional">
                            A
                         </a>`;
@@ -97,6 +104,9 @@ function loadDataProfissional(data) {
                     </td>                                       
                 </tr>`;
     });
+
+    document.querySelector('#contadorAtivo').textContent = `Ativos :: ${contadorAtivo}`
+    document.querySelector('#contadorInativo').textContent = `Inativos :: ${contadorInativo}`
 
     return row;
 }
@@ -321,7 +331,7 @@ async function alocar_profissional(idProfissional) {
                 "nomeProfissionalAlocar"
             ).textContent = `${dados["nomeProfissional"]} - ${dados["modalidade"]}`;
 
-            document.querySelector("#iTotalAlocacao").textContent = `${dados['totalAlocacao']} de 95 possíveiss`
+            document.querySelector("#iTotalAlocacao").textContent = `${dados['totalAlocacao']} de 95 possíveis`
 
             const btVoltarAlocacaoProfissional = document.querySelector(
                 "#btVoltarAlocacaoProfissional"

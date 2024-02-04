@@ -16,8 +16,11 @@ echo $this->section('content');
                 <div class="card">
                     <div class="header bg-indigo">
                         <h2>
-                            <?php echo 'LISTA DE PROFISSIONAIS ATIVOS'; ?>
+                            <?php echo 'LISTA DE PROFISSIONAIS'; ?>
                         </h2>
+                        <small id="totalProfissionais">* campos de preenchimento obrigatório.</small>
+                        <small id="contadorAtivo" style="display:block">* campos de preenchimento obrigatório.</small>
+                        <small id="contadorInativo">* campos de preenchimento obrigatório.</small>
                     </div>
                     <div class="body">
                         <div class="body table-responsive">
@@ -352,37 +355,20 @@ echo $this->section('content');
                     </div>
                 </div>
                 
-            </div>
-            <div class="row clearfix">
-                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
-                    <a href="#" class="btn btn-warning waves-effect disabled" id="btnListarAlocacao"><span class="badge">L</span>
-                        ISTAR ALOCAÇÕES</a>
-                    </div>
-                    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7 align-content-end">
-                        
-                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal"><span
-                                class="badge">C</span> ANCELAR</button>
-                        
-                            <?= session()->get('botaoSalvar'); ?>
-                    </div>
-                </div>
+            </div>           
 
             <div class="modal-footer">
-                <div class="d-lex flex-ow" style="display: flex;">
-                    <div id="btnSalvar" style="flex: 2; padding: 10px;" >
-                    <a href="#" class="btn btn-warning waves-effect disabled" id="btnListarAlocacao"><span class="badge">L</span>
-                        ISTAR ALOCAÇÕES</a>
-                    </div>
-                    <div style="flex: 2; padding: 10px;">
-
-                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal"><span
-                                class="badge">C</span> ANCELAR</button>
-                        
-                            <?= session()->get('botaoSalvar'); ?>
-
+                <div style="display: flex;">
+                    <div id="btnSalvar" style="flex: 2; padding: 10px; text-align: left;" >
+                        <a href="#" class="btn btn-warning waves-effect disabled" id="btnListarAlocacao"><span class="badge">L</span>
+                            ISTAR ALOCAÇÕES</a>
                         </div>
+                    <div style="flex: 2; padding: 10px;">
+                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal"><span
+                                class="badge">C</span> ANCELAR</button>                        
+                            <?= session()->get('botaoSalvar'); ?>
+                    </div>
                 </div>
-
             </div>
             <?php echo form_close(); ?>
         </div>
@@ -420,17 +406,21 @@ echo $this->section('content');
                 </div>
             </div>
             <div class="modal-footer">
-
-                <a href="#" class="btn btn-warning waves-effect" id="btVoltarAlocacaoProfissional" data-toggle="modal"
+                <div style="display: flex;">
+                    <div id="btnSalvar" style="flex: 2; padding: 10px; text-align: left;" >
+                    <a href="#" class="btn btn-warning waves-effect" id="btVoltarAlocacaoProfissional" data-toggle="modal"
                     data-target="#alocarProfissionalModal">
                     <span class="badge">
                         V
                     </span> OLTAR</a>
                 </a>
-                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal"><span
+                        </div>
+                    <div style="flex: 2; padding: 10px;">
+                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal"><span
                         class="badge">C</span> ANCELAR</button>
-
-            </div>
+                    </div>
+                </div>
+            </div>            
             <?php echo form_close(); ?>
         </div>
     </div>
@@ -467,14 +457,21 @@ echo $this->section('content');
             </div>
 
             <div class="modal-footer">
-                <button type="submit" class="btn btn-danger waves-effect">SIM</button>
-
-                <a href="#" class="btn btn-link waves-effect" id="btnVoltarAlocacaoProfissional" data-toggle="modal"
+                <div style="display: flex;">
+                    <div id="btnSalvar" style="flex: 2; padding: 10px; text-align: left;" >
+                    <a href="#" class="btn btn-link waves-effect" id="btnVoltarAlocacaoProfissional" data-toggle="modal"
                     data-target="#listarAlocacaoProfissional">
                     CANCELAR
                     </a>
-                </a>         
+                        </div>
+                    <div style="flex: 2; padding: 10px;">
+                    <button type="submit" class="btn btn-danger waves-effect">SIM</button>
+                    </div>
+                </div>
             </div>         
+
+            
+          
 
             <?php echo form_close(); ?>
         </div>
