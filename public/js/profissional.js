@@ -86,18 +86,21 @@ function loadDataProfissional(data) {
         if (elem.ativo == "ATIVO") {
             contadorAtivo++
             row += `<a href="" onclick = "editar_profissional('${elem.idProfissional}')" class = "btn bg-teal waves-effect" title = "Editar profissional" data-toggle = "modal" data-target = "#editarProfissional">
-                           E
+                           <i class="fas fa-edit"></i>
                         </a>
                         <a href="#/" onclick = "ativar_desativar_profissional('${elem.idProfissional}','N')" class = "btn bg-red waves-effect" title = "Desativar Profissional" data-toggle = "modal" data-target = "#ativarDesativarProfissional">
-                           D
+                        <i class="fa fa-ban"></i>
                         </a>
                         <a href="#/" onclick = "alocar_profissional('${elem.idProfissional}')" class = "btn bg-orange waves-effect" title = "Alocar Profissional" data-toggle = "modal" data-target = "#alocarProfissionalModal">
-                           A
-                        </a>`;
+                        <i class="fas fa-table"></i>
+                        </a>
+                        <a href="#/" onclick = "visualizar_agenda_profissional('${elem.idProfissional}')" class = "btn bg-blue waves-effect" title = "Alocar Profissional" data-toggle = "modal" data-target = "#visualizarAgendaProfissionalModal">
+                        <i class="fa fa-calendar"></i>
+                        </a>`
         } else {
             contadorInativo++
             row += `<a href="#/" onclick = "ativar_desativar_profissional('${elem.idProfissional}','S')" class = "btn bg-success waves-effect" title = "Ativar Profissional" data-toggle = "modal" data-target = "#ativarDesativarProfissional">
-                           A
+            <i class="fas fa-check-circle"></i>
                         </a>`;
         }
         row += `                      
@@ -167,10 +170,10 @@ async function editar_profissional(idProfissional) {
                 checkedFem = 'checked="true"';
             }
 
-            let optionGenero = `<input name="nGenero" type="radio" ${checkedMasc} class="with-gap" id="iGeneroMasc" value="M"/>
-                <label for="iGeneroMasc">Masc</label>`;
-            optionGenero += `<input name="nGenero" type="radio" ${checkedFem} id="iGeneroFemi" class="with-gap" value="F"/>
-                <label for="iGeneroFemi">Femi</label>`;
+            let optionGenero = `<div class="icheck-material-teal"><input name="nGenero" type="radio" ${checkedMasc} class="with-gap" id="iGeneroMasc" value="M"/>
+                <label for="iGeneroMasc">Masc</label></div>`;
+            optionGenero += `<div class="icheck-material-teal"><input name="nGenero" type="radio" ${checkedFem} id="iGeneroFemi" class="with-gap" value="F"/>
+                <label for="iGeneroFemi">Femi</label></div>`;
             genero.innerHTML = optionGenero;
         })
         .catch((error) => console.log(error));
@@ -344,11 +347,11 @@ async function alocar_profissional(idProfissional) {
             let checkboxDiaSemana = "";
             for (let i = 2; i <= 6; i++) {
                 checkboxDiaSemana += `
-                                            <input type="checkbox" id="i${i}" class="marcarTodos" name="nDia[]"
+                <div class="icheck-material-teal icheck-inline"><input type="checkbox" id="i${i}" class="marcarTodos" name="nDia[]"
                                     value="${i}" onclick="clearMessageError('iDiasAtendimento')" /> 
                                     <label for="i${i}"> ${tratarDiaSemana(
                     i
-                )}</label>`;
+                )}</label></div>`;
             }
 
             document.querySelector("#diaSemanaDiv").innerHTML = checkboxDiaSemana;
@@ -358,12 +361,12 @@ async function alocar_profissional(idProfissional) {
             for (var m = 0; m < horariosManha.length; m++) {
                
                 checkboxHoraInicio += `
-                                            <input type="checkbox" id="m${m + 2
+                <div class="icheck-material-teal icheck-inline"><input type="checkbox" id="m${m + 2
                     }" class="marcarTodos" name="nHorarioManha[]"
                                     value="${horariosManha[m]
                     }" onclick="clearMessageError(['iHorarioManha','iMensagem'])" /> 
                                     <label for="m${m + 2}"> ${horariosManha[m]
-                    }</label>`;
+                    }</label></div>`;
             }
 
             let checkboxHoraFim = "";
@@ -372,12 +375,12 @@ async function alocar_profissional(idProfissional) {
             for (var t = 0; t < horariosTarde.length; t++) {
                
                 checkboxHoraFim += `
-                                            <input type="checkbox" id="t${t + 2
+                <div class="icheck-material-teal icheck-inline"><input type="checkbox" id="t${t + 2
                     }" class="marcarTodos" name="nHorarioTarde[]"
                                     value="${horariosTarde[t]
                     }" onclick="clearMessageError(['iHorarioTarde','iMensagem'])" /> 
                                     <label for="t${t + 2}"> ${horariosTarde[t]
-                    }</label>`;
+                    }</label></div>`;
             }
 
             document.querySelector("#horaInicioNew").innerHTML = checkboxHoraInicio;
@@ -492,7 +495,7 @@ function loadDataAlocacaoProfissional(data) {
                         data-placement= "top"
                         title = "Remover alocação"
                         onclick = remover_alocacao_profissional('${elem.idAlocacao}')>
-                            <span class="badge"> R </span> emover
+                            <i class="fa fa-trash"></>
                     </td>
                 </tr>`;
     });

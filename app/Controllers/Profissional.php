@@ -38,6 +38,7 @@ class Profissional extends BaseController
         $dados = array(
             'titulo' => 'CADASTRAR PROFISSIONAL',
             'pasta' => 'profissional',
+            'linkMenu'=> 'form_cadastrar_profissional',
             'modalidades' => $this->modelModalidade->findAll()
         );
         return view('profissional/form-cadastrar-profissional', $dados);
@@ -58,8 +59,9 @@ class Profissional extends BaseController
     public function form_editar_profissional()
     {
         $dados = [
-            'titulo' => 'EDITAR PROFISSIONAL',
+            'titulo' => 'LISTAR PROFISSIONAL',
             'pasta' => 'profissional', 
+            'linkMenu'=> 'form_editar_profissional',
             'profissionais'=> $this->modelProfissional ->getProfissionalAtivo(),
             'exibirForm' => 0
         ];

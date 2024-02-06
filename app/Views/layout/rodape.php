@@ -1,59 +1,34 @@
-
 <!-- Jquery Core Js -->
 <script src="<?php echo base_url('plugins/jquery/jquery.min.js'); ?>"></script>
 
+
 <!-- Bootstrap Core Js -->
-<script src="<?php echo base_url('plugins/bootstrap/js/bootstrap.js'); ?>"></script>
-
-<!-- Select Plugin Js -->
-<script src="<?php echo base_url('plugins/bootstrap-select/js/bootstrap-select.js'); ?>"></script>
-
-<!-- Slimscroll Plugin Js -->
-<script src="<?php //echo base_url('plugins/jquery-slimscroll/jquery.slimscroll.js'); ?>"></script>
-
-<!-- Waves Effect Plugin Js -->
-<script src="<?php echo base_url('plugins/node-waves/waves.js'); ?>"></script>
-
-<!-- Autosize Plugin Js -->
-<script src="<?php echo base_url('plugins/autosize/autosize.js'); ?>"></script>
-
-<!-- Moment Plugin Js -->
-<script src="<?php echo base_url('plugins/momentjs/moment.js'); ?>"></script>
+<script src="<?php echo base_url('plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
+<script src="<?php echo base_url('dist/js/adminlte.min.js?v=3.2.0'); ?>"></script>
 
 <!-- Bootstrap Material Datetime Picker Plugin Js -->
-<script src="<?php echo base_url('plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js'); ?>"></script>
+<script src="<?php echo base_url('plugins_original/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js'); ?>"></script>
 
 <!-- Bootstrap Datepicker Plugin Js -->
-<script src="<?php echo base_url('plugins/bootstrap-datepicker/js/bootstrap-datepicker.js'); ?>"></script>
+<script src="<?php echo base_url('plugins_original/bootstrap-datepicker/js/bootstrap-datepicker.js'); ?>"></script>
 <script src="<?php echo base_url('bootstrap-datepicker/dist/js/bootstrap-datepicker-pt-BR.js'); ?>"></script>
 
-<!-- Custom Js -->
-<script src="<?php echo base_url('js/admin.js'); ?>"></script>
-<script src="<?php echo base_url('js/pages/forms/basic-form-elements.js'); ?>"></script>
-
-<!-- Demo Js -->
-<script src="<?php //echo base_url('js/demo.js'); ?>"></script>
-
 <!-- Masc-->
-<script src="<?php echo base_url('plugins/mask/jquery.mask.min.js'); ?>"></script>
-
-<script src="<?php echo base_url('plugins/mask/jquery.maskMoney.js'); ?>"></script>
-
-
+<script src="<?php echo base_url('plugins_original/mask/jquery.mask.min.js'); ?>"></script>
+<script src="<?php echo base_url('plugins_original/mask/jquery.maskMoney.js'); ?>"></script>
 
 <!-- Jquery DataTable Plugin Js -->
-<script src="<?php echo base_url('plugins/jquery-datatable/jquery.dataTables.js'); ?>"></script>
-<script src="<?php echo base_url('plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js'); ?>"></script>
-<script src="<?php echo base_url('plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js'); ?>"></script>
-<script src="<?php echo base_url('plugins/jquery-datatable/extensions/export/buttons.flash.min.js'); ?>"></script>
-<script src="<?php echo base_url('plugins/jquery-datatable/extensions/export/jszip.min.js'); ?>"></script>
-<script src="<?php echo base_url('plugins/jquery-datatable/extensions/export/pdfmake.min.js'); ?>"></script>
-<script src="<?php echo base_url('plugins/jquery-datatable/extensions/export/vfs_fonts.js'); ?>"></script>
-<script src="<?php echo base_url('plugins/jquery-datatable/extensions/export/buttons.html5.min.js'); ?>"></script>
-<script src="<?php echo base_url('plugins/jquery-datatable/extensions/export/buttons.print.min.js'); ?>"></script>
+<script src="<?php echo base_url('plugins_original/jquery-datatable/jquery.dataTables.js'); ?>"></script>
+<script src="<?php echo base_url('plugins_original/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js'); ?>"></script>
+<script src="<?php echo base_url('plugins_original/jquery-datatable/extensions/export/dataTables.buttons.min.js'); ?>"></script>
+<script src="<?php echo base_url('plugins_original/jquery-datatable/extensions/export/buttons.flash.min.js'); ?>"></script>
+<script src="<?php echo base_url('plugins_original/jquery-datatable/extensions/export/jszip.min.js'); ?>"></script>
+<script src="<?php echo base_url('plugins_original/jquery-datatable/extensions/export/pdfmake.min.js'); ?>"></script>
+<script src="<?php echo base_url('plugins_original/jquery-datatable/extensions/export/vfs_fonts.js'); ?>"></script>
+<script src="<?php echo base_url('plugins_original/jquery-datatable/extensions/export/buttons.html5.min.js'); ?>"></script>
+<script src="<?php echo base_url('plugins_original/jquery-datatable/extensions/export/buttons.print.min.js'); ?>"></script>
 <script src="<?php echo base_url('js/pages/tables/jquery-datatable.js'); ?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
 
 <!-- Scripts -->
 <script src="<?php echo base_url('js/axios.min.js'); ?>"></script>
@@ -104,5 +79,9 @@
   });
 </script>
 
+
 </body>
 </html>
+
+
+
