@@ -39,7 +39,8 @@ class Profissional extends BaseController
             'titulo' => 'CADASTRAR PROFISSIONAL',
             'pasta' => 'profissional',
             'linkMenu'=> 'form_cadastrar_profissional',
-            'modalidades' => $this->modelModalidade->findAll()
+            'modalidades' => $this->modelModalidade->findAll(),
+            'atributos' => $this->modelProfissional->getAtributos()
         );
         return view('profissional/form-cadastrar-profissional', $dados);
     }
@@ -48,7 +49,7 @@ class Profissional extends BaseController
     {
         $dados = array(
             
-            'titulo' => 'ALOCAR HORÁRIOS',
+            'titulo' => 'Alocar Horários',
             'pasta' => 'profissional',
             //'modalidades' => $this->modelModalidade->findAll()           
             'metodo' => 'profissional/alocar_profissional',
@@ -59,11 +60,12 @@ class Profissional extends BaseController
     public function form_editar_profissional()
     {
         $dados = [
-            'titulo' => 'LISTAR PROFISSIONAL',
+            'titulo' => 'LISTAR PROFISSIONAIS',
             'pasta' => 'profissional', 
             'linkMenu'=> 'form_editar_profissional',
             'profissionais'=> $this->modelProfissional ->getProfissionalAtivo(),
-            'exibirForm' => 0
+            'exibirForm' => 0,
+            'atributos' => $this->modelProfissional->getAtributos()
         ];
         return view('profissional/form-editar-profissional', $dados);
     }

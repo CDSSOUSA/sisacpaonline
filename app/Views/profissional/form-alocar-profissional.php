@@ -31,3 +31,6 @@ echo $this->section('content');
 </section>
 
 <?= $this->endSection(); ?>
+<?= $this->section('script-js'); ?>
+<script src="<?= base_url() ?>js/profissional.js"></script>
+<?= $this->endSection(); ?>

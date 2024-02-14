@@ -45,6 +45,7 @@ class Login extends BaseController
                 //redirect('dashboard/'.date('Y'));
             }
         }
-        return view('login', $data);
+        return view('auth/login', $data);
+        //return view('atendimento/listar-atendimento', $dados);
     }
 }

@@ -1,144 +1,422 @@
-
 <?= view("layout/cabecalho"); ?>
-
-<body class="hold-transition sidebar-mini layout-fixed">
-<!-- Site wrapper -->
-<div class="wrapper">
-
-<?= view("layout/menu"); ?>
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="../../index3.html" class="brand-link">
-      <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
-    </a>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">        
-          <img src="<?php echo base_url('img/' . (session()->get('fotoPerfil') ?: 'foto-perfil.png')); ?>" class="img-circle elevation-2" width="48" height="48" alt="User" />
-        </div>
-        <div class="info">
-          <a href="#" class="d-block"><?=word_limiter(session()->get('nome'),1,''); ?></a>
-          
-        </div>
-      </div>
-
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-               <li class="nav-header">MENU PRINCIPAL</li>
-               <li class="nav-item">          
-                <?php echo anchor('form_alterar_senha_usuario/' . session()->get('idOperadorSistema'), '<i class="nav-icon fas fa-th"></i><p>ALTERAR SENHA<span class="right badge badge-danger">New</span></p>', array('class' => 'nav-link')); ?>
-                </li>
-                <li role="separator" class="divider"></li>
-
-                <?php foreach(session()->get('menu')as $menus):?>
-                <li class="nav-item <?php echo ($pasta == mb_strtolower(tratarPalavras($menus->descricao))) ? 'menu-open' : ''; ?>">
-                            <a href="#" class="nav-link <?php echo ($pasta == mb_strtolower(tratarPalavras($menus->descricao))) ? 'active' : ''; ?>">
-                                <i class="nav-icon <?php echo $menus->icone; ?>"></i>
-                                <p>
-                                    <?php echo $menus->descricao; ?>
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
+<body class="">
+	<!-- [ Pre-loader ] start -->
+	<div class="loader-bg">
+		<div class="loader-track">
+			<div class="loader-fill"></div>
+		</div>
+	</div>
+	<!-- [ Pre-loader ] End -->
+	<!-- [ navigation menu ] start -->
+	<nav class="pcoded-navbar  ">
+		<div class="navbar-wrapper  ">
+			<div class="navbar-content scroll-div " >
+				
+				<div class="">
+					<div class="main-menu-header">
+						<img class="img-radius" src="<?=base_url()?><?=base_url()?>assets/images/user/avatar-2.jpg" alt="User-Profile-Image">
+						<div class="user-details">
+							<span>John Doe</span>
+							<div id="more-details">UX Designer<i class="fa fa-chevron-down m-l-5"></i></div>
+						</div>
+					</div>
+					<div class="collapse" id="nav-user-link">
+						<ul class="list-unstyled">
+							<li class="list-group-item"><a href="user-profile.html"><i class="feather icon-user m-r-5"></i>View Profile</a></li>
+							<li class="list-group-item"><a href="#!"><i class="feather icon-settings m-r-5"></i>Settings</a></li>
+							<li class="list-group-item"><a href="auth-normal-sign-in.html"><i class="feather icon-log-out m-r-5"></i>Logout</a></li>
+						</ul>
+					</div>
+				</div>
+				
+				<ul class="nav pcoded-inner-navbar ">
+					<li class="nav-item pcoded-menu-caption">
+						<label>Menu principal</label>
+					</li>
+                  
+                   
+					<li class="nav-item">
+                        <?php echo anchor('form_alterar_senha_usuario/' . session()->get('idOperadorSistema'), 
+                            '<span class="pcoded-micon">
+                                <i class="feather icon-home"></i>
+                            </span>
+                            <span class="pcoded-mtext">
+                                    Alterar Senha
+                            </span>', 
+                        ['class' => 'nav-link']); ?>                   
+					</li>
+                    <?php foreach (session()->get('menu')as $menus):?>
+                    
+                        <li class="<?php echo ($pasta == mb_strtolower(tratarPalavras($menus->descricao))) ? 'active' : ''; ?> nav-item pcoded-hasmenu">
+                            <a href="javascript:void(0);" class="nav-link" data-toggle="dropdown">
+                                <span class="pcoded-micon"><i class="feather icon-layout"></i></span>
+                                <span class="pcoded-mtext"><?php echo $menus->descricao; ?></span></span>
                             </a>
-                            <ul class="nav nav-treeview">
-
-                            <?php
-                                $itemMenu = session()->get('itemMenu');
-                            
+                            <ul class="pcoded-submenu">
+                                <?php
+                                $itemMenu = session()->get('itemMenu');                           
 
                                 foreach ($itemMenu  as $item) {
                                     //echo $item->possuiSubMenu;
                                     if ($item->idMenu == $menus->idMenu) {
                                         if ($item->possuiSubMenu == 'S') {
-                                            echo '<li class="nav-item">' . anchor($menus->link.'/'.$item->link, '<i class="far fa-circle nav-icon"></i><p>' . $item->nomeMenu . '</p>', array('target' => '_blank', 'class'=>'nav-link'. $item->link == 'form_cadastrar_profissional' ? 'active' : "")).'</li>';
+                                            echo '<li>' . anchor($menus->link.'/'.$item->link, $item->nomeMenu, array('target' => '_blank')) . '</li>';
                                         } else {
-                                            echo '<li class="nav-item">' . anchor($menus->link.'/'.$item->link, '<i class="far fa-circle nav-icon"></i><p>' . $item->nomeMenu . '</p>',["class"=> $linkMenu == $item->link ? 'nav-link active' : "nav-link"]) . '</li>';
+                                            echo '<li>' . anchor($menus->link.'/'.$item->link,$item->nomeMenu) . '</li>';
                                         }
                                     }
                                 }
                                 ?>
-                                
+
                             </ul>
-            <?php endforeach;?>
+                        </li>
+                    <?php endforeach?>
 
-            <li class="nav-item">
+                    <li class="nav-item pcoded-hasmenu">
+                        <a href="javascript:void(0);" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-layout"></i></span>
+                            <span class="pcoded-mtext">RELATÓRIOS</span></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="nav-item pcoded-hasmenu">
+                                <a href="javascript:void(0);" class="nav-link">                                    
+                                    <span>USUÁRIO</span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <?php echo '<li>' . anchor('rel_usuario_faixa_etaria', '<span> Faixa-etária </span>') . '</li>'; ?>
+                                    <?php echo '<li>' . anchor('rel_dados_usuario_filiacao', '<span> Filiação </span>') . '</li>'; ?>
+                                    <?php echo '<li>' . anchor('imprimir_usuario_genero', '<span> Gênero </span>', array('target' => '_blank')) . '</li>'; ?>
+                                    <?php echo '<li>' . anchor('imprimir_usuario_telefone', '<span> Telefone </span>', array('target' => '_blank')) . '</li>'; ?>
+                                    <?php echo '<li>' . anchor('rel_usuario_matriculado', '<span> Matriculados <span style=color:red> [Ativos]</span>' . '</span>') . '</li>'; ?>
+                                    <?php echo '<li>' . anchor('rel_usuario_desligado', '<span> Desligados <span style=color:red> [Inativos]</span>' . '</span>') . '</li>'; ?>
+                                    <?php echo '<li>' . anchor('rel_usuario_cidade', '<span> Cidade </span>').'</li>'; ?>
+                                    <?php echo '<li>' . anchor('imprimir_usuario_completo/ativos', '<span> Completo </span>', array('target' => '_blank')) . '</li>'; ?>
+                                </ul>
+                            </li>
+                            
+                            <li class="nav-item pcoded-hasmenu">
+                                <a href="javascript:void(0);" class="nav-link">                                    
+                                    <span>ATENDIMENTOS</span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <?php echo '<li>' . anchor('imprimir_atendimento_modalidade', '<span>' . 'Modalidade' . '</span>', array('target' => '_blank')) . '</li>'; ?>
+                                    <?php echo '<li>' . anchor('imprimir_atendimento_dia_semana', '<span>' . 'Dia semana' . '</span>', array('target' => '_blank')) . '</li>'; ?>
+                                    <?php echo '<li>' . anchor('imprimir_atendimento_profissional', '<span>' . 'Profissional' . '</span>', array('target' => '_blank')) . '</li>'; ?>
+                                    <?php echo '<li>' . anchor('rel_atendimento_periodo', '<span>' . 'Período' . '</span>') . '</li>'; ?>
+                                   
+                                    <li class="nav-item pcoded-hasmen">
+                                        <a href="#!" class="nav-link">                                           
+                                            <span>Agendados</span>
+                                        </a>
+                                        <ul class="pcoded-submenu">
+                                            <?php
+                                            for ($i = 2; $i <= 6; $i++) {
+                                                echo '<li>' . anchor('imprimir_atendimento_dia_previsao/' . $i, '<span>' . tratarDiaSemana($i) . '</span>', array('target' => '_blank')) . '</li>';
+                                            }
+                                            ?>
+                                        </ul>
+                                    </li>
+                                </ul>
 
-            <?php echo anchor('dashboard/' . date('Y'), '<i class="nav-icon fas fa-tachometer-alt"></i><p>DASHBOARDS</p>', array('class' => 'nav-link')); ?>
-            <?php echo anchor('logout/', '<i class="nav-icon fas fa-tachometer-alt"></i><p>SAIR</p>', array('class' => 'nav-link')); ?>
-                
+                            </li>
+                            <li class="nav-item pcoded-hasmenu">
+                                <a href="javascript:void(0);" class="nav-link">                                   
+                                    <span>EVOLUÇÃO</span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <?php echo '<li>' . anchor('rel_dados_estatistica_evolucao', '<span>' . 'Estatística' . '</span>', array('target' => '_blank')) . '</li>'; ?>
+                                 </ul>
+                            </li>
+                            <li class="nav-item pcoded-hasmenu">
+                            <a href="javascript:void(0);" class="nav-link">                               
+                                    <span>MODALIDADE</span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <?php echo '<li>' . anchor('rel_modalidade_periodo', ' <span> Período </span>') . '</li>'; ?>
+                                </ul>
+                            </li>
 
-                         </li>
+                            <li class="nav-item pcoded-hasmenu">
+                                <a href="javascript:void(0);" class="nav-link">                                   
+                                        <span>PROFISSIONAL</span>
+                                    </a>
+                                <ul class="pcoded-submenu">
 
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="../../index.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v1</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../../index2.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v2</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../../index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
-                </a>
-              </li>
-            </ul>
-          </li>      
-        
-          
-         
-          
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
+                                        <li class="nav-item pcoded-hasmenu">
+                                            <a href="javascript:void(0);" class="nav-link">                                               
+                                                <span>Desempenho</span>
+                                            </a>
+                                            <ul class="pcoded-submenu">
+                                                <?php
+                                                for ($i = 1; $i <= date('m'); $i++) {
+                                                    echo '<li>' . anchor('imprimir_desempenho_profissional_mes/' . $i . '/' . date('Y'), '<span>' . tratarMes($i) . '/' . date('Y') . '</span>', array('target' => '_blank')) . '</li>';
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
+                                </ul>
+                            </li>
+
+                            <?php echo '
+                            <li>' . anchor('imprimir_cidades_atendidas/ativos', '<span>CIDADES ATENDIDAS</span>', array('target' => '_blank')) . '</li>' ?>
+                            <?php echo '
+                            <li>' . anchor('imprimir_tipo_escola/ativos', '<span>TIPO ESCOLA</span>', array('target' => '_blank')) . '</li>' ?>
+
+
+                        </ul>
+                    </li>                   
+
+                    <li>
+
+                        <?php echo anchor('dashboard/' . date('Y'), '
+                            <span class="pcoded-micon">
+                                <i class="feather icon-home"></i>
+                            </span>
+                            <span class="pcoded-mtext">
+                                  Dashboard
+                            </span>', array('class' => 'nav-item')); ?>
+                    </li>
+                    <li>
+                        <?php echo anchor('logout', '
+                                <span class="pcoded-micon">
+                                    <i class="feather icon-home"></i>
+                                </span>
+                                <span class="pcoded-mtext">
+                                    Sair
+                                </span>', array('class' => 'nav-item')); ?>                      
+
+                    </li>
+				</ul>			
+				
+			</div>
+		</div>
+	</nav>
+	<!-- [ navigation menu ] end -->
+	<!-- [ Header ] start -->
+	<header class="navbar pcoded-header navbar-expand-lg navbar-light header-dark">
+		
+			
+				<div class="m-header">
+					<a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
+					<a href="#!" class="b-brand">
+						<!-- ========   change your logo hear   ============ -->
+						<img src="<?=base_url()?>assets/images/logo.png" alt="" class="logo">
+						<img src="<?=base_url()?>assets/images/logo-icon.png" alt="" class="logo-thumb">
+					</a>
+					<a href="#!" class="mob-toggler">
+						<i class="feather icon-more-vertical"></i>
+					</a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item">
+							<a href="#!" class="pop-search"><i class="feather icon-search"></i></a>
+							<div class="search-bar">
+								<input type="text" class="form-control border-0 shadow-none" placeholder="Search hear">
+								<button type="button" class="close" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+						</li>
+						<li class="nav-item">
+							<div class="dropdown">
+								<a class="dropdown-toggle h-drop" href="#" data-toggle="dropdown">
+									Dropdown
+								</a>
+								<div class="dropdown-menu profile-notification ">
+									<ul class="pro-body">
+										<li><a href="user-profile.html" class="dropdown-item"><i class="fas fa-circle"></i> Profile</a></li>
+										<li><a href="email_inbox.html" class="dropdown-item"><i class="fas fa-circle"></i> My Messages</a></li>
+										<li><a href="auth-signin.html" class="dropdown-item"><i class="fas fa-circle"></i> Lock Screen</a></li>
+									</ul>
+								</div>
+							</div>
+						</li>
+						<li class="nav-item">
+							<div class="dropdown mega-menu">
+								<a class="dropdown-toggle h-drop" href="#" data-toggle="dropdown">
+									Mega
+								</a>
+								<div class="dropdown-menu profile-notification ">
+									<div class="row no-gutters">
+										<div class="col">
+											<h6 class="mega-title">UI Element</h6>
+											<ul class="pro-body">
+												<li><a href="#!" class="dropdown-item"><i class="fas fa-circle"></i> Alert</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="fas fa-circle"></i> Button</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="fas fa-circle"></i> Badges</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="fas fa-circle"></i> Cards</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="fas fa-circle"></i> Modal</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="fas fa-circle"></i> Tabs & pills</a></li>
+											</ul>
+										</div>
+										<div class="col">
+											<h6 class="mega-title">Forms</h6>
+											<ul class="pro-body">
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-minus"></i> Elements</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-minus"></i> Validation</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-minus"></i> Masking</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-minus"></i> Wizard</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-minus"></i> Picker</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-minus"></i> Select</a></li>
+											</ul>
+										</div>
+										<div class="col">
+											<h6 class="mega-title">Application</h6>
+											<ul class="pro-body">
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-mail"></i> Email</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-clipboard"></i> Task</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-check-square"></i> To-Do</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-image"></i> Gallery</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-help-circle"></i> Helpdesk</a></li>
+											</ul>
+										</div>
+										<div class="col">
+											<h6 class="mega-title">Extension</h6>
+											<ul class="pro-body">
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-file-plus"></i> Editor</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-file-minus"></i> Invoice</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-calendar"></i> Full calendar</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-upload-cloud"></i> File upload</a></li>
+												<li><a href="#!" class="dropdown-item"><i class="feather icon-scissors"></i> Image cropper</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+					<ul class="navbar-nav ml-auto">
+						<li>
+							<div class="dropdown">
+								<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+									<i class="icon feather icon-bell"></i>
+									<span class="badge badge-pill badge-danger">5</span>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right notification">
+									<div class="noti-head">
+										<h6 class="d-inline-block m-b-0">Notifications</h6>
+										<div class="float-right">
+											<a href="#!" class="m-r-10">mark as read</a>
+											<a href="#!">clear all</a>
+										</div>
+									</div>
+									<ul class="noti-body">
+										<li class="n-title">
+											<p class="m-b-0">NEW</p>
+										</li>
+										<li class="notification">
+											<div class="media">
+												<img class="img-radius" src="<?=base_url()?>assets/images/user/avatar-1.jpg" alt="Generic placeholder image">
+												<div class="media-body">
+													<p><strong>John Doe</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>5 min</span></p>
+													<p>New ticket Added</p>
+												</div>
+											</div>
+										</li>
+										<li class="n-title">
+											<p class="m-b-0">EARLIER</p>
+										</li>
+										<li class="notification">
+											<div class="media">
+												<img class="img-radius" src="<?=base_url()?>assets/images/user/avatar-2.jpg" alt="Generic placeholder image">
+												<div class="media-body">
+													<p><strong>Joseph William</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>10 min</span></p>
+													<p>Prchace New Theme and make payment</p>
+												</div>
+											</div>
+										</li>
+										<li class="notification">
+											<div class="media">
+												<img class="img-radius" src="<?=base_url()?>assets/images/user/avatar-1.jpg" alt="Generic placeholder image">
+												<div class="media-body">
+													<p><strong>Sara Soudein</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>12 min</span></p>
+													<p>currently login</p>
+												</div>
+											</div>
+										</li>
+										<li class="notification">
+											<div class="media">
+												<img class="img-radius" src="<?=base_url()?>assets/images/user/avatar-2.jpg" alt="Generic placeholder image">
+												<div class="media-body">
+													<p><strong>Joseph William</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span></p>
+													<p>Prchace New Theme and make payment</p>
+												</div>
+											</div>
+										</li>
+									</ul>
+									<div class="noti-footer">
+										<a href="#!">show all</a>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="dropdown drp-user">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									<i class="feather icon-user"></i>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right profile-notification">
+									<div class="pro-head">
+										<img src="<?=base_url()?>assets/images/user/avatar-1.jpg" class="img-radius" alt="User-Profile-Image">
+										<span>John Doe</span>
+										<a href="auth-signin.html" class="dud-logout" title="Logout">
+											<i class="feather icon-log-out"></i>
+										</a>
+									</div>
+									<ul class="pro-body">
+										<li><a href="user-profile.html" class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
+										<li><a href="email_inbox.html" class="dropdown-item"><i class="feather icon-mail"></i> My Messages</a></li>
+										<li><a href="auth-signin.html" class="dropdown-item"><i class="feather icon-lock"></i> Lock Screen</a></li>
+									</ul>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				
+			
+	</header>
+	<!-- [ Header ] end -->
+	
+	
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+    <div class="pcoded-content">
+       
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            <!-- [ sample-page ] start -->
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><?=$titulo?></h5>
+                        <p class="text-muted mb-1">* campos de preeechimento obrigátorio!</p>
+                        <div class="card-header-right">
+                            <div class="btn-group card-option">
+                                <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="feather icon-more-horizontal"></i>
+                                </button>
+                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+                                    <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+                                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> reload</a></li>
+                                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                    <?= $this->renderSection('content');?>  
+                    </div>
+                </div>
+            </div>
+            <!-- [ sample-page ] end -->
+        </div>
+        <!-- [ Main Content ] end -->
     </div>
-    <!-- /.sidebar -->
-  </aside>
-
-
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-
-  <?=$this->renderSection('content');?>
-  </div>
-  <!-- /.content-wrapper -->
-
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
 
 
 <?= view("layout/rodape"); ?>

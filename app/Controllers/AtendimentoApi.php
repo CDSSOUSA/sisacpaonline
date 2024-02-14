@@ -201,4 +201,37 @@ class AtendimentoApi extends ResourceController
             return $this->failServerError($e->getMessage());
         }
     }
+
+    public function getAgendaProfissionalAlocada($dia, $idProfissinal, $horaInicio){
+
+        helper('utils');
+        //$idProfissinal = $this->request->getPost('nIdProfissional');
+        $id = decrypt($idProfissinal);
+        $datas = [];
+        $modelAtendimento = new AtendimentoModel();
+        try {
+
+            $data = $modelAtendimento->getAtendimentosDiaAgendadoProfissional($dia,$id,$horaInicio);
+
+            
+            if($data){
+                $datas = [
+                    'cns'=>$data[0]->cnsUsuario,
+                    'idUsuario'=> $data[0]->idUsuario,
+                    'nomeUsuario'=> $data[0]->nomeUsuario,
+                    'dataNasc' => converteParaDataBrasileira($data[0]->dataNascimento),
+                    'idade'=> calcAge($data[0]->dataNascimento),
+                    'cpf'=> $data[0]->cpfUsuario,                
+    
+                ];
+            }
+          
+            //var_dump($datas);
+            //exit;
+            return $this->response->setJSON($datas);
+        } catch (Exception $e) {
+            return $this->failServerError($e->getMessage());
+        }
+
+    }
 }

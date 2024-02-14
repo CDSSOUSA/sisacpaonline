@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class PessoaModel extends Model
+class PessoaModel extends MyModel
 {
     protected $DBGroup          = 'default';
     protected $table            = 'tb_pessoa';

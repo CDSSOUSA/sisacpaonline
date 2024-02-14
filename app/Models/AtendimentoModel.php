@@ -223,4 +223,27 @@ class AtendimentoModel extends Model
             return false;
         }
     }
+
+    public function getAtendimentosDiaAgendadoProfissional($dia, $idProfissional, $horaInicio)
+    {
+
+        return $this->select('u.cnsUsuario, 
+                                tb_atendimento.idUsuario, 
+                                tb_atendimento.nomeUsuario, 
+                                tb_atendimento.nomeProfissional,
+                                tb_atendimento.horaInicio,
+                                tb_atendimento.modalidade,
+                                tb_atendimento.horaFim, 
+                                tb_atendimento.diaSemana, 
+                                u.dataNascimento, 
+                                u.cpfUsuario')
+            //->from('tb_atendimento a')
+            ->join('tb_usuario u', 'u.idUsuario = tb_atendimento.idUsuario')
+            ->where('tb_atendimento.diaSemana', $dia)
+            ->where('tb_atendimento.idProfissional', $idProfissional)
+            ->where('tb_atendimento.horaInicio', $horaInicio)
+            ->where('tb_atendimento.ativo', 'S')
+            ->orderBy('tb_atendimento.horaInicio', 'ASC')
+            ->get()->getResult();
+    }
 }

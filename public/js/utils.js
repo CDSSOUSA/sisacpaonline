@@ -14,6 +14,8 @@
         var keys = Object.keys(obj);       
 
         var optionElement = document.createElement("option");
+        console.log('valor array',data[i][keys[1]])
+        console.log('atributo', atributo)
         if (data[i][keys[1]] === atributo) {
             optionElement.selected = true;
         }
@@ -64,6 +66,23 @@ const validateErros = (errors, locale) => {
     return r;
 }
 
+const validateErrosInput = (errors, locale) => {
+    let r = document.querySelector(`#${locale}`)
+    if(errors) {
+        r.classList.add('required')
+    }
+}
+
+const clearInputSelectError = (option) => {
+    if (typeof option == 'string') {
+        document.getElementById(option).classList.remove('required')
+    } else {
+        option.forEach((e) => {
+            document.getElementById(e).classList.remove('required')
+        })
+    } 
+}
+
 const clearMessageError = (option) => {
 
     if (typeof option == 'string') {
@@ -82,6 +101,8 @@ function showAlertToast(status, message) {
         text = message
     }
 
+    console.log('status',status)
+
     toastr.options = {
       closeButton: true, // Exibir botão de fechar
       positionClass: 'toast-top-right',
@@ -92,7 +113,7 @@ function showAlertToast(status, message) {
     if (status) {
       toastr.success(`<b>Parabéns!Operação realizada com sucesso!</b><br>${text}`);
     } else {
-      toastr.error(`<b>Ops! ${message}</b>`);
+      toastr.error(`<b>Ops! ${text}</b>`);
     }
   
 }

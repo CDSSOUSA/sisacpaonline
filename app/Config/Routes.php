@@ -89,6 +89,7 @@ $routes->group('/usuario', ['namespace'=>'App\Controllers','filter'=>'authFilter
 $routes->group('/api/atendimento', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
     $routes->get('getDataAtendimento/(:any)','AtendimentoApi::getDataAtendimento/$1');
     $routes->get('listarAtendimentos/(:any)','AtendimentoApi::listarAtendimentos/$1');
+    $routes->get('getAgendaProfissionalAlocada/(:any)/(:any)/(:any)','AtendimentoApi::getAgendaProfissionalAlocada/$1/$2/$3');
     
     $routes->post('confirmaPresencaUsuarioHorario','AtendimentoApi::confirmaPresencaUsuarioHorario');
 
@@ -165,9 +166,11 @@ $routes->group('/api/profissional', ['namespace'=>'App\Controllers','filter'=>'a
     $routes->get('listarProfissional','ProfissionalApi::listarProfissional');  
     $routes->get('getDataProfissional/(:any)','ProfissionalApi::getDataProfissional/$1');  
     $routes->get('getAlocacaoProfissional/(:any)','ProfissionalApi::getAlocacaoProfissional/$1');  
+    $routes->get('getAlocacaoDia/(:any)/(:any)','ProfissionalApi::getAlocacaoDia/$1/$2');  
     $routes->post('edita_profissional','ProfissionalApi::editaProfissional');  
     $routes->post('ativa_desativa_profissional','ProfissionalApi::ativaDesativaProfissional');  
     $routes->post('aloca_profissional','ProfissionalApi::alocaProfissional');  
+    $routes->post('cadastrar_profissional','ProfissionalApi::cadastrarProfissional');  
 
 });
 

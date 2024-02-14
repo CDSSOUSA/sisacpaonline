@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use Exception;
 
 class ProfissionalModel extends Model
 {
     protected $DBGroup = 'default';
     protected $table = 'tb_profissional';
-    protected $primaryKey = 'idProfissional';
+    protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
     protected $returnType = 'object';
     protected $useSoftDeletes = false;
@@ -16,21 +17,14 @@ class ProfissionalModel extends Model
     protected $allowedFields = [];
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
     protected $deletedField = 'deleted_at';
 
     // Validation
-    protected $validationRules = [
-        'nNomeProfissional' => 'required|min_length[3]',
-        'nGenero' => 'required',
-        'nCpfProfissional' => 'required|validateCpf|is_unique[tb_profissional.cpfProfissional, idProfissional,{idProfissional}]',
-        'nCnsProfissional' => 'required|valid_cns|is_unique[tb_profissional.cnsProfissional, idProfissional,{idProfissional}]',
-        'nTipoProfissional' => 'required',
-        'nModalidade' => 'required'
-    ];
+    protected $validationRules = [];
     protected $validationMessages = [];
     protected $skipValidation = false;
     protected $cleanValidationRules = true;
@@ -54,6 +48,55 @@ class ProfissionalModel extends Model
         $colunas = $db->getFieldNames($this->table);
 
         $this->allowedFields = $colunas;
+
+    }
+
+    public function getAtributos()
+    {
+        return [
+            'nome' => [
+                'id' => 'iProfissional',
+                'name' => 'nNomeProfissional',
+                'label' => 'Nome Completo: *',
+                'iError' => 'iErrorNomeProfissional'
+            ],
+            'cpfProfissional' => [
+                'id' => 'iCpfProfissional',
+                'name' => 'nCpfProfissional',
+                'label' => 'Cpf Profissional: *',
+                'iError' => 'iErrorCpfProfissional'
+            ],
+            'genero' => [
+                'id' => 'iGenero',
+                'name' => 'nGenero',
+                'label' => 'Gênero: *',
+                'iError' => 'iErrorGenero'
+            ],
+            'cnsProfissional' => [
+                'id' => 'iCnsProfissional',
+                'name' => 'nCnsProfissional',
+                'label' => 'Cns Profissional: *',
+                'iError' => 'iErrorCnsProfissional'
+            ],
+            'tipoProfissional' => [
+                'id' => 'iTipoProfissional',
+                'name' => 'nTipoProfissional',
+                'label' => 'Tipo profissional: *',
+                'iError' => 'iErrorTipoProfissional'
+            ],
+            'modalidade' => [
+                'id' => 'iModalidade',
+                'name' => 'nModalidade',
+                'label' => 'Modalidade: *',
+                'iError' => 'iErrorModalidade'
+            ],
+            'numClasse' => [
+                'id' => 'iNumConselho',
+                'name' => 'nConselhoClasse',
+                'label' => 'Núm. Cons. Classe',
+                'iError' => 'iErrorConselho'
+            ]
+        ];
     }
 
     public function getProfissionalAtivo()
@@ -62,12 +105,10 @@ class ProfissionalModel extends Model
             ->get()->getResult();
     }
 
-    public function saveProfissional($dados)
+    public function savePessoa($dados)
     {
-
+        var_dump('entrei para salvar');
         try {
-            $this->db->transBegin();
-
             $dado['nome'] = $dados['nomeProfissional'];
             $dado['ativo'] = 'S';
             $dado['cpf'] = $dados['cpfProfissional'];
@@ -76,40 +117,54 @@ class ProfissionalModel extends Model
             $dado['tipoOperador'] = 'P';
 
             $pessoa = new PessoaModel();
-            $pessoa->save($dado);
+            $salvarPessoa = $pessoa->save($dado);
+            $salvarPessoa = true;
 
-
-            $ultimaPessoa = $pessoa->getLastPessoa();
-            $idProfissional = $ultimaPessoa->idPessoa;
-            $dados['idProfissional'] = $idProfissional;
-            $this->insert($dados);
-
-
-            if ($this->db->transStatus()) {
-                $this->db->transCommit();
+            if ($salvarPessoa) {
                 return true;
             }
-            $this->db->transRollback();
 
+        } catch (Exception $e) {
+            echo 'Erro: ' . $e->getMessage();
             return false;
-        } catch (\Exception $e) {
+        }
+    }
+
+    public function saveProfissional($dados)
+    {
+
+        try {
+           
+            $result = $this->savePessoa($dados);
+
+            if ($result) {
+                $modelPessoa = new PessoaModel;
+                $ultimaPessoa = $modelPessoa->getLastPessoa();
+                $idProfissional = $ultimaPessoa->idPessoa;
+
+                $dadosProf['idProfissional'] = $idProfissional;                
+                $dadosProf['nomeProfissional'] = $dados['nomeProfissional'];
+                $dadosProf['cpfProfissional'] = $dados['cpfProfissional'];
+                $dadosProf['cnsProfissional'] = $dados['cnsProfissional'];
+                $dadosProf['genero'] = $dados['genero'];
+                $dadosProf['operadorAtivo'] = $dados['operadorAtivo'];
+                $dadosProf['tipoProfissional'] = $dados['tipoProfissional'];
+                $dadosProf['numeralConselhoClasse'] = $dados['numeralConselhoClasse'];
+                $dadosProf['modalidade'] = $dados['modalidade'];
+                //$dados['idProfissional'] = $idProfissional;
+                $salvarProfissional = $this->save($dadosProf);
+
+                if($salvarProfissional){
+                    return true;
+                }               
+            }
+            return false;
+        } catch (Exception $e) {
             echo 'Erro: ' . $e->getMessage();
             // Fazer o rollback da transação em caso de erro
             $this->db->transRollback();
             return false;
         }
-
-        // $dadosProf['idProfissional'] = $idProfissional;
-        // $dadosProf['nomeProfissional'] = $dados['nomeProfissional'];
-        // $dadosProf['cpfProfissional'] = $dados['cpfProfissional'];
-        // $dadosProf['genero'] = $dados['genero'];
-        // $dadosProf['operadorAtivo'] = $dados['operadorAtivo'];
-        // $dadosProf['tipoProfissional'] = $dados['tipoProfissional'];
-        // $dadosProf['numeralConselhoClasse'] = $dados['numeralConselhoClasse'];
-        // $dadosProf['modalidade'] = $dados['modalidade'];
-
-        //$this->db->insert('tb_profissional', $dadosProf);
-
 
     }
 
@@ -118,10 +173,15 @@ class ProfissionalModel extends Model
         try {
             $this->db->transBegin();
 
+            var_dump($dados);
+
             $dado['idProfissional'] = $dados['idProfissional'];
+            $dado['id'] = $dados['id'];
             $dado['ativo'] = $dados['ativo'];
             $dado['operadorAtivo'] = $dados['operadorAtivo'];
+            $dado['updated_at'] = date('Y-m-d H:i:s');
             $this->save($dado);
+
 
 
             $pessoa = new PessoaModel;
@@ -134,12 +194,12 @@ class ProfissionalModel extends Model
                 $modelAlocacao = new AlocacaoModel;
 
                 $dataAlocacao = [
-                    'ativo' => $dados['ativo'],  
-                    'updated_at' => date('Y-m-d H:i:s')             
+                    'ativo' => $dados['ativo'],
+                    'updated_at' => date('Y-m-d H:i:s')
                 ];
-            
+
                 $modelAlocacao->where([
-                    'idProfissional'=> $dados['idProfissional'],
+                    'idProfissional' => $dados['idProfissional'],
                     'ativo' => 'S'
                 ]);
                 $modelAlocacao->builder->update($dataAlocacao);
@@ -202,7 +262,7 @@ class ProfissionalModel extends Model
             $this->db->transBegin();
 
             $diaSemana = $dados['diaSemana'];
-            $horarios = $dados['horarios']; 
+            $horarios = $dados['horarios'];
 
             foreach ($diaSemana as $d) {
                 $dadoAlocacao['diaSemana'] = $d;
@@ -221,7 +281,7 @@ class ProfissionalModel extends Model
                         $dadoAlocacao['horaInicio']
                     );
 
-                    $qtdeUpdate++;  
+                    $qtdeUpdate++;
 
                     if (!$duplicidade) {
                         //$this->session->set_flashdata('erro', 'ERRO, horário duplicado.');
@@ -230,7 +290,7 @@ class ProfissionalModel extends Model
                         $modelAlocacao->save($dadoAlocacao);
                         $qtdeInsert++;
                         $qtdeUpdate--;
-                    } 
+                    }
                 }
 
             }
@@ -240,9 +300,9 @@ class ProfissionalModel extends Model
             if ($this->db->transStatus()) {
                 $this->db->transCommit();
                 return [
-                    'status'=> true,
-                    'insert'=> $qtdeInsert,
-                    'update'=> $qtdeUpdate
+                    'status' => true,
+                    'insert' => $qtdeInsert,
+                    'update' => $qtdeUpdate
                 ];
             }
             $this->db->transRollback();
@@ -251,7 +311,7 @@ class ProfissionalModel extends Model
 
         } catch (\Exception $e) {
             echo 'Erro: ' . $e->getMessage();
-            
+
             // Fazer o rollback da transação em caso de erro
             $this->db->transRollback();
             return false;
@@ -296,6 +356,12 @@ class ProfissionalModel extends Model
 
         }*/
 
+    }
+
+    public function getDataProfissional($id)
+    {
+        return $this->where('idProfissional',$id) 
+          ->get()->getResult();
     }
 
 }

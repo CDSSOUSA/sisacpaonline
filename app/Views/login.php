@@ -114,7 +114,7 @@
                 <div class="input-group">
                 
                 <span  class="input-group-daddon">
-                        <i id="iv" class="glyphicon glyphicon-eye-close"></i>                       
+                        <i id="iv" class="fa fa-envelope"></i>                       
                     </span>
                     <?php //nbs(3);?>
                     <span id="mostraSenha" onclick="myFunction()">Mostrar senha</span>               
