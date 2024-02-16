@@ -51,8 +51,27 @@ class ModalidadeModel extends Model
 
     public function getDataModalidade()
     {
-        return $this->select('idModalidade, nomeModalidade')
+        return $this->select('*')
             ->where('ativo','S')
             ->findAll();
+    }
+
+    public function getAtributos()
+    {
+        return [
+            'descricao' => [
+                'id' => 'iDescricao',
+                'name' => 'nDescricaoModalidade',
+                'label' => 'Descrição: *',
+                'iError' => 'iErrorDescricao'
+            ],
+            'cbo' => [
+                'id' => 'iCbo',
+                'name' => 'nCbo',
+                'label' => 'CBO: *',
+                'iError' => 'iErrorCbo'
+            ],
+            
+        ];
     }
 }

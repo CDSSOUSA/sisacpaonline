@@ -161,6 +161,10 @@ $routes->group('/profissional', ['namespace'=>'App\Controllers','filter'=>'authF
     $routes->get('alocar_profissional','Profissional::alocar_profissional');
     $routes->get('form_editar_profissional','Profissional::form_editar_profissional');
 });
+$routes->group('/modalidade', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
+    $routes->get('form_cadastrar_modalidade','Modalidade::form_cadastrar_modalidade'); 
+    $routes->get('form_editar_modalidade','Modalidade::form_editar_modalidade');
+});
 
 $routes->group('/api/profissional', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
     $routes->get('listarProfissional','ProfissionalApi::listarProfissional');  
@@ -176,6 +180,10 @@ $routes->group('/api/profissional', ['namespace'=>'App\Controllers','filter'=>'a
 
 $routes->group('/api/modalidade', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
     $routes->get('getDataModalidade','ModalidadeApi::getDataModalidade'); 
+    $routes->post('cadastrar_modalidade','ModalidadeApi::cadastrarModalidade'); 
+    $routes->get('listarModalidade','ModalidadeApi::listarModalidade');  
+    
+    
 });
 
 $routes->group('/api/alocacao', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {

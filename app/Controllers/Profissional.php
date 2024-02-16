@@ -58,19 +58,14 @@ class Profissional extends BaseController
         return view('profissional/form-pesquisar-profissional', $dados);
     }
     public function form_editar_profissional()
-    {
-        helper('security');
-
-        // Agora você pode usar os métodos do helper security
-        $csrfToken = csrf_hash();
+    {          
         $dados = [
             'titulo' => 'LISTAR PROFISSIONAIS',
             'pasta' => 'profissional', 
             'linkMenu'=> 'form_editar_profissional',
             'profissionais'=> $this->modelProfissional ->getProfissionalAtivo(),
             'exibirForm' => 0,
-            'atributos' => $this->modelProfissional->getAtributos(),
-            'csrfToken' => $csrfToken
+            'atributos' => $this->modelProfissional->getAtributos(),            
         ];
         return view('profissional/form-editar-profissional', $dados);
     }
