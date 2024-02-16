@@ -216,12 +216,12 @@ class AtendimentoApi extends ResourceController
             
             if($data){
                 $datas = [
-                    'cns'=>$data[0]->cnsUsuario,
+                    'cnsUsuario'=> mascaraCns($data[0]->cnsUsuario),
                     'idUsuario'=> $data[0]->idUsuario,
                     'nomeUsuario'=> $data[0]->nomeUsuario,
                     'dataNasc' => converteParaDataBrasileira($data[0]->dataNascimento),
                     'idade'=> calcAge($data[0]->dataNascimento),
-                    'cpf'=> $data[0]->cpfUsuario,                
+                    'cpfUsuario'=> mascaraCpf($data[0]->cpfUsuario),                
     
                 ];
             }

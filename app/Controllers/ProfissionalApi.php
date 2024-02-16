@@ -150,7 +150,7 @@ class ProfissionalApi extends ResourceController
         }
 
         $idProfissional = $id;
-        $nomeProfissional = $this->request->getPost('nNomeProfissional');
+        $nomeProfissional = tratarPalavras($this->request->getPost('nNomeProfissional'));
         $genero = $this->request->getPost('nGenero');
         $cpfProfissional = $this->request->getPost('nCpfProfissional');
         $cnsProfissional = $this->request->getPost('nCnsProfissional');

@@ -56,7 +56,7 @@ class Home extends BaseController
 
         session()->set(
             [
-                'botaoSalvar' => ' <button type="submit" class="main_bt" id=""><i class="fa fa-save"></i> Salvar</button>',
+                'botaoSalvar' => '<button type="submit" class="main_bt" id="" data-continue="false"><i class="fa fa-save"></i> Salvar</button>',
                 'botaoLimpar' => '<button type="reset" class="main_clear_bt"><i class="fa fa-times"></i> Limpar</button>',
                 'botaoFecharModal' => '<button type="button" class="main_clear_bt" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>',
                 'botaoPesquisar' => '<button class="btn btn-success waves-effect" type="submit"><span class="badge">P</span> ESQUISAR</button> ',

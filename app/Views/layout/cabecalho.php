@@ -16,6 +16,7 @@
     <meta name="description" content="" />
     <meta name="keywords" content="">
     <meta name="author" content="Phoenixcoded" />
+   
     <!-- Favicon icon -->
     <link rel="icon" href="<?= base_url() ?>assets/images/favicon.ico" type="image/x-icon">
 
@@ -69,6 +70,8 @@ https://cdn.jsdelivr.net/npm/icheck-material@1.0.1/icheck-material.min.css
             transition: ease all 0.5s;
             cursor: pointer;
             font-weight: 300;
+            margin-right: 10px;
+
         }
 
         button.main_back_bt {
@@ -106,6 +109,32 @@ https://cdn.jsdelivr.net/npm/icheck-material@1.0.1/icheck-material.min.css
         .main_bt:hover,
         .main_bt:focus {
             background: #009345;
+            color: #fff;
+        }
+        .main_dropdown_bt {
+            min-width: 125px;
+            height: auto;
+            float: left;
+            background: #20c997;
+            text-align: center;
+            color: #fff;
+            padding: 10px 25px;
+            font-size: 16px;
+            border-radius: 25px;
+            border: none;
+            transition: ease all 0.5s;
+            cursor: pointer;
+            font-weight: 300;
+        }
+
+        button.main_dropdown_bt {
+            float: none;
+            margin: 0;
+        }
+
+        .main_dropdown_bt:hover,
+        .main_dropdown_bt:focus {
+            background: #1abc9c;
             color: #fff;
         }
 

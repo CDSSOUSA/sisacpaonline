@@ -3,6 +3,7 @@ const URI_API_PROFISSIONAL = "api/profissional";
 const URI_API_ATENDIMENTO = "api/atendimento";
 const URI_API_MODALIDADE = "api/modalidade";
 const URI_API_ALOCACAO = "api/alocacao";
+const URL_WIEW = 'http://localhost/sisacpaonline/app/Views/profissional/modal/'
 const dataTipo = [
     {
         ident: "F",
@@ -88,16 +89,18 @@ function loadDataProfissional(data) {
                 <td>${indice+1}</td>
                     <td>${elem.nomeProfissional}${elem.created_at == dataAtual ? ' <span class="badge badge-pill badge-primary"> Novo</span>' :'' }</td>
                     <td>${tratarFieldNull(elem.cnsProfissional)}</td>
-                    <td>${elem.cpfProfissional
-            }</td>                                                         
-                    <td>${elem.modalidade}</td>   
-                    <td>${tratarTipoProfissional(elem.tipoProfissional)}</td>   
-                    <td>${elem.ativo}</td>   
-                    <td class="text-center">`;
+
+                    <td>${elem.cpfProfissional}</td> 
+                    <td>${elem.modalidade}</td> 
+                    <td>${tratarTipoProfissional(elem.tipoProfissional)}</td> 
+
+                                        <td>${elem.ativo}</td>   
+                                        <td class="text-center">
+                    `;
 
         if (elem.ativo == "ATIVO") {
             contadorAtivo++
-            row += `<a href="" onclick = "editar_profissional('${elem.idProfissional}')" class = "btn btn-icon btn-primary" title = "Editar profissional" data-toggle = "modal" data-target = "#editarProfissional">
+            row += `<a href="#/" onclick = "editar_profissional('${elem.idProfissional}')" class = "btn btn-icon btn-primary" title = "Editar profissional" data-toggle = "modal" data-target = "#editarProfissional">
                            <i class="feather icon-edit"></i>
                         </a>
                         <a href="#/" onclick = "ativar_desativar_profissional('${elem.idProfissional}','N')" class = "btn btn-icon btn-danger" title = "Desativar Profissional" data-toggle = "modal" data-target = "#ativarDesativarProfissional">
@@ -106,7 +109,7 @@ function loadDataProfissional(data) {
                         <a href="#/" onclick = "alocar_profissional('${elem.idProfissional}')" class = "btn btn-icon btn-warning" title = "Alocar Profissional" data-toggle = "modal" data-target = "#alocarProfissionalModal">
                         <i class="fas fa-table"></i>
                         </a>
-                        <a href="#/" onclick = "visualizar_agenda_profissional('${elem.idProfissional}')" class = "btn btn-icon btn-info" title = "Alocar Profissional" data-toggle = "modal" data-target = "#visualizarAgendaProfissionalModal">
+                        <a href="#/" onclick = "visualizar_agenda_profissional('${elem.idProfissional}')" class = "btn btn-icon btn-info" title = "Visualizar Agenda Profissional" data-toggle = "modal" data-target = "#visualizarAgendaProfissionalModal">
                         <i class="feather icon-calendar"></i>
                         </a>`
         } else {
@@ -271,6 +274,7 @@ async function editar_profissional(idProfissional) {
 const editProfissionalForm = document.getElementById("editProfissionalForm");
 if (editProfissionalForm) {
     editProfissionalForm.addEventListener("submit", async (e) => {
+       
         e.preventDefault();
 
         const dataForm = new FormData(editProfissionalForm);
@@ -336,7 +340,7 @@ if (editProfissionalForm) {
 /* ativar e desativar profissional */
 async function ativar_desativar_profissional(idProfissional, status) {
     clearMessageErrorAll();
-
+    
     await axios
         .get(
             `${URL_BASE}${URI_API_PROFISSIONAL}/getDataProfissional/${idProfissional}`
@@ -406,6 +410,7 @@ if (ativarDesativarProfissionalForm) {
 /* alocar profissional*/
 async function alocar_profissional(idProfissional) {
     clearMessageErrorAll()
+    
     $("#listarAlocacaoProfissional").modal("hide");
 
     const horaFim = document.querySelector("#horaFim");
@@ -511,7 +516,22 @@ const alocarProfissionalForm = document.getElementById(
 );
 if (alocarProfissionalForm) {
     alocarProfissionalForm.addEventListener("submit", async (e) => {
+        
         e.preventDefault();
+        var submitButton = e.submitter;       
+        var dataContinueAttribute = submitButton.getAttribute('data-continue');
+
+        //var submitButton = document.querySelector('#salvarContinuar');
+
+        console.log(dataContinueAttribute)
+
+       // let resultSalvarContinuar = false
+
+        //if (dataContinueAttribute) {
+        //    resultSalvarContinuar = true
+       // }
+
+    
 
         const dataForm = new FormData(alocarProfissionalForm);
         
@@ -528,7 +548,7 @@ if (alocarProfissionalForm) {
             })
             .then((response) => {
                 var dados = response.data;
-                //console.log(dados);
+                console.log(dados);
                 if (response.data.error) {
                     showAlertToast(false, "Erros no preechimento!");
 
@@ -542,6 +562,12 @@ if (alocarProfissionalForm) {
                     dados.status,
                     `Novo:: ${dados.insert}<br>Atualização:: ${dados.update}`
                 );
+                if(dataContinueAttribute === 'true'){
+                    console.log('caiu no true')
+                    alocarProfissionalForm.reset();
+                    document.getElementById("idProfissionalAlocar").value = dataForm.get('nIdProfissional');
+                    return
+                }
                 alocarProfissionalForm.reset();
                 $("#alocarProfissionalModal").modal("hide");
                 listarProfissionais();
@@ -681,7 +707,7 @@ if (removerAlocacaoProfissionalForm) {
 }
 
 async function visualizar_agenda_profissional(idProfissional){
-    const dia = 2
+    
     await axios
         .get(
             `${URL_BASE}${URI_API_PROFISSIONAL}/getDataProfissional/${idProfissional}`
@@ -698,12 +724,61 @@ async function visualizar_agenda_profissional(idProfissional){
             document.querySelector('#myTab').innerHTML = gerarDiasAbas()
             //document.querySelector('#myTagbContent').innerHTML = gerarConteudoAbas(data)
             gerarConteudoAbas(idProfissional)
-            
-            
+            const divAgendaLocal = document.querySelector('#divAgendaLocal')
+            divAgendaLocal.innerHTML = `
+            <button 
+                class="main_dropdown_bt m-l-5 dropdown-toggle" 
+                type="button" 
+                data-toggle="dropdown" 
+                aria-haspopup="true" 
+                aria-expanded="true"><i class="fa fa-print"></i> 
+                    Agenda Local
+            </button>
+            <div class="dropdown-menu" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -111px, 0px);">
+                <a href="imprimirAgenda/idProfissinal/semana" class="dropdown-item" target="_blank">
+                    Semana Atual
+                </a>
+                <a href="imprimirAgenda/idProfissinal/next" class="dropdown-item" target="_blank">
+                    Próxima Semana
+                </a>                
+            </div>`           	
+            const divAgendaSUS = document.querySelector('#divAgendaSUS')
+            divAgendaSUS.innerHTML = `
+            <button 
+                class="main_dropdown_bt m-l-5 dropdown-toggle" 
+                type="button" 
+                data-toggle="dropdown" 
+                aria-haspopup="true" 
+                aria-expanded="true"><i class="fa fa-print"></i> 
+                    Agenda SUS
+            </button>
+            <div class="dropdown-menu" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -111px, 0px);">
+                <a href="imprimirAgendaSus/idProfissinal/semana" class="dropdown-item" target="_blank">
+                    Mês Atual
+                </a>
+                <a href="imprimirAgendaSus/idProfissinal/next" class="dropdown-item" target="_blank">
+                    Próxima Mês
+                </a>                
+            </div>`
         })
         .catch((error) => console.log(error));
 }
 
+function dataDaSemana(diaSemana) {
+    const dataAtual = new Date();
+    const diaAtual = dataAtual.getDay(); // 0 para Domingo, 1 para Segunda, ..., 6 para Sábado
+    let diferenca = diaSemana - diaAtual;
+
+    // Adiciona ou subtrai o número de dias para chegar ao dia da semana desejado
+    dataAtual.setDate(dataAtual.getDate() + diferenca);
+
+    // Formata a data no formato "dd/mm/yyyy"
+    const dia = String(dataAtual.getDate()).padStart(2, '0');
+    const mes = String(dataAtual.getMonth() + 1).padStart(2, '0'); // Mês é base zero
+    const ano = dataAtual.getFullYear();
+
+    return `${dia}/${mes}/${ano}`;
+}
 function gerarDiasAbas ()
 {
     let item = ``
@@ -711,7 +786,7 @@ function gerarDiasAbas ()
     for (let dia = 2; dia <= 6; dia++) {
         let diaExtenso = tratarDiaSemana(dia)
        item += `<li class="nav-item">
-       <a class="nav-link text-uppercase ${dia == 2 ? 'active' : ''}" id="${(diaExtenso)}-tab" data-toggle="tab" href="#${(diaExtenso)}" role="tab" aria-controls="home" aria-selected="true">${(diaExtenso)}</a>
+       <a class="nav-link text-uppercase ${dia == 2 ? 'active' : ''}" id="${(diaExtenso)}-tab" data-toggle="tab" href="#${(diaExtenso)}" role="tab" aria-controls="home" aria-selected="true">${(diaExtenso)} - ${dataDaSemana(dia-1)}</a>
    </li>`
         
     }    
@@ -783,7 +858,8 @@ async function getAgendaProfissionalAlocada(dia, idProfissional, horaInicio) {
         if (Object.keys(data).length === 0) { // Verifica se data está vazio
             return 'Horário Vago';
         }
-        return `${data.cns} - ${data.idUsuario}`;
+        return `${data.cnsUsuario} - ${data.idUsuario} - ${data.nomeUsuario}
+                ${data.dataNasc} - ${data.idade} - ${data.cpfUsuario}`;
     } catch (error) {
         console.log(error);
         return ''; // Ou outra manipulação de erro que seja adequada ao seu caso
@@ -852,4 +928,49 @@ function tratarTipoProfissional(tipo) {
             return "OUTROS";
     }
     return "";
+}
+
+function carregarFormularioNoModal(urlDoFormulario) {
+
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    console.log(urlDoFormulario)
+    // Seleciona os elementos do modal
+    var modalBody = document.getElementById('modal-body');
+    var modalFooter = document.getElementById('modal-footer');
+
+    // Limpa o conteúdo atual do modal
+    modalBody.innerHTML = '';
+    modalFooter.innerHTML = '';
+
+    // Cria uma requisição para carregar o formulário do arquivo
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Sucesso ao carregar o conteúdo do arquivo
+                var formulario = xhr.responseText;
+
+                // Insere o formulário no corpo do modal
+                modalBody.innerHTML = formulario;
+
+                // Adiciona o código para manipular o envio do formulário, se necessário
+                // Por exemplo, você pode adicionar um ouvinte de evento submit para processar o formulário
+                // Exemplo:
+                /*
+                modalBody.querySelector('form').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    // Aqui você pode realizar ações adicionais, como enviar os dados do formulário via AJAX
+                });
+                */
+            } else {
+                // Ocorreu um erro ao carregar o arquivo
+                console.error('Erro ao carregar o formulário:', xhr.status);
+            }
+        }
+    };
+    // Abre a requisição para carregar o arquivo
+    xhr.open('GET', urlDoFormulario, true);
+    xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+    xhr.send();
 }
