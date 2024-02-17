@@ -8,12 +8,9 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Descrição
-                                Modalidade</th>
-                            <th class="text-center">
-                                CBO</th>                            
-                            <th class="text-center">Ações
-                            </th>
+                            <th>Descrição</th>
+                            <th>CBO</th>                            
+                            <th class="text-center">Ações</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -22,7 +19,7 @@
         </div>
     </div>
 </div>
-
+<?=$this->include('modalidade/modal/form-modal-editar-modalidade');?>
 
 
 <?= $this->endSection(); ?>

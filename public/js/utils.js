@@ -38,7 +38,7 @@ function tratarFieldNull(fieldData){
 }
 
 const clearMessageErrorAll = () => {
-    const fields = document.querySelectorAll('.messageErro');
+    const fields = document.querySelectorAll('.text-danger');
     fields.forEach((item)=>{
         item.innerHTML = '';
     })    

@@ -180,8 +180,10 @@ $routes->group('/api/profissional', ['namespace'=>'App\Controllers','filter'=>'a
 
 $routes->group('/api/modalidade', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
     $routes->get('getDataModalidade','ModalidadeApi::getDataModalidade'); 
-    $routes->post('cadastrar_modalidade','ModalidadeApi::cadastrarModalidade'); 
+    $routes->get('getDataModalidadeId/(:any)','ModalidadeApi::getDataModalidadeId/$1'); 
     $routes->get('listarModalidade','ModalidadeApi::listarModalidade');  
+    $routes->post('cadastrar_modalidade','ModalidadeApi::cadastrarModalidade'); 
+    $routes->post('edita_modalidade','ModalidadeApi::editaModalidade'); 
     
     
 });

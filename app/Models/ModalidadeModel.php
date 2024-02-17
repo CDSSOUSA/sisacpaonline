@@ -16,7 +16,7 @@ class ModalidadeModel extends Model
     protected $allowedFields    = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -53,7 +53,14 @@ class ModalidadeModel extends Model
     {
         return $this->select('*')
             ->where('ativo','S')
+            ->orderBy('nomeModalidade','ASC')
             ->findAll();
+    }
+    public function getDataModalidadeId($idModalidade)
+    {
+        return $this->select('*')
+            ->where('idModalidade',$idModalidade)
+            ->get()->getResult();
     }
 
     public function getAtributos()

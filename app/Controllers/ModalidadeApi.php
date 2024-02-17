@@ -33,6 +33,27 @@ class ModalidadeApi extends ResourceController
         }
 
     }
+    public function getDataModalidadeId($idModalidade)
+    {
+        helper("utils");
+        $id = decrypt($idModalidade);
+        try {
+            $modelModalidade = new ModalidadeModel;
+            $data = $modelModalidade->getDataModalidadeId($id);
+            foreach ($data as $value) {               
+                $result[] = [                   
+                    'nomeModalidade' => $value->nomeModalidade,
+                    'cbo' => $value->cbo,
+                    'idModalidade' => encrypt($value->idModalidade),                                   
+                ];
+            }
+            return $this->response->setJSON($result);
+
+        } catch (Exception $e) {
+            return $this->failServerError($e->getMessage());
+        }
+
+    }
     public function cadastrarModalidade()
     {   
         
@@ -41,10 +62,7 @@ class ModalidadeApi extends ResourceController
         $rules = [
             'nDescricaoModalidade' => 'required|min_length[3]|is_unique[tb_modalidade.nomeModalidade]',
             'nCbo' => 'required|is_unique[tb_modalidade.cbo]',            
-        ];        
-
-        //$modelProfissional = new ProfissionalModel;
-        
+        ];      
 
         $val = $this->validate($rules);
         
@@ -96,7 +114,6 @@ class ModalidadeApi extends ResourceController
                 
             }
         } catch (Exception $e) {
-
             var_dump($e->getCode());
             session()->set('erro', 'ERRO, não foi possível realizar operação.');
             $this->logging->critical(__CLASS__ . "\\" . __FUNCTION__, ['MODALIDADE::' => null, 'FEITO POR::' => session()->get("nome"), 'ERROR' => $e->getMessage()]);
@@ -105,14 +122,9 @@ class ModalidadeApi extends ResourceController
                 'error' => true,
                 'code' => $e->getCode(),
                 'msg' => $e->getMessage(),
-                'msgs' => [
-                    'series' => 'Série, turma e turno já cadastrados!'
-                ]
+                'msgs' => $e->getMessage(),
             ]);
-        }
-
-        //return $this->form_cadastrar_profissional();
-
+        }      
     }
 
     public function listarModalidade()
@@ -132,7 +144,8 @@ class ModalidadeApi extends ResourceController
                     
                     'nomeModalidade' => $value->nomeModalidade,
                     'cbo' => $value->cbo,                   
-                    'created_at' => $dataTratada->format('Y-m-d')
+                    'created_at' => $dataTratada->format('Y-m-d'),
+                    'idModalidade' => encrypt($value->idModalidade)
                 ];
 
             }
@@ -143,5 +156,94 @@ class ModalidadeApi extends ResourceController
         }
     }
 
-    
+    public function editaModalidade()
+    {
+        helper("utils");
+        $idModalidade = $this->request->getPost('nIdModalidade');
+        $id = decrypt($idModalidade);
+
+
+        $modelModalidade = new ModalidadeModel;
+        $result = $modelModalidade->getDataModalidadeId($id);
+        if (!$result) {
+            $response = [
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => 400,
+                'msg' => ['nIdModalidade' => 'Id inválido'],
+                'msgs' => ['nIdModalidade' => 'Id inválido']
+            ];
+
+            $this->logging->error(__CLASS__ . "\\" . __FUNCTION__, [
+                'MODALIDADE::' => $id,
+                'FEITO POR::' => session()->get("nome"),
+                'ERROR' => ['nIdProfissional' => 'Id inválido']
+            ]);
+            return $this->response->setJSON($response);
+        }       
+
+        $rules = [
+            'nDescricaoModalidade' => 'required|min_length[3]',
+            'nCbo' => 'required',  
+        ];        
+
+        $val = $this->validate($rules);
+
+        if (!$val) {
+            $response = [
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => 400,
+                'msg' => $this->validator->getErrors(),
+                'msgs' => $this->validator->getErrors()
+            ];
+
+            $this->logging->error(__CLASS__ . "\\" . __FUNCTION__, [
+                'MODALIDADE::' => $id,
+                'FEITO POR::' => session()->get("nome"),
+                'ERROR' => $this->validator->getErrors()
+            ]);
+            return $this->response->setJSON($response);
+        }
+
+        $idModalidade = $id;
+        $nomeModalidade = tratarPalavras($this->request->getPost('nDescricaoModalidade'));
+        $cbo = tratarPalavras($this->request->getPost('nCbo'));        
+
+        $modelModalidade = new ModalidadeModel;
+
+        $data = [
+            'idModalidade' => $idModalidade,
+            'nomeModalidade' => $nomeModalidade,
+            'cbo' => $cbo,                     
+        ];
+
+        try {
+            
+            $gravar = $modelModalidade->save($data);
+
+            if ($gravar) {
+                $this->logging->info(__CLASS__ . "\\" . __FUNCTION__, ['MODALIDADE::' => $idModalidade, 'FEITO POR::' => session()->get("nome"), 'SUCCESS::' => $gravar]);
+
+                $response = [
+                    'status' => true,
+                    'error' => false,
+                    'code' => 200,
+                    'msg' => '<p>Operação realizada com sucesso!</p>',                   
+                ];               
+                return $this->response->setJSON($response);
+            }
+        } catch (Exception $e) {
+
+            $this->logging->critical(__CLASS__ . "\\" . __FUNCTION__, ['MODALIDADE::' => $idModalidade, 'FEITO POR::' => session()->get("nome"), 'ERROR' => $e->getMessage()]);
+
+            return $this->response->setJSON([
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+                'msgs' => $e->getMessage(),
+            ]);
+        }
+    }    
 }
