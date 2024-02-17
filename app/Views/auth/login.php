@@ -2,63 +2,56 @@
     echo $this->extend('layout/home_auth');
     echo $this->section('content'); 
 ?>
-    <body class="inner_page login">
-      <div class="full_container">
-         <div class="container">
-            <div class="center verticle_center full_height">
-               <div class="login_section">
-                  <div class="logo_login">
-                     <div class="center">
-                        <img width="210" src="<?= base_url();?>assets/images/logo/logo.png" alt="#" />
-                     </div>
-                  </div>
-                  <div class="login_form">
-                     <?php
-                            $atributos_formulario = array('id' => 'sign_up');
-                            echo 'd6a2d408b7557df8a9d666b1e3c3babab855c821';
-                            echo form_open("", $atributos_formulario);
+
+<body>
+
+<!-- [ auth-signin ] start -->
+<div class="auth-wrapper">
+	<div class="auth-content text-center">
+		<img src="<?=base_url()?>img/logo-acpa.png" width="150" alt="" class="img-fluid mb-0">
+		<div class="card borderless">
+			<div class="row align-items-center ">
+				<div class="col-md-12">
+					<div class="card-body">
+               <?php
+                            $atributos_formulario = array('id' => 'sign_up');                            
+                            echo form_open("/login", $atributos_formulario);
                     
                     ?>
-                        <fieldset>
-                           <div class="field">
-                              <label class="label_field">Email Address</label>
-                              <?php 
+						<h5 class="mb-3 f-w-400">ACESSAR O SISTEMA</h5>
+						<hr>
+						<div class="form-group mb-3">
+                  <?php 
                                 echo csrf_field();
-                                echo form_input(array('name' => 'nLogin', 'class' => 'form-control cpf', 'autofocus' => 'true', 'placeholder' => 'Login (cpf)'), set_value('nLogin')); 
+                                echo form_input(array('name' => 'nLogin', 'class' => 'form-control cpf', 'autofocus' => 'true', 'placeholder' => 'Login (cpf)','value'=>'01939752469')); 
                              ?>
-                           </div>
-                           <div class="field">
-                              <label class="label_field">Password</label>
-                              <input type="password" id="password" class="form-control" name="nSenha" minlength=""
-                            placeholder="Senha" autocomplete="on"> 
-                        </div>
-                        <div class="input-group">
-                
-                <span  class="input-group-daddon">
-                        <i id="iv" class="fa fa-eye-slash"></i>                       
-                    </span>
-                    <?php //nbs(3);?>
-                    <span id="mostraSenha" onclick="myFunction()">Mostrar senha</span>               
-                </div>    
-                           <div class="field">
-                              <label class="label_field hidden">hidden label</label>
-                              <label class="form-check-label"><input type="checkbox" class="form-check-input"> Remember Me</label>
-                              <a class="forgot" href="">Forgotten Password?</a>
-                           </div>
-                           <div class="field margin_0">
-                              <label class="label_field hidden">hidden label</label>
-                              <button class="main_bt">Sing In</button>
-                           </div>
-                        </fieldset>
-                        <div class="m-t-25 m-b--5 align-center">
-                            <?php echo anchor('form_redefinir_senha','Esqueceu a senha?');?>
-                        </div>
-                     </form>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
+							
+						</div>
+						<div class="form-group mb-4">
+                  <input type="password" id="password" class="form-control" name="nSenha" minlength=""
+                            placeholder="Senha" autocomplete="on" value="1"> 
+							
+						</div>
+						<div class="custom-control custom-checkbox text-left mb-4 mt-2">
+							<input type="checkbox" class="custom-control-input" id="customCheck1">
+							<label id="mostraSenha" onclick="myFunction()" class="custom-control-label" for="customCheck1">Exibir senha</label>
+						</div>
+						<button type="submit" class="btn btn-block btn-primary mb-4">Entrar</button>
+                  
+</form>
+						<hr>
+						<p class="mb-2 text-muted">Forgot password? <a href="auth-reset-password.html" class="f-w-400">Reset</a></p>
+						<p class="mb-0 text-muted">Don’t have an account? <a href="auth-signup.html" class="f-w-400">Signup</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- [ auth-signin ] end -->
+
+
+    
       <script>
     function myFunction() {
         var x = document.getElementById("password");

@@ -161,6 +161,9 @@ $routes->group('/profissional', ['namespace'=>'App\Controllers','filter'=>'authF
     $routes->get('alocar_profissional','Profissional::alocar_profissional');
     $routes->get('form_editar_profissional','Profissional::form_editar_profissional');
 });
+$routes->group('/operador', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
+    $routes->get('form_cadastrar_operador','Operador::form_cadastrar_operador');    
+});
 $routes->group('/modalidade', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
     $routes->get('form_cadastrar_modalidade','Modalidade::form_cadastrar_modalidade'); 
     $routes->get('form_editar_modalidade','Modalidade::form_editar_modalidade');
