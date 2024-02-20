@@ -8,7 +8,7 @@ class OperadorPermissaoModel extends Model
 {
     protected $DBGroup          = 'default';
     protected $table            = 'tb_operador_permissao';
-    protected $primaryKey       = 'idOperador';
+    protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;

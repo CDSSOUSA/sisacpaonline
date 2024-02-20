@@ -163,6 +163,8 @@ $routes->group('/profissional', ['namespace'=>'App\Controllers','filter'=>'authF
 });
 $routes->group('/operador', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
     $routes->get('form_cadastrar_operador','Operador::form_cadastrar_operador');    
+    $routes->get('form_editar_operador','Operador::form_editar_operador');    
+    $routes->get('form_permitir_operador/(:any)','Operador::form_permitir_operador/$1');    
 });
 $routes->group('/modalidade', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
     $routes->get('form_cadastrar_modalidade','Modalidade::form_cadastrar_modalidade'); 
@@ -178,7 +180,7 @@ $routes->group('/api/profissional', ['namespace'=>'App\Controllers','filter'=>'a
     $routes->post('ativa_desativa_profissional','ProfissionalApi::ativaDesativaProfissional');  
     $routes->post('aloca_profissional','ProfissionalApi::alocaProfissional');  
     $routes->post('cadastrar_profissional','ProfissionalApi::cadastrarProfissional');  
-
+    
 });
 
 $routes->group('/api/modalidade', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
@@ -187,8 +189,16 @@ $routes->group('/api/modalidade', ['namespace'=>'App\Controllers','filter'=>'aut
     $routes->get('listarModalidade','ModalidadeApi::listarModalidade');  
     $routes->post('cadastrar_modalidade','ModalidadeApi::cadastrarModalidade'); 
     $routes->post('edita_modalidade','ModalidadeApi::editaModalidade'); 
-    
-    
+});
+$routes->group('/api/operador', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
+    $routes->get('listarOperador','OperadorApi::listarOperador');  
+    $routes->get('getMenuPermissaoOperador/(:any)','OperadorApi::getMenuPermissaoOperador/$1');    
+    $routes->get('getDataOperadorId/(:any)','OperadorApi::getDataOperadorId/$1');    
+    $routes->post('remover_permissao','OperadorApi::removerPermissao');    
+    $routes->post('adicionar_permissao','OperadorApi::adicionarPermissao');  
+    $routes->post('cadastrar_operador','OperadorApi::cadastrarOperador'); 
+    $routes->post('editarOperador','OperadorApi::editarOperador'); 
+    $routes->post('desativar_operador','OperadorApi::desativarOperador'); 
 });
 
 $routes->group('/api/alocacao', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {

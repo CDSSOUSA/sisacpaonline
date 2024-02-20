@@ -51,4 +51,53 @@ class MenuModel extends Model
             ->orderBy("idMenu")
             ->findAll();
     } 
+
+    public function getMenuAll()
+    {
+        return $this->select('*')
+            //->from('tb_menu M')
+            //->join('tb_permissao P', 'P.idMenu = M.idMenu')
+            //->join('tb_operador_permissao OP', 'OP.idPermissao = P.idPermissao')
+            ->where('ativo', 'S')
+            //->where('OP.idOperador', $idOperador)
+            //->groupBy("M.idMenu")
+            ->orderBy("idMenu")
+            ->findAll();
+
+    }
+
+    public function getPermissaoPorMenu($idMenu, $idOperador) {
+        
+        return $this->select('P.nomeMenu, P.idPermissao, OP.ativo, OP.idOperador')
+                        ->from('tb_permissao P')
+                        ->join('tb_operador_permissao OP', 'P.idPermissao = OP.idPermissao AND (OP.idOperador) =' . $idOperador, 'LEFT')
+                        ->where('P.idMenu', $idMenu)
+                        ->where('P.ativo', 'S')
+                        ->groupBy('P.idPermissao')
+                        ->get()->getResult();
+    }
+
+    public function getMenuPermissaoOperador($idOperador) {
+
+        helper("utils");
+        $dataMenu = $this->getMenuAll();
+        $resultado = [];
+    
+        foreach($dataMenu as $menu) {
+            $dataPermissao = $this->getPermissaoPorMenu($menu->idMenu, $idOperador);
+    
+            foreach($dataPermissao as $permissao) {
+                $operador = $menu->descricao; // Nome do operador ou alguma outra identificação
+    
+                // Adiciona a permissão ao operador no array resultado
+                $resultado[$operador][] = [
+                    'nomeMenu' => $permissao->nomeMenu,
+                    'idPermissao' => encrypt($permissao->idPermissao),
+                    'ativo' => $permissao->ativo
+                ];
+            }
+        }
+    
+        return $resultado;
+    }
 }
