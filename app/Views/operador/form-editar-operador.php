@@ -44,6 +44,33 @@
         })
     })*/
 
+    async function ativar_operador(idOperador){
+
+    const dataForm = new FormData();
+
+    dataForm.append('nIdOperador', idOperador);    
+    
+    await axios.post(`${URL_BASE}${URI_API_OPERADOR}/ativar_operador`, dataForm, {
+            headers: {
+                "Content-Type": "application/json",
+                'X-CSRF-TOKEN': "<?= csrf_hash() ?>"
+            },
+        }).then((response) => {
+            console.log('RESTOR', response.data)
+            if (response.data.error) {
+                    showAlertToast(false, "Erros na tentativa!");
+                    
+                } else {
+                    showAlertToast(true);
+                    listarOperador()
+
+                    
+                }
+        }).catch((error) => console.log(error));
+
+}
+
+
     function tratarTipoOperador(tipo) {
     switch (tipo) {
         case "O":

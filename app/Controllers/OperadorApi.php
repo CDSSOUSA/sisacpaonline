@@ -204,7 +204,8 @@ class OperadorApi extends ResourceController
                     'created_at' => $dataTratada->format('Y-m-d'),
                     'idOperador' => encrypt($value->idOperador),
                     'tipoOperador' => $value->tipoOperador,
-                    'id' => encrypt($value->id)
+                    'id' => encrypt($value->id),
+                    'ativo' => $value->ativo
                 ];
 
             }
@@ -252,6 +253,8 @@ class OperadorApi extends ResourceController
 
     }
 
+
+
     public function desativarOperador()
     {
         helper("utils");        
@@ -271,6 +274,51 @@ class OperadorApi extends ResourceController
             $modelOperador = new OperadorModel;
 
             $gravar = $modelOperador->desativarOperador($dados);            
+
+            if ($gravar) {
+                
+                $this->logging->info(__CLASS__ . "\\" . __FUNCTION__, ['OPERADOR::' => $idOperadorDb, 'FEITO POR::' => session()->get("nome"), 'SUCCESS::' => $gravar]);
+                
+                $response = [
+                    'status' => true,
+                    'error' => false,
+                    'code' => 200,
+                    'msg' => '<p>Operação realizada com sucesso!</p>',
+                    
+                ];               
+                return $this->response->setJSON($response);
+                
+            }
+        } catch (Exception $e) {
+            var_dump($e->getCode());
+            session()->set('erro', 'ERRO, não foi possível realizar operação.');
+            $this->logging->critical(__CLASS__ . "\\" . __FUNCTION__, ['OPERADOR::' => $idOperadorDb, 'FEITO POR::' => session()->get("nome"), 'ERROR' => $e->getMessage()]);
+            return $this->response->setJSON([
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+                'msgs' => $e->getMessage(),
+            ]);
+        }   
+    }
+    public function ativarOperador()
+    {
+        helper("utils");        
+        $idOperador = $this->request->getPost('nIdOperador');
+        
+        $idOperadorDb = decrypt($idOperador);
+        
+        $dados = [
+            'idOperador' => $idOperadorDb,
+            'ativo' => 'S',
+            'updated_at' => date('Y-m-d')
+        ];
+
+        try {
+            $modelOperador = new OperadorModel;
+
+            $gravar = $modelOperador->ativarOperador($dados);            
 
             if ($gravar) {
                 

@@ -199,6 +199,7 @@ $routes->group('/api/operador', ['namespace'=>'App\Controllers','filter'=>'authF
     $routes->post('cadastrar_operador','OperadorApi::cadastrarOperador'); 
     $routes->post('editarOperador','OperadorApi::editarOperador'); 
     $routes->post('desativar_operador','OperadorApi::desativarOperador'); 
+    $routes->post('ativar_operador','OperadorApi::ativarOperador'); 
 });
 
 $routes->group('/api/alocacao', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {

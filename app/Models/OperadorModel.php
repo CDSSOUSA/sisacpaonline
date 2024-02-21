@@ -169,7 +169,7 @@ class OperadorModel extends Model
     {
         return $this->select('*')
             //->where('ativo', 'S')
-            ->orderBy('nome', 'ASC')
+            ->orderBy('ativo DESC','nome ASC')
             ->findAll();
     }
 
@@ -230,6 +230,22 @@ class OperadorModel extends Model
             //$this->db->update('tb_profissional', array('operadorAtivo' => $dados['ativo']), array('idProfissional' => $dados['idOperador']));
 
      
+                return true;
+            }
+            return false;
+
+        } catch (Exception $e) {
+            echo 'Erro: ' . $e->getMessage();
+            return false;
+        }
+
+    }
+    public function ativarOperador($dados)
+    {
+        try {
+           
+            $salvarOperador = $this->save($dados);
+            if ($salvarOperador) {
                 return true;
             }
             return false;

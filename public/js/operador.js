@@ -55,7 +55,7 @@ function loadDataOperador(data) {
 
     data.forEach((elem, indice) => {
         row += `
-                <tr style="${elem.ativo == "INATIVO"
+                <tr style="${elem.ativo == "N"
                 ? "text-decoration: line-through; color:gray;"
                 : "text-decoration: none"
             }">    
@@ -64,9 +64,10 @@ function loadDataOperador(data) {
                 ? ' <span class="badge badge-pill badge-primary"> Novo</span>'
                 : ""
             }</td>
-                    <td>${tratarTipoOperador(elem.tipoOperador)}</td>
-                    <td class="text-center">
-                        <a href="#/" onclick = "editar_operador('${elem.idOperador
+                    <td>${tratarTipoOperador(elem.tipoOperador)}</td>`
+                    row +=`<td class="text-center">`
+                    if (elem.ativo === 'S') {
+                        row +=`<a href="#/" onclick = "editar_operador('${elem.idOperador
             }')" class = "btn btn-icon btn-primary" title = "Editar Operador" data-toggle = "modal" data-target = "#editarOperadorModal">
                             <i class="feather icon-edit"></i>
                         </a>
@@ -78,9 +79,14 @@ function loadDataOperador(data) {
             }')" class = "btn btn-icon btn-warning" title = "Permitir Operador" data-toggle = "modal" data-target = "#permitirOperadorModal">
                             <i class="fa fa-lock"></i>
                         </a>
-                    </td>                                       
-                </tr>`;
-    });
+                    `
+        } else {
+            row += `<a href="#/" onclick = "ativar_operador('${elem.idOperador}')" class = "btn btn-icon btn-success" title = "Ativar Operador">
+            <i class="feather icon-check"></i>
+                        </a>`
+                    }                                       
+                });
+                row +=`</td></tr>`;
 
     return row;
 }
@@ -199,8 +205,6 @@ async function desativar_operador(idOperador){
             console.log(error)
         })
 }
-
-
 
 function tratarTipoOperador(tipo) {
     switch (tipo) {

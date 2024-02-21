@@ -13,6 +13,12 @@
 
             </div>
             <div class="modal-body">
+            <div class="alert alert-warning alert-dismissible fade show"
+                    role="alert">
+                    <strong>Atenção!</strong><br>Após desativar o OPERADOR todos os registros de: alocação, atendimento e permissão serão desativados, não sendo possível recuperá-los. 
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                </div>
                 <?php
                 $atributos_formulario = array(
                     'role' => 'form',

@@ -111,7 +111,7 @@ function showAlertToast(status, message) {
     };
   
     if (status) {
-      toastr.success(`<b>Parabéns!Operação realizada com sucesso!</b><br>${text}`);
+      toastr.success(`<b>Parabéns! <br>Operação realizada com sucesso!</b><br>${text}`);
     } else {
       toastr.error(`<b>Ops! ${text}</b>`);
     }

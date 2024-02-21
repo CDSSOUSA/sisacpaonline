@@ -6,7 +6,7 @@
     <!-- Jquery DataTable Plugin Js -->
     <script src="<?php // base_url('assets/datatables/datatables.min.js') ?>"></script>
 
-      <script src="<?= base_url();?>assets/js/toastr.min.js"></script>
+      <script src="<?= base_url();?>assets/toastr/toastr.min.js"></script>
 
       <!-- Bootstrap Datepicker Plugin Js -->
 <script src="<?php echo base_url('plugins_original/bootstrap-datepicker/js/bootstrap-datepicker.js'); ?>"></script>
