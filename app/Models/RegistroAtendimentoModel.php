@@ -277,7 +277,7 @@ class RegistroAtendimentoModel extends MyModel
                         ->where('A.idUsuario', $idUsuario)
                         ->where('A.idProfissional', $idProfissional)
                         ->where('tb_registro_atendimento.jaEvoluiu', 'S')
-                        ->limit(25)
+                        ->limit(10)
                         ->orderBy('tb_registro_atendimento.dataRegistroEvolucao','DESC')
                         ->get()->getResult();
     }

@@ -1038,7 +1038,7 @@ function definePassword(bool $option, $data): string
 function gerarbotaoVoltar($metodo)
 {
 
-    return anchor($metodo, '<span class="badge">V</span> OLTAR', array('class' => 'btn bg-orange waves-effect')) . '  ';
+    return anchor($metodo, '<i class="fa fa-arrow-left"></i> Voltar' , ['class' => 'btn main_back_bt']) . '  ';
 }
 
 function gerarBotaoImprimir($metodo, $titulo = null)

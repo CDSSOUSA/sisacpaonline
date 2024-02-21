@@ -190,6 +190,10 @@ $routes->group('/api/modalidade', ['namespace'=>'App\Controllers','filter'=>'aut
     $routes->post('cadastrar_modalidade','ModalidadeApi::cadastrarModalidade'); 
     $routes->post('edita_modalidade','ModalidadeApi::editaModalidade'); 
 });
+
+$routes->group('/api/evolucao', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
+    $routes->post('escrever_evolucao','EvolucaoApi::escreverEvolucao'); 
+});
 $routes->group('/api/operador', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
     $routes->get('listarOperador','OperadorApi::listarOperador');  
     $routes->get('getMenuPermissaoOperador/(:any)','OperadorApi::getMenuPermissaoOperador/$1');    

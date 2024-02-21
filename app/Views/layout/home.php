@@ -392,7 +392,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5><?=$titulo?></h5>
-                        <p class="text-muted mb-1">* campos de preeechimento obrigátorio!</p>
+                        <p class="text-muted mb-1" id="subTitulo">* campos de preeechimento obrigátorio!</p>
                         <div class="card-header-right">
                             <div class="btn-group card-option">
                                 <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
