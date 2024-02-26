@@ -127,13 +127,13 @@ $numeroRegistro = $atendimento->numeroRegistro;
             </div>
         </div>
         <div class="form-group row">
-        <label class="col-sm-3 hidden"></label>
-            <div class="col-sm-9 d-flex justify-content-between">
+       
+            <div class="col d-flex justify-content-between">
                               
                 <?= gerarbotaoVoltar('evolucao/form_escrever_evolucao_data_atendimento');?>
                 <?= session()->get('botaoLimpar'); ?>     
                 <?= session()->get('botaoSalvar'); ?>
-                <a onclick="historico_evolucao()" href="#" class="main_back_bt" data-toggle = "modal" data-target = "#historicoEvolucaoModal"><i class="fa fa-table"></i> Histórico Evolução</a>     
+                <a onclick="exibirHistoricoEvolucao('<?=encrypt($idUsuario)?>')" href="#" class="main_back_bt" data-toggle = "modal" data-target = "#historicoEvolucaoModal"><i class="fa fa-table"></i> Histórico Evolução</a>     
                 
             </div>    
         </div>
@@ -142,72 +142,18 @@ $numeroRegistro = $atendimento->numeroRegistro;
 </div>
 
 <?=$this->include('evolucao/modal/form-modal-historico-evolucao');?>
-<div class="row">
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header bg-indigo">
-                        <h2>
+<?=$this->include('evolucao/modal/form-modal-editar-evolucao');?>
 
-                            <?php
-                            echo 'HISTÓRICO DE EVOLUÇÃO DOS ATENDIMENTOS <small>' . $idUsuario . ' - ' . $nomeUsuario . '</small>';
-                            ?>
-                        </h2>
-                    </div>
-                    <div class="body table-responsive">
-                        <table class="table table-hover" id="">
-                            <thead>
-                                <tr>
-                                    <th style="font-weight: bold; color: black; font-size: 18px;">EVOLUÇÃO</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                //$evolucoes = $this->RegistroAtendimento_model->getEvolucao(md5($idUsuario), $atendimento->idOperador)->result();
-                                
-
-                                foreach ($dadosEvolucao as $evolucao) {
-                                    ?>
-                                    <tr>
-                                        <td>
-
-                                            <div class="card">
-                                                <div class="header bg-blue-grey">
-                                                    <h2>
-                                                        Data do atendimento:
-                                                        <?php echo converteParaDataBrasileira($evolucao->dataAtendimento) . ' - ' . tratarDiaSemana($evolucao->diaSemana) . ' - ' . $evolucao->horaInicio . ' - <span class="badge">' . $evolucao->numeroRegistro . '</span> <small>Profissional: ' . $evolucao->nomeProfissional . ' - ' . $evolucao->modalidade . '</small><small>Registro da evolução em : ' . converteParaDataHoraCompletaBrasileira($evolucao->dataRegistroEvolucao) . '</small>'; ?>
-                                                    </h2>
-                                                </div>
-                                                <div class="body">
-                                                    <?php echo tratarEvolucao(base64_decode($evolucao->textoEvolucao), true); ?>
-                                                </div>
-
-                                            </div>
-                                            <div>
-                                                <?php echo anchor('evolucao/form_editar_evolucao/' . encrypt($evolucao->idRegistroAtendimento), '<span class="badge">E</span> ditar', array('class' => 'btn bg-teal waves-effect')); ?>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <?php
-                                }
-                                ?>
-                            </tbody>
-
-                        </table>
-                    </div>
-                </div>
-            </div>
-</div>
 
 <script>
 
     const URL_BASE = "http://localhost/sisacpaonline/public/";
     const URI_API_EVOLUCAO = "api/evolucao";
     const subTitulo = document.querySelector('#subTitulo')
-    subTitulo.textContent =
-        '<?= 'Registro: ' . $numeroRegistro . '\n' . ' * campos de preenchimento obrigatório'; ?>'
+    subTitulo.innerHTML =
+        '<?= '<p>Registro: <span class="badge badge-pill badge-info">'.$numeroRegistro . '<span></p> <p>' . ' * campos de preenchimento obrigatório</p>'; ?>'
 
-    const escreverEvolucaoForm = document.querySelector("#escreverEvolucaoForm");
-
+const escreverEvolucaoForm = document.querySelector("#escreverEvolucaoForm");
 if (escreverEvolucaoForm) {
     escreverEvolucaoForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -221,13 +167,12 @@ if (escreverEvolucaoForm) {
             })
             .then((response) => {
                 if (response.data.error) {
-                    showAlertToast(false, "Erros no preechimento!");
-
+                    showAlertToast(false, "Erros no preechimento!");                   
                     validateErros(response.data.msgs.nTextoEvolucao, "iErrorTextoEvolucao");
                     
                 } else {
                     showAlertToast(true);
-                    escreverEvolucaoForm.reset();
+                    escreverEvolucaoForm.reset();                   
 
                     setTimeout(function () {
                         window.location.href = `${URL_BASE}evolucao/form_escrever_evolucao_data_atendimento`;
@@ -239,7 +184,146 @@ if (escreverEvolucaoForm) {
             });
     });
 }
+async function exibirHistoricoEvolucao(idUsuario) {
+
+    axios.get(
+            `${URL_BASE}${URI_API_EVOLUCAO}/getHistorioEvolucao/${idUsuario}`
+        )
+        .then((response) => {
+            const dados =response.data;
+            document.querySelector('#resultHistorico').innerHTML = loadDataHistoricoEvolucao(dados)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+
+    
+}
+var nomeUsuario = ''
+
+function loadDataHistoricoEvolucao(dados) {
+    
+    let div = ''
+
+    const totalHistorico =document.querySelector('#totalHistorico')
+    totalHistorico.textContent = `A(s) ${dados.length.toString().padStart(2, '0')} última(s).`
+    //for (var elem in dados) {
+    dados.forEach((elem)=>{
+        nomeUsuario = elem.nomeUsuario       
+        const nomeUsuarioHistorico = document.querySelector('#nomeUsuarioHistorico')
+        nomeUsuarioHistorico.textContent = nomeUsuario        
+
+        
+        div += `<div class="col-xl-12">
+                        <div class="row">
+                            <div class="col">
+                                <div class="card text-left">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            Data do atendimento:
+                                            ${elem.dataAtendimento} -
+                                            ${elem.diaSemana} - 
+                                            ${elem.horaInicio}
+                                            
+                                    <span class="badge badge-pill badge-info">${elem.numeroRegistro}</span><br>
+                                    <small>Profissional: ${elem.nomeProfissional} -
+                                    ${elem.modalidade}</small><br>
+                                    <small>Registro da evolução em : ${elem.dataRegistroEvolucao}</small>
+                                        </h5>
+                                        <blockquote class="blockquote">
+                                            <p class="mb-2">
+                                            ${elem.textoEvolucao}
+                                               
+                                            </p>
+
+                                        </blockquote>
+
+                                        <a href="#"
+                                            onclick="editarEvolucao('${elem.idRegistroAtendimento}')"
+                                            class="main_bt"
+                                            data-toggle = "modal" 
+                                            data-target = "#editarEvolucaoModal"><i class="fa fa-edit"></i> Editar</a>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>`
+    })
+
+    return div;
+
+}
+function fecharBt(idUsuario){
+        $("#editarEvolucaoModal").modal("hide");
+        $("#historicoEvolucaoModal").modal("show");
+
+        //exibirHistoricoEvolucao(idUsuario);
+    }
+async function editarEvolucao(idEvolucao){   
+    $("#historicoEvolucaoModal").modal("hide");
+    axios.get(
+            `${URL_BASE}${URI_API_EVOLUCAO}/getDataEvolucao/${idEvolucao}`
+        )
+        .then((response) => {
+            const dados = response.data
+            console.log(dados)
+            document.querySelector('#iIdRegistroAtendimento').value = dados[0].idRegistroAtendimento
+            document.querySelector('#iTextoEvolucaoEdicao').value = dados[0].textoEvolucao
+            document.querySelector('#iRegistroEdicao').textContent = dados[0].registro
+            document.querySelector('#btFecharEditarEvolucao').setAttribute('onclick', `fecharBt('${dados[0].idUsuario}')`);
+            
+            // const btFecharEditarEvolucao = document.querySelector('#btFecharEditarEvolucao')
+            // btFecharEditarEvolucao.setAttribute('onclick','fecharBt('dados[0].idUsuario')')
+
+        }). catch((error)=>{
+            console.log(error)
+        })
+}
+
+const editarEvolucaoForm = document.querySelector("#editarEvolucaoForm");
+
+if (editarEvolucaoForm) {
+    editarEvolucaoForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const dataForm = new FormData(editarEvolucaoForm);
+
+        await axios
+            .post(`${URL_BASE}${URI_API_EVOLUCAO}/editar_evolucao`, dataForm, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((response) => {
+                if (response.data.error) {
+                    showAlertToast(false, "Erros no preechimento!");
+                    validateErros(response.data.msgs.nTextoEvolucao, "iErrorTextoEvolucaoEdicao");
+
+                    
+                } else {
+                    showAlertToast(true);
+                    editarEvolucaoForm.reset();
+                    $("#editarEvolucaoModal").modal("hide");
+
+                    //$("#historicoEvolucaoModal").modal("show");
+
+                    //exibirHistoricoEvolucao()
+                    // setTimeout(function () {                        
+                    //     window.location.href = `${URL_BASE}evolucao/form_evoluir_atendimento/${dataForm.get('nIdRegistroAtendimento')}`;
+                    // }, 2000);
+                }
+            })
+            .catch((error) => {
+                showAlertToast(false, error);
+            });
+    });
+}
 
 </script>
 
-<?php $this->endSection();
+<?php $this->endSection();?>
+<?= $this->section('script-js'); ?>
+<script src="<?= base_url() ?>js/evolucao.js"></script>
+<?= $this->endSection(); ?>

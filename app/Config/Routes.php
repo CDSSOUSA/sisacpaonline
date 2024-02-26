@@ -142,6 +142,8 @@ $routes->group('/evolucao', ['namespace'=>'App\Controllers','filter'=>'authFilte
     $routes->get('form_editar_evolucao/(:any)','Evolucao::form_editar_evolucao/$1');
     $routes->get('form_escrever_evolucao_data_atendimento','Evolucao::form_escrever_evolucao_data_atendimento');
     $routes->get('form_evoluir_atendimento/(:any)','Evolucao::form_evoluir_atendimento/$1');
+    $routes->get('listar_dados_estatistica_evolucao','Evolucao::listar_dados_estatistica_evolucao');
+    $routes->get('detalhar_estatistica_evolucao/(:any)','Evolucao::detalhar_estatistica_evolucao/$1');
 
     $routes->post('editar_evolucao','Evolucao::editarEvolucao');
     $routes->post('evoluir_registro_atendimento','Evolucao::evoluirRegistroAtendimento');
@@ -193,6 +195,9 @@ $routes->group('/api/modalidade', ['namespace'=>'App\Controllers','filter'=>'aut
 
 $routes->group('/api/evolucao', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
     $routes->post('escrever_evolucao','EvolucaoApi::escreverEvolucao'); 
+    $routes->post('editar_evolucao','EvolucaoApi::editarEvolucao'); 
+    $routes->get('getDataEvolucao/(:any)','EvolucaoApi::getDataEvolucao/$1'); 
+    $routes->get('getHistorioEvolucao/(:any)','EvolucaoApi::getHistorioEvolucao/$1'); 
 });
 $routes->group('/api/operador', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
     $routes->get('listarOperador','OperadorApi::listarOperador');  

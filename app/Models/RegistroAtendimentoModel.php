@@ -90,6 +90,19 @@ class RegistroAtendimentoModel extends MyModel
         $documento = new DocumentoJustificativaModel;
         return $documento->getDocumentoJustificativa($idRegistroAtendimento);
     }
+    public function getDataEvolucao($idRegistroAtendimento)
+    {
+        return $this->select('A.nomeUsuario, A.nomeProfissional, 
+                              tb_registro_atendimento.dataRegistroEvolucao, tb_registro_atendimento.textoEvolucao,tb_registro_atendimento.dataAtendimento, 
+                              tb_registro_atendimento.idRegistroAtendimento, tb_registro_atendimento.textoJustificativaFalta,
+                              tb_registro_atendimento.numeroRegistro,
+                              A.idProfissional, A.idAtendimento, 
+                              A.idUsuario, A.horaInicio, A.diaSemana, A.modalidade')
+            ->join('tb_atendimento A', 'tb_registro_atendimento.idAtendimento = A.idAtendimento')
+            ->where('tb_registro_atendimento.idRegistroAtendimento', $idRegistroAtendimento)
+            ->get()->getResult();
+
+    }
 
     public function getRegistro($idRegistroAtendimento)
     {
@@ -392,6 +405,40 @@ class RegistroAtendimentoModel extends MyModel
             ->where('tb_registro_atendimento.idAtendimento', $idAtendimento)
             ->where('tb_registro_atendimento.dataAtendimento', $dataAtendimento)
             ->get()->getRow();
+    }
+
+    public function getAtendiemntoStatusEvolucao($idProfissional, $opcao) {        
+
+        return $this->select('A.nomeProfissional,tb_registro_atendimento.numeroRegistro, A.idProfissional, tb_registro_atendimento.dataAtendimento, A.diaSemana, A.horaInicio, A.modalidade, A.idUsuario, A.nomeUsuario, tb_registro_atendimento.jaEvoluiu, tb_registro_atendimento.idRegistroAtendimento')
+                        //->from('tb_atendimento A')
+                        ->join('tb_atendimento A', 'tb_registro_atendimento.idAtendimento = A.idAtendimento')
+                        //->where('tb_registro_atendimento.jaEvoluiu', $opcao)
+                        ->where('tb_registro_atendimento.atendido', 'S')
+                        ->where('A.idProfissional', $idProfissional)
+                        ->where('A.modalidade <>', 'TRIAGEM')
+                        ->orderBy('tb_registro_atendimento.dataAtendimento', 'DESC')
+                        ->orderBy('A.diaSemana', 'ASC')
+                        ->orderBy('A.horaInicio', 'ASC')
+                        // ->group_by('A.nomeProfissional')
+                        ->get()->getResult();
+    }
+
+    public function getAtendimentoStatusEvoluiu($idProfissional)
+    {
+        helper('utils');
+        $id = decrypt($idProfissional);
+        return $this->select('A.nomeProfissional,tb_registro_atendimento.numeroRegistro, A.idProfissional, tb_registro_atendimento.dataAtendimento, A.diaSemana, A.horaInicio, A.modalidade, A.idUsuario, A.nomeUsuario, tb_registro_atendimento.jaEvoluiu, tb_registro_atendimento.idRegistroAtendimento')
+        //->from('tb_atendimento A')
+        ->join('tb_atendimento A', 'tb_registro_atendimento.idAtendimento = A.idAtendimento')
+        ->where('tb_registro_atendimento.jaEvoluiu', 'N')
+        ->where('tb_registro_atendimento.atendido', 'S')
+        ->where('A.idProfissional', $id)
+        ->where('A.modalidade <>', 'TRIAGEM')
+        ->orderBy('tb_registro_atendimento.dataAtendimento', 'DESC')
+        ->orderBy('A.diaSemana', 'ASC')
+        ->orderBy('A.horaInicio', 'ASC')
+        // ->group_by('A.nomeProfissional')
+        ->get()->getResult();
     }
 
 

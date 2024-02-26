@@ -58,6 +58,29 @@ class Evolucao extends BaseController
 
         return view('evolucao/historico-evolucao', $dados);
     }
+    public function listar_dados_estatistica_evolucao()
+    {
+        $dados = array(
+            'titulo' => 'EVOLUÇÃO - DADOS ESTATÍSTICOS',
+            //'pagina' => 'listar-dados-estatistica-evolucao',
+            'profissionais' => $this->modelProfissional->getProfissionalAtivo(),
+            'pasta' => 'evolucao',
+        );        
+
+        return view('evolucao/listar-dados-estatistica-evolucao', $dados);
+    }
+    public function detalhar_estatistica_evolucao($idProfissional)
+    {
+        $dados = array(
+            'titulo' => 'EVOLUÇÕES PENDENTES',
+            //'pagina' => 'detalhar-estatistica-evolucao',
+            'profissionais' => $this->modelProfissional->getProfissionalAtivo(),
+            'atendimentosPendentes' => $this->modelRegistroAtendimento->getAtendimentoStatusEvoluiu($idProfissional),
+            'pasta' => 'evolucao',
+        ); 
+
+        return view('evolucao/detalhar-estatistica-evolucao', $dados);
+    }
 
     public function form_editar_evolucao($idEvolucao)
     {

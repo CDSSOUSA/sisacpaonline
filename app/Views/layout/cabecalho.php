@@ -58,11 +58,39 @@
             background: #222;
             color: #fff;
         }
+
+        .main_print_bt {
+            min-width: 125px;
+            height: auto;
+            float: left;
+            background: #0254A4;
+            text-align: center;
+            color: #FFF;
+            padding: 10px 25px;
+            font-size: 16px;
+            border-radius: 25px;
+            border: none;
+            transition: ease all 0.5s;
+            cursor: pointer;
+            font-weight: 300;
+        }
+
+        button.main_print_bt {
+            float: none;
+            margin: 0;
+        }
+
+        .main_print_bt:hover,
+        .main_print_bt:focus {
+            background: #33A7D8;
+            color: #fff;
+        }
+
         .main_back_bt {
             min-width: 125px;
             height: auto;
             float: left;
-            background: orange;
+            background: #F37027;
             text-align: center;
             color: #FFF;
             padding: 10px 25px;
@@ -83,7 +111,7 @@
 
         .main_back_bt:hover,
         .main_back_bt:focus {
-            background: #F37020;
+            background: #F9A54B;
             color: #fff;
         }
 

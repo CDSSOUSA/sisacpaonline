@@ -1027,13 +1027,6 @@ function definePassword(bool $option, $data): string
     return '';
 }
 
-/**
- * Função para gerar o botao de voltar;
- * Entrada: metodo que define o retorno;
- * Saída: botao no formato html;
- * @param string $metodo
- * @return html
- */
 
 function gerarbotaoVoltar($metodo)
 {
@@ -1043,8 +1036,8 @@ function gerarbotaoVoltar($metodo)
 
 function gerarBotaoImprimir($metodo, $titulo = null)
 {
-
-    return '  ' . anchor($metodo, '<span class="badge">I</span> MPRIMIR ' . $titulo, array('class' => 'btn bg-teal waves-effect', 'target' => '_blank'));
+  
+    return '  ' . anchor($metodo, '<i class="fa fa-print"></i> Imprimir ' . $titulo, array('class' => 'btn main_print_bt', 'target' => '_blank'));
 }
 
 function generateButtonAdd(string $metodo, string $titulo)

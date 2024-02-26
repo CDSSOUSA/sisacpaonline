@@ -20,11 +20,7 @@ $totalEvolucao = count($atendimentos) < 30 ? count($atendimentos) : 30;
                 </thead>
 
                 <tbody>
-                    <?php
-                    /*
-                     @CONTROLLER Evolucao
-                     @METODO formEscreverEvolucaoDataAtendimento
-                    */
+                    <?php                   
                     foreach ($atendimentos as $atendimento) { ?>
                         <tr>
                             <td>
