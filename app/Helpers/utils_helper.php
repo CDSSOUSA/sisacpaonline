@@ -1027,7 +1027,6 @@ function definePassword(bool $option, $data): string
     return '';
 }
 
-
 function gerarbotaoVoltar($metodo)
 {
 

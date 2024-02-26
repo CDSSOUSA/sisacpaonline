@@ -239,8 +239,11 @@ $(document).ready(function() {
     $('#iFrequentaNao').click(function() {        
         checkedSim = $('#iFrequentaNao').val();
 
+        
         if (checkedSim === 'N') {  
-            $("input[name='nTipoEscola']:checked").attr('checked',false);
+            //alert(checkedSim)
+            $("input[name='nTipoEscola']:checked").prop('checked',false);
+            //$('input[name="opcao"][value="opcao1"]').prop('checked', false);
         }
 
     });   
