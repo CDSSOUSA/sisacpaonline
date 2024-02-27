@@ -257,15 +257,16 @@ echo $this->section('content');
              <div class="col-sm-8">
                 <div class="form-group">
                     <div class="form-line">
-                        <div class="demo-radio-button radio-inline">
+                    <div class="icheck-material-teal icheck-inline">
                             <input name="nFrequentaEscolaEspecial" value="S" <?php echo set_radio('nFrequentaEscolaEspecial', 'S', FALSE); ?> type="radio" class="with-gap"
                                 id="iFrequentaEspecialSim" />
-                            <label class="col-sm-3 col-form-label font-weight-bold"
+                            <label class=""
                                 for="iFrequentaEspecialSim">SIM</label>
-
+                    </div>
+                    <div class="icheck-material-teal icheck-inline">
                             <input name="nFrequentaEscolaEspecial" value="N" <?php echo set_radio('nFrequentaEscolaEspecial', 'N', FALSE); ?> type="radio"
                                 id="iFrequentaEspecialNao" class="with-gap" />
-                            <label class="col-sm-3 col-form-label font-weight-bold"
+                            <label class=""
                                 for="iFrequentaEspecialNao">NÃO</label>
                         </div>
                     </div>
@@ -282,13 +283,16 @@ echo $this->section('content');
              <div class="col-sm-8">
                 <div class="form-group">
                     <div class="form-line">
-                        <div class="demo-radio-button radio-inline">
+                    <div class="icheck-material-teal icheck-inline">
                             <input name="nCuidador" value="S" <?php echo set_radio('nCuidador', 'S', FALSE); ?>
                                 type="radio" class="with-gap" id="iCuidadorSim" />
-                            <label class="col-sm-3 col-form-label font-weight-bold" for="iCuidadorSim">SIM</label>
-                            <input name="nCuidador" value="N" <?php echo set_radio('nCuidador', 'N', FALSE); ?>
+                            <label for="iCuidadorSim">SIM</label>
+                           
+                    </div>
+                    <div class="icheck-material-teal icheck-inline">
+                         <input name="nCuidador" value="N" <?php echo set_radio('nCuidador', 'N', FALSE); ?>
                                 type="radio" id="iCuidadorNao" class="with-gap" />
-                            <label class="col-sm-3 col-form-label font-weight-bold" for="iCuidadorNao">NÃO</label>
+                            <label for="iCuidadorNao">NÃO</label>
                         </div>
                     </div>
                     <span style="color:red">
@@ -340,15 +344,17 @@ echo $this->section('content');
              <div class="col-sm-8">
                 <div class="form-group">
                     <div class="form-line">
-                        <div class="demo-checkbox">
+                    <div class="icheck-material-teal icheck-inline">
 
                             <input type="checkbox" id="iFezAtendimento" class="checkbox-inline" name="nFezAtendimento"
                                 value="S" <?php echo set_checkbox('nFezAtendimento', 'S'); ?> /> <label
-                                class="col-sm-3 col-form-label font-weight-bold" for="iFezAtendimento"> FEZ ATENDIMENTO;
+                                 for="iFezAtendimento"> FEZ ATENDIMENTO;
                                 E OU </label><br>
+                    </div>
+                                <div class="icheck-material-teal icheck-inline">
                             <input type="checkbox" id="iFazAtendimento" class="checkbox-inline" name="nFazAtendimento"
                                 value="S" <?php echo set_checkbox('nFazAtendimento', 'S'); ?> /> <label
-                                class="col-sm-3 col-form-label font-weight-bold" for="iFazAtendimento"> FAZ ATENDIMENTO
+                                for="iFazAtendimento"> FAZ ATENDIMENTO
                             </label><br>
                         </div>
                     </div>
@@ -440,7 +446,7 @@ echo $this->section('content');
         <div class="form-group row">
 
             <label class="col-sm-3 col-form-label font-weight-bold">CEP: </label>
-        </div>
+       
          <div class="col-sm-8">
             <div class="form-group">
                 <div class="form-line">
@@ -448,6 +454,7 @@ echo $this->section('content');
                         class="form-control cep" placeholder="CEP" pattern="[0-9]+$" title="Digite apenas números">
                 </div>
             </div>
+        </div>
         </div>
     
     <div class="form-group row">
@@ -557,7 +564,8 @@ echo $this->section('content');
     </div>
 
     <div class="form-group row">
-        <div class="col-lg-offset-3 col-md-offset-3 col-sm-offset-4 col-xs-offset-5">
+    <label class="col-sm-3 hidden"></label>
+            <div class="col-sm-8 d-flex justify-content-between">
             <?php
             echo session()->get('botaoSalvar');
             echo session()->get('botaoLimpar');
