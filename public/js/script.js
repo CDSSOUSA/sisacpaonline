@@ -34,6 +34,11 @@ $("#iProfissional").focus(function() {
     $('#iDataAtendimento').val('');
 });
 
+$(".flatpickr").flatpickr({
+    "locale": "pt",
+    dateFormat: "d/m/Y", 
+    maxDate: "today"
+});
 
 /* MASCARAS*/
 
@@ -90,18 +95,7 @@ setTimeout(function() {
 }, 60000);
 
 /* DATAS*/
-$('.data').datepicker({
-    format: "dd/mm/yyyy",
-    language: "pt-BR",
-    // startDate: "<?php echo date("d - m - Y"); ?>",
-    endDate: "<?php echo date('d-m-Y');?>",
-    //todayHighlight: true,
-    orientation: 'auto bottom',
-    autoclose: true,
-    darktheme: true
-            //daysOfWeekDisabled: '0,6',
-            //orientation: 'bottom'
-});
+
 
 /* BUSCA CEP*/
 $('#iCep').blur(function() {
@@ -237,9 +231,7 @@ $(document).ready(function() {
 
         
     $('#iFrequentaNao').click(function() {        
-        checkedSim = $('#iFrequentaNao').val();
-
-        
+        checkedSim = $('#iFrequentaNao').val(); 
         if (checkedSim === 'N') {  
             //alert(checkedSim)
             $("input[name='nTipoEscola']:checked").prop('checked',false);
@@ -481,6 +473,7 @@ function marcardesmarcar() {
     marcartodos();
 }
 
+
 function marcarRadioButton(){
     $("#iFrequentaSim").prop('checked', true);
 }
@@ -496,5 +489,6 @@ function marcartodos() {
             }
     );
 }
+
 
 

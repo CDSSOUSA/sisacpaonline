@@ -57,9 +57,19 @@ const clearInput = (option) => {
     //document.querySelector('#option').value = '';
 }
 
+const validateErros = (errors) => {
+    for (let locale in errors) {
+        let r = document.getElementById(locale).innerHTML = '';
+        console.log(errors[locale]);
+        if (errors[locale]) {
+            r = document.getElementById(locale).innerHTML = `<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ${errors[locale]}!`;
+        }
+    }
+};
 
-const validateErros = (errors, locale) => {
+const validateErros_ = (errors, locale) => {
     let r = document.getElementById(locale).innerHTML = '';
+    console.log(errors)
     if (errors) {
         r = document.getElementById(locale).innerHTML = `<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ${errors}!`
     }

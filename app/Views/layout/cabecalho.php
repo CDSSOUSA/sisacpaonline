@@ -27,9 +27,13 @@
     https://cdn.jsdelivr.net/npm/icheck-material@1.0.1/icheck-material.min.css
     " rel="stylesheet">
     <link rel="stylesheet" href="<?=base_url();?>assets/toastr/toastr.min.css">
+    <link rel="stylesheet" href="<?=base_url();?>assets/flatpickr/flatpickr.min.css">
+    <link rel="stylesheet" href="<?=base_url();?>assets/flatpickr/material_green.css">
     
     <link rel="stylesheet" href="<?php //base_url() ?>assets/datatables/datatables.min.css">
     <script src="<?php //base_url('assets/jquery/jquery.min.js'); ?>"></script>
+
+   
 
     <style>
         .main_clear_bt {

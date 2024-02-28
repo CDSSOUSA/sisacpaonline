@@ -192,6 +192,56 @@ $routes->group('/api/modalidade', ['namespace'=>'App\Controllers','filter'=>'aut
     $routes->post('cadastrar_modalidade','ModalidadeApi::cadastrarModalidade'); 
     $routes->post('edita_modalidade','ModalidadeApi::editaModalidade'); 
 });
+$routes->group('/api/usuario', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
+    $routes->get('form_pesquisar_usuario','UsuarioApi::form_pesquisar_usuario');
+    $routes->get('form_alterar_dados_pessoais/(:any)','UsuarioApi::form_alterar_dados_pessoais/$1');
+    $routes->get('form_alterar_dados_responsaveis/(:any)','UsuarioApi::form_alterar_dados_responsaveis/$1');
+    $routes->get('form_alterar_dados_aspectos_sociais/(:any)','UsuarioApi::form_alterar_dados_aspectos_sociais/$1');
+    $routes->get('form_alterar_dados_comunicacao/(:any)','UsuarioApi::form_alterar_dados_comunicacao/$1');
+    $routes->get('form_alterar_dados_comportamento/(:any)','UsuarioApi::form_alterar_dados_comportamento/$1');
+    $routes->get('form_alterar_dados_socializacao/(:any)','UsuarioApi::form_alterar_dados_socializacao/$1');
+    $routes->get('form_alterar_dados_finalizacao/(:any)','UsuarioApi::form_alterar_dados_finalizacao/$1');
+    $routes->get('form_alterar_dados_foto/(:any)','UsuarioApi::form_alterar_dados_foto/$1');
+    $routes->get('form_desligar_usuario/(:any)','UsuarioApi::form_desligar_usuario/$1');
+        
+    $routes->post('pesquisar_usuario','UsuarioApi::pesquisarUsuario');
+    $routes->post('alterar_dados_pessoais','UsuarioApi::alterarDadosPessoais');    
+    $routes->post('alterar_dados_responsaveis','UsuarioApi::alterarDadosResponsaveis');    
+    $routes->post('alterar_dados_sociais','UsuarioApi::alterarDadosSociais');    
+    $routes->post('alterar_dados_comunicacao','UsuarioApi::alterarDadosComunicacao');  
+    $routes->post('alterar_dados_comportamento','UsuarioApi::alterarDadosComportamento');  
+    $routes->post('alterar_dados_socializacao','UsuarioApi::alterarDadosSocializacao');  
+    $routes->post('alterar_dados_finalizacao','UsuarioApi::alterarDadosFinalizacao');  
+    $routes->post('alterar_dados_foto','UsuarioApi::alterarDadosFoto');  
+    $routes->post('desligar_usuario','UsuarioApi::desligarUsuario');  
+    
+    $routes->get('exibir_usuario','UsuarioApi::exibirUsuario');
+    $routes->get('detalhar_usuario/(:any)','UsuarioApi::detalharUsuario/$1');
+    
+    $routes->get('form_escrever_anamnese/(:any)','UsuarioApi::form_escrever_anamnese/$1');
+    $routes->get('form_escrever_anamnese02/(:any)','UsuarioApi::form_escrever_anamnese02/$1');
+    $routes->get('form_escrever_anamnese03/(:any)','UsuarioApi::form_escrever_anamnese03/$1');
+    $routes->get('form_escrever_anamnese04/(:any)','UsuarioApi::form_escrever_anamnese04/$1');
+    $routes->get('form_escrever_anamnese05/(:any)','UsuarioApi::form_escrever_anamnese05/$1');
+    $routes->get('form_escrever_anamnese06/(:any)','UsuarioApi::form_escrever_anamnese06/$1');
+    $routes->get('form_escrever_anamnese07/(:any)','UsuarioApi::form_escrever_anamnese07/$1');
+    
+    $routes->post('escrever_anamnese_ep01','UsuarioApi::escreverAnamneseEp01');  
+    $routes->post('escrever_anamnese_ep02','UsuarioApi::escreverAnamneseEp02');  
+    $routes->post('escrever_anamnese_ep03','UsuarioApi::escreverAnamneseEp03');  
+    $routes->post('escrever_anamnese_ep04','UsuarioApi::escreverAnamneseEp04');  
+    $routes->post('escrever_anamnese_ep05','UsuarioApi::escreverAnamneseEp05');  
+    $routes->post('escrever_anamnese_ep06','UsuarioApi::escreverAnamneseEp06');  
+    $routes->post('escrever_anamnese_ep07','UsuarioApi::escreverAnamneseEp07');
+
+    $routes->get('form_escolha_cadastrar_usuario','UsuarioApi::form_escolha_cadastrar_usuario');
+    $routes->get('form_cadastrar_usuario','UsuarioApi::form_cadastrar_usuario');
+    $routes->post('cadastrar_usuario_simplificado','UsuarioApi::cadastrarUsuarioSimplificado');
+    
+    $routes->get('form_cadastrar_usuario_acompanhante','UsuarioApi::form_cadastrar_usuario_acompanhante');
+    $routes->post('cadastrar_usuario_acompanhante','UsuarioApi::cadastrarUsuarioUcompanhante');
+   
+});
 
 $routes->group('/api/evolucao', ['namespace'=>'App\Controllers','filter'=>'authFilter'], function ($routes) {
     $routes->post('escrever_evolucao','EvolucaoApi::escreverEvolucao'); 

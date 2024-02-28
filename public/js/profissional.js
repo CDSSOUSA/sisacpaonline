@@ -150,31 +150,10 @@ if(cadastrarProfissionalForm){
                 if (response.data.error) {
                    
                     showAlertToast(false, "Erros no preechimento!");
-
                     validateErros(
-                        response.data.msgs.nNomeProfissional,
-                        "iErrorNomeProfissional"
+                        response.data.msgs,                       
                     );
-                    validateErros(
-                        response.data.msgs.nGenero,
-                        "iErrorGenero"
-                    );
-                    validateErros(
-                        response.data.msgs.nCpfProfissional,
-                        "iErrorCpfProfissional"
-                    );
-                    validateErros(
-                        response.data.msgs.nCnsProfissional,
-                        "iErrorCnsProfissional"
-                    );
-                    validateErros(
-                        response.data.msgs.nTipoProfissional,
-                        "iErrorTipoProfissional"
-                    );
-                    validateErros(
-                        response.data.msgs.nModalidade,
-                        "iErrorModalidade"
-                    );
+                    
                     
                 } else {
                     //activeSeriesModal.hide();
@@ -184,9 +163,9 @@ if(cadastrarProfissionalForm){
 
                     cadastrarProfissionalForm.reset();
 
-                    setTimeout(function() {
-                        window.location.href = `${URL_BASE}profissional/form_editar_profissional`;
-                    }, 2000); // Redireciona após 5 segundos
+                    //setTimeout(function() {
+                      //  window.location.href = `${URL_BASE}profissional/form_editar_profissional`;
+                    //}, 2000); // Redireciona após 5 segundos
                     //listarProfissionais();
                     //editProfissionalForm.hide();
                     //$("#editarProfissional").modal("hide");

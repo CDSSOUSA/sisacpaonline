@@ -7,11 +7,10 @@
     <script src="<?php // base_url('assets/datatables/datatables.min.js') ?>"></script>
 
       <script src="<?= base_url();?>assets/toastr/toastr.min.js"></script>
+      <script src="<?= base_url();?>assets/flatpickr/flatpickr.min.js"></script>
+      <script src="<?= base_url();?>assets/flatpickr/flatpickr.pt.js"></script>
 
-      <!-- Bootstrap Datepicker Plugin Js -->
-<script src="<?php echo base_url('plugins_original/bootstrap-datepicker/js/bootstrap-datepicker.js'); ?>"></script>
-<script src="<?php echo base_url('bootstrap-datepicker/dist/js/bootstrap-datepicker-pt-BR.js'); ?>"></script>
-
+     
       <!-- Masc-->
 <script src="<?php echo base_url('plugins_original/mask/jquery.mask.min.js'); ?>"></script>
 

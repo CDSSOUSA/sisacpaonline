@@ -519,6 +519,8 @@ class ProfissionalApi extends ResourceController
                 'msg' => $this->validator->getErrors(),
                 'msgs' => $this->validator->getErrors()
             ];
+
+          
             return $this->response->setJSON($response);
             //return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
@@ -565,9 +567,7 @@ class ProfissionalApi extends ResourceController
                 
             }
         } catch (Exception $e) {
-
-            var_dump($e->getCode());
-            session()->set('erro', 'ERRO, não foi possível realizar operação.');
+            
             $this->logging->critical(__CLASS__ . "\\" . __FUNCTION__, ['PROFISSIONAL::' => $idProfissional, 'FEITO POR::' => session()->get("nome"), 'ERROR' => $e->getMessage()]);
             return $this->response->setJSON([
                 'status' => 'ERROR',

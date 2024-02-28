@@ -58,43 +58,43 @@ class ProfissionalModel extends Model
                 'id' => 'iProfissional',
                 'name' => 'nNomeProfissional',
                 'label' => 'Nome Completo: *',
-                'iError' => 'iErrorNomeProfissional'
+                'iError' => 'nNomeProfissional'
             ],
             'cpfProfissional' => [
                 'id' => 'iCpfProfissional',
                 'name' => 'nCpfProfissional',
                 'label' => 'Cpf Profissional: *',
-                'iError' => 'iErrorCpfProfissional'
+                'iError' => 'nCpfProfissional'
             ],
             'genero' => [
                 'id' => 'iGenero',
                 'name' => 'nGenero',
                 'label' => 'Gênero: *',
-                'iError' => 'iErrorGenero'
+                'iError' => 'nGenero'
             ],
             'cnsProfissional' => [
                 'id' => 'iCnsProfissional',
                 'name' => 'nCnsProfissional',
                 'label' => 'Cns Profissional: *',
-                'iError' => 'iErrorCnsProfissional'
+                'iError' => 'nCnsProfissional'
             ],
             'tipoProfissional' => [
                 'id' => 'iTipoProfissional',
                 'name' => 'nTipoProfissional',
                 'label' => 'Tipo profissional: *',
-                'iError' => 'iErrorTipoProfissional'
+                'iError' => 'nTipoProfissional'
             ],
             'modalidade' => [
                 'id' => 'iModalidade',
                 'name' => 'nModalidade',
                 'label' => 'Modalidade: *',
-                'iError' => 'iErrorModalidade'
+                'iError' => 'nModalidade'
             ],
             'numClasse' => [
                 'id' => 'iNumConselho',
                 'name' => 'nConselhoClasse',
                 'label' => 'Núm. Cons. Classe',
-                'iError' => 'iErrorConselho'
+                'iError' => 'nConselhoClasse'
             ]
         ];
     }
