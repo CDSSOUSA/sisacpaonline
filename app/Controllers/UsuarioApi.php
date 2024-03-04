@@ -133,10 +133,120 @@ class UsuarioApi extends ResourceController
                         'status' => true,
                         'error' => false,
                         'code' => 200,
+                        'idUsuario' => encrypt($idUsuario),
+                        'msg' => '<p>Operação realizada com sucesso!</p>',
+                        //'id' =>  $this->series->getInsertID()
+                        //'data' => $this->list()
+                    ];                   
+                    //return redirect()->to('atendimento/listar_atendimento');
+                    return $this->response->setJSON($response);
+                    
+                }
+            } catch (Exception $e) {
+                //session()->set('erro', 'ERRO, não foi possível realizar operação.');
+                $this->logging->critical(__CLASS__ . "\\" . __FUNCTION__, ['USUARIO::' => $idUsuario, 'FEITO POR::' => session()->get("nome"), 'ERROR' => $e->getMessage()]);
+
+                return $this->response->setJSON([
+                    'status' => 'ERROR',
+                    'error' => true,
+                    'code' => $e->getCode(),
+                    'msg' => $e->getMessage(),
+                    'msgs' => $e->getMessage(),
+                ]);
+            }    
+    
+            //return $this->form_cadastrar_usuario();  
+    }
+    public function cadastrarUsuarioAcompanhante()
+    {
+            helper("utils");
+
+            $dados['nomeUsuario'] = tratarPalavras($this->request->getPost('nNomeUsuario'));
+            $dados['dataNascimento'] = converteParaDataMysql($this->request->getPost('nDataNascimento'));
+            $dados['idadeDiagnostico'] = $this->request->getPost('nIdadeDiagnostico');
+            $dados['genero'] = $this->request->getPost('nGenero');
+            $dados['telefone'] = $this->request->getPost('nTelefone');
+            $dados['teste'] = $this->request->getPost('teste');
+            $dados['cpfUsuario'] = tratarCpf($this->request->getPost('nCpfUsuario'));
+            $dados['cnsUsuario'] = tratarCns($this->request->getPost('nCnsUsuario'));           
+            $dados['nisUsuario'] = tratarNis($this->request->getPost('nNisUsuario'));
+            $dados['nomeResponsavel'] = 'NAO INFORMADO';
+            $dados['cep'] = $this->request->getPost('nCep');
+            $dados['logradouro'] = tratarPalavras($this->request->getPost('nLogradouro'));
+            $dados['numeroLogradouro'] = $this->request->getPost('nNumeroLogradouro');
+            $dados['bairro'] = tratarPalavras($this->request->getPost('nBairro'));
+            $dados['complemento'] = tratarPalavras($this->request->getPost('nComplemento'));
+            $dados['pontoReferencia'] = tratarPalavras($this->request->getPost('nPontoReferencia'));
+            $dados['cidade'] = tratarPalavras($this->request->getPost('nCidade'));
+            $dados['listaEspera'] = 'N';
+            $dados['acompanhante'] = 'S';  
+            
+            $rules = [
+                'nNomeUsuario' => 'required|min_length[3]',
+                'nDataNascimento' => 'required',
+                'nGenero' => 'required',
+                'nLogradouro' => 'required',
+                'nNumeroLogradouro' => 'required',
+                'nBairro' => 'required',
+                'nCidade' => 'required',
+                'nPontoReferencia' => 'permit_empty|min_length[3]',
+                'nCpfUsuario' => 'permit_empty|validateCpf|is_unique[tb_pessoa.cpf]',
+                'nCnsUsuario' => 'required|valid_cns|is_unique[tb_usuario.cnsUsuario, idUsuario, {".$idUsuario."}]',
+                'nNisUsuario' => 'permit_empty|valid_nis|is_unique[tb_usuario.nisUsuario]', 
+            ];
+
+
+            $val = $this->validate($rules);  
+
+            $idUsuario = $this->request->getPost('nIdUsuario');
+            if (!$val) {
+    
+                $this->logging->error(__CLASS__ . "\\" . __FUNCTION__, [
+                    'USUARIO::' => $idUsuario,
+                    'FEITO POR::' => session()->get("nome"),
+                    'ERROR' => $this->validator->getErrors()
+                ]);
+
+                $response = [
+                    'status' => 'ERROR',
+                    'error' => true,
+                    'code' => 400,
+                    'msg' => $this->validator->getErrors(),
+                    'msgs' => $this->validator->getErrors()
+                ];
+                return $this->response->setJSON($response);
+    
+    
+                //return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            }
+            
+            try {
+                $modelUsuario = new UsuarioModel;
+
+                $gravar = $modelUsuario->saveUsuario($dados);
+
+                //dd($gravar);
+    
+                if ($gravar) {
+                    //session()->set('sucesso', 'Parabéns, ação realizada com sucesso.');
+
+                    $modelPessoa = new PessoaModel;
+                    $ultimaPessoa = $modelPessoa->getLastPessoa();
+
+                    $idUsuario = $ultimaPessoa->idPessoa;    
+                    //return redirect()->to('usuario/detalhar_usuario/' . encrypt($idUsuario));
+                    $this->logging->info(__CLASS__ . "\\" . __FUNCTION__, ['USUARIO::' => $idUsuario, 'FEITO POR::' => session()->get("nome"), 'SUCCESS::' => $gravar]);
+                    //return redirect()->to('usuario/detalhar_usuario/' . encrypt($idUsuario));
+                    $response = [
+                        'status' => true,
+                        'error' => false,
+                        'code' => 200,
+                        'idUsuario' => encrypt($idUsuario),
                         'msg' => '<p>Operação realizada com sucesso!</p>',
                         //'id' =>  $this->series->getInsertID()
                         //'data' => $this->list()
                     ];
+
                     //return redirect()->to('atendimento/listar_atendimento');
                     return $this->response->setJSON($response);
                     

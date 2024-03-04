@@ -590,6 +590,7 @@ echo $this->section('content');
                 })
                 .then((response) => {
                     console.log(response.error)
+                    const dados = response.data  
 
                     if (response.data.error) {
 
@@ -608,7 +609,7 @@ echo $this->section('content');
                         cadastrarUsuarioForm.reset();
 
                         setTimeout(function() {
-                          window.location.href = `${URL_BASE}usario/detalhar_usuario/DK3OvCVj4DSoB4nhEdxe72bWfPqXuhYelYklgX86Ed9WiLciQQipkApj5xzmteIt15HUzsT7Y9ahNXqrJRCSlO3rQLbZMGZ4LmO8Zmz1gNnqMDuGTbt0Rwp9TG6gyKa23421GiuVYT6BplrYXvwPiZ4b8EVCfvJ1sRhL6nTavzHkq37LcQtkcAWpxurBGRTCbeUC4HKu85Lz9otyyAQfM5MeFggdnpmg705EljxsOYhaW24ntc0jqswwF0UN8K3kzjS`;
+                            window.location.href = `${URL_BASE}usuario/detalhar_usuario/${dados.idUsuario}`
                         }, 2000); // Redireciona após 5 segundos
                         //listarProfissionais();
                         //editProfissionalForm.hide();

@@ -239,7 +239,7 @@ $routes->group('/api/usuario', ['namespace'=>'App\Controllers','filter'=>'authFi
     $routes->post('cadastrar_usuario_simplificado','UsuarioApi::cadastrarUsuarioSimplificado');
     
     $routes->get('form_cadastrar_usuario_acompanhante','UsuarioApi::form_cadastrar_usuario_acompanhante');
-    $routes->post('cadastrar_usuario_acompanhante','UsuarioApi::cadastrarUsuarioUcompanhante');
+    $routes->post('cadastrar_usuario_acompanhante','UsuarioApi::cadastrarUsuarioAcompanhante');
    
 });
 
